@@ -110,3 +110,22 @@ export async function hasAllPermissions(
   }
   return true;
 }
+
+/**
+ * Helper function to check permissions from user groups structure
+ */
+export function checkPermission(
+  userGroups: any[],
+  resource: string,
+  action: string
+): boolean {
+  return userGroups.some((ug) =>
+    ug.group.permissions.some(
+      (gp: any) =>
+        (gp.permission.resource === resource ||
+          gp.permission.resource === "*") &&
+        (gp.permission.action === action || gp.permission.action === "*")
+    )
+  );
+}
+

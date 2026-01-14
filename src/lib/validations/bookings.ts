@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+export const bookingCreateSchema = z.object({
+  serviceId: z.number().int().positive("Serviço inválido"),
+  barberId: z.number().int().positive("Barbeiro inválido"),
+  scheduledAt: z.string().datetime("Data/hora inválida"),
+  customerName: z.string().min(1, "Nome do cliente é obrigatório").max(100),
+  customerEmail: z.string().email("E-mail inválido").optional(),
+  customerPhone: z.string().max(20).optional(),
+  status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"]).default("PENDING"),
+  notes: z.string().max(1000).optional(),
+});
+
 export const bookingSchema = z.object({
   serviceId: z.number().int().positive("Serviço inválido"),
   barberId: z.number().int().positive("Barbeiro inválido"),
