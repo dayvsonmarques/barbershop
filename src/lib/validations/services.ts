@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const serviceCategorySchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório").max(100),
+  description: z.string().max(500).optional(),
+  isActive: z.boolean().default(true),
+});
+
 export const categorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório").max(100),
   description: z.string().max(500).optional().nullable(),

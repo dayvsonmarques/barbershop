@@ -15,13 +15,12 @@ export const productSchema = z.object({
 });
 
 export const courseSchema = z.object({
-  title: z.string().min(1, "Título é obrigatório").max(200),
-  description: z.string().min(1, "Descrição é obrigatória"),
+  name: z.string().min(1, "Nome é obrigatório").max(200),
+  description: z.string().min(1, "Descrição é obrigatória").optional(),
   type: z.enum(["PRESENCIAL", "ONLINE"]),
-  duration: z.number().int().min(1, "Duração mínima: 1 hora").max(1000),
+  durationHours: z.number().int().min(1, "Duração mínima: 1 hora").max(1000),
   price: z.number().min(0, "Preço deve ser positivo"),
-  maxStudents: z.number().int().min(1, "Mínimo 1 aluno").max(100),
-  status: z.enum(["ATIVO", "INATIVO"]).default("ATIVO"),
+  isActive: z.boolean().default(true),
 });
 
 export type ProductCategoryInput = z.infer<typeof productCategorySchema>;
