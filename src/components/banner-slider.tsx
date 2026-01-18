@@ -14,19 +14,19 @@ type Slide = {
 const slides: Slide[] = [
   {
     id: 1,
-    image: "/images/banner-1.jpg",
+    image: "/images/banner-1.svg",
     title: "Estilo e Tradição",
     subtitle: "A melhor barbearia da região",
   },
   {
     id: 2,
-    image: "/images/banner-2.jpg",
+    image: "/images/banner-2.svg",
     title: "Profissionais Experientes",
     subtitle: "Atendimento de qualidade garantido",
   },
   {
     id: 3,
-    image: "/images/banner-3.jpg",
+    image: "/images/banner-3.svg",
     title: "Agende Seu Horário",
     subtitle: "Fácil, rápido e seguro",
   },

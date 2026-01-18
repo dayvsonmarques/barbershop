@@ -18,9 +18,7 @@ export default function UsersPage() {
             <h2 className="text-lg font-semibold text-gray-900">
               Lista de Usuários
             </h2>
-            <p className="text-sm text-gray-600">
-              Total: 2 usuários cadastrados
-            </p>
+            <p className="text-sm text-gray-600">Total: 2 usuários cadastrados</p>
           </div>
           <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
             + Novo Usuário

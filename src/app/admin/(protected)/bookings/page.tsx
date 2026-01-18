@@ -44,13 +44,12 @@ export default function BookingsPage() {
 
   useEffect(() => {
     loadBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
   const loadBookings = async () => {
     try {
-      const response = await fetch(
-        `/api/admin/bookings?date=${selectedDate}`
-      );
+      const response = await fetch(`/api/admin/bookings?date=${selectedDate}`);
       if (response.ok) {
         const data = await response.json();
         setBookings(data);
@@ -192,9 +191,7 @@ export default function BookingsPage() {
 
         {bookings.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">
-              Nenhum agendamento para esta data
-            </p>
+            <p className="text-gray-500">Nenhum agendamento para esta data</p>
           </div>
         )}
       </div>

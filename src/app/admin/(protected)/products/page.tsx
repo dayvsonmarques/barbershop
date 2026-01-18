@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
 type Product = {
@@ -10,8 +10,10 @@ type Product = {
   price: number;
   stock: number;
   isActive: boolean;
-  categoryId: number;
-  category: { id: number; name: string };
+  category: {
+    id: number;
+    name: string;
+  };
 };
 
 export default function ProductsPage() {
@@ -51,7 +53,7 @@ export default function ProductsPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Produtos</h1>
         <p className="mt-1 text-sm text-gray-600">
-          Gerenciamento de produtos para venda
+          Gerenciamento de produtos e estoque
         </p>
       </div>
 
@@ -114,18 +116,8 @@ export default function ProductsPage() {
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900 font-medium">
                     R$ {product.price.toFixed(2)}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    <span
-                      className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                        product.stock > 10
-                          ? "bg-green-100 text-green-800"
-                          : product.stock > 0
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {product.stock} un
-                    </span>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                    {product.stock}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
                     <span
@@ -151,12 +143,6 @@ export default function ProductsPage() {
             </tbody>
           </table>
         </div>
-
-        {products.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">Nenhum produto cadastrado</p>
-          </div>
-        )}
       </div>
     </div>
   );

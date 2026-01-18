@@ -61,7 +61,7 @@ app/
 ### Prerequisites
 
 - Node.js 18+ 
-- PostgreSQL 14+
+- Docker + Docker Compose (recomendado)
 - npm or pnpm
 
 ### Installation
@@ -79,15 +79,17 @@ npm install
 
 3. Set up environment variables:
 ```bash
-cp .env.example .env
+# Ajuste o .env conforme necessário
 ```
 Edit `.env` with your configuration. See [docs/ENV.md](docs/ENV.md) for details.
 
-4. Set up the database:
+Por padrão, este projeto usa:
+- Postgres via Docker em `localhost:5433` (evita conflito comum com Postgres local na `5432`)
+- Mailpit em `localhost:8025` (UI) e `localhost:1025` (SMTP)
+
+4. Start local infrastructure (Postgres + Mailpit) and set up the database:
 ```bash
-npx prisma generate
-npx prisma migrate dev
-npx prisma db seed
+npm run db:setup
 ```
 
 5. Run the development server:
@@ -95,16 +97,27 @@ npx prisma db seed
 npm run dev
 ```
 
+Opcional (faz tudo em um comando):
+```bash
+npm run dev:full
+```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📝 Available Scripts
 
 - `npm run dev` - Start development server
+- `npm run dev:full` - Sobe infra + migra + seed + inicia o dev server
 - `npm run build` - Build for production
 - `npm start` - Start production server
+- `npm run infra:up` - Sobe Postgres + Mailpit (Docker)
+- `npm run infra:down` - Para a infra (mantém volume)
+- `npm run infra:nuke` - Para a infra e remove volumes (zera o banco)
+- `npm run db:setup` - Infra + generate + migrate + seed
+- `npm run db:reset` - Zera o banco e roda `db:setup`
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
-- `npx prisma studio` - Open Prisma Studio (database GUI)
+- `npm run db:studio` - Open Prisma Studio (database GUI)
 
 ## 📚 Documentation
 

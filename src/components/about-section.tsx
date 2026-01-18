@@ -49,7 +49,7 @@ export function AboutSection() {
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: "url(/images/about.jpg)",
+                backgroundImage: "url(/images/about.svg)",
               }}
             />
           </div>

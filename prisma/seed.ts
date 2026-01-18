@@ -1,7 +1,14 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import * as bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Starting database seed...");
@@ -314,28 +321,25 @@ async function main() {
   await prisma.course.createMany({
     data: [
       {
-        title: "Curso de Barbeiro Profissional",
+        name: "Curso de Barbeiro Profissional",
         description: "Aprenda todas as técnicas de corte e finalização",
         type: "PRESENCIAL",
-        duration: 80,
+        durationHours: 80,
         price: 1500.0,
-        status: "ATIVO",
       },
       {
-        title: "Workshop de Desenhos em Cabelo",
+        name: "Workshop de Desenhos em Cabelo",
         description: "Técnicas avançadas de desenhos e degradê",
         type: "PRESENCIAL",
-        duration: 16,
+        durationHours: 16,
         price: 450.0,
-        status: "ATIVO",
       },
       {
-        title: "Curso Online: Barbeiro Iniciante",
+        name: "Curso Online: Barbeiro Iniciante",
         description: "Fundamentos da barbearia (vídeo-aulas)",
         type: "ONLINE",
-        duration: 40,
+        durationHours: 40,
         price: 350.0,
-        status: "ATIVO",
       },
     ],
   });
@@ -371,10 +375,11 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error("❌ Error during seed:", e);
-    process.exit(1);
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

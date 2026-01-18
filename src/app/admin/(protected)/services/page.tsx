@@ -77,7 +77,6 @@ export default function ServicesPage() {
         </p>
       </div>
 
-      {/* Categories */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -120,7 +119,6 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Services */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-center justify-between mb-6">
           <div>

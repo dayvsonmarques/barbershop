@@ -13,12 +13,14 @@ export interface AuthContext {
  */
 export async function requireAuth(request: NextRequest): Promise<AuthContext | NextResponse> {
   const authHeader = request.headers.get("authorization");
+  const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+  const cookieToken = request.cookies.get("auth_token")?.value ?? null;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  const token = bearerToken ?? cookieToken;
+
+  if (!token) {
     return NextResponse.json({ error: "Token não fornecido" }, { status: 401 });
   }
-
-  const token = authHeader.substring(7);
   const payload = await verifyToken(token);
 
   if (!payload) {

@@ -1,78 +1,142 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+type PublicSettings = {
+  name?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  phone?: string | null;
+  openingHours?: Record<string, string>;
+};
 
 export function MapSection() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markerRef = useRef<any>(null);
+
+  const [settings, setSettings] = useState<PublicSettings | null>(null);
+
+  const tileUrl =
+    process.env.NEXT_PUBLIC_MAP_TILE_URL ??
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  const tileAttribution =
+    process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ?? "© OpenStreetMap contributors";
+
+  const fallbackLat = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -23.55052);
+  const fallbackLng = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -46.633308);
+  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 15);
+
+  const mapCenter = useMemo(() => {
+    const lat = settings?.latitude ?? fallbackLat;
+    const lng = settings?.longitude ?? fallbackLng;
+    return { lat, lng };
+  }, [settings?.latitude, settings?.longitude, fallbackLat, fallbackLng]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/public/settings");
+        if (!res.ok) return;
+        const json = (await res.json()) as { data?: PublicSettings | null };
+        if (json.data) setSettings(json.data);
+      } catch {
+        // ignore
+      }
+    };
+
+    load();
+  }, []);
 
   useEffect(() => {
     // Only run on client side
     if (typeof window === "undefined" || !mapRef.current) return;
 
+    // Import Leaflet CSS once
+    if (!document.querySelector('link[data-leaflet="true"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      link.setAttribute("data-leaflet", "true");
+      document.head.appendChild(link);
+    }
+
     // Dynamically import Leaflet to avoid SSR issues
-    import("leaflet").then((L) => {
-      // Check if map is already initialized
-      if (mapRef.current?.querySelector(".leaflet-container")) return;
+    import("leaflet").then((leafletModule) => {
+      const L = (leafletModule as any).default ?? leafletModule;
 
-      // Coordinates for the establishment (example: São Paulo center)
-      const lat = -23.5505;
-      const lng = -46.6333;
-
-      // Create map
-      const map = L.map(mapRef.current!).setView([lat, lng], 15);
-
-      // Add OpenStreetMap tiles
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      // Custom marker icon
-      const customIcon = L.divIcon({
-        className: "custom-marker",
-        html: `
-          <div style="
-            background-color: #2563eb;
-            width: 40px;
-            height: 40px;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          ">
-            <div style="
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%) rotate(45deg);
-              font-size: 20px;
-            ">💈</div>
-          </div>
-        `,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40],
-      });
-
-      // Add marker
-      L.marker([lat, lng], { icon: customIcon })
-        .addTo(map)
-        .bindPopup(
-          `
-          <div style="text-align: center; padding: 8px;">
-            <strong style="font-size: 16px; display: block; margin-bottom: 4px;">ED Barbearia</strong>
-            <p style="margin: 0; color: #666;">Rua Exemplo, 123</p>
-            <p style="margin: 0; color: #666;">São Paulo - SP</p>
-          </div>
-        `
+      // Initialize map once
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapRef.current!).setView(
+          [mapCenter.lat, mapCenter.lng],
+          fallbackZoom
         );
+
+        L.tileLayer(tileUrl, {
+          attribution: tileAttribution,
+        }).addTo(map);
+
+        const customIcon = L.divIcon({
+          className: "custom-marker",
+          html: `
+            <div style="
+              background-color: #2563eb;
+              width: 40px;
+              height: 40px;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              border: 3px solid white;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            ">
+              <div style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(45deg);
+                font-size: 20px;
+              ">💈</div>
+            </div>
+          `,
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+        });
+
+        const marker = L.marker([mapCenter.lat, mapCenter.lng], { icon: customIcon }).addTo(map);
+        markerRef.current = marker;
+        mapInstanceRef.current = map;
+      }
+
+      // Update marker + view when settings change
+      const map = mapInstanceRef.current;
+      if (map) {
+        map.setView([mapCenter.lat, mapCenter.lng], map.getZoom());
+      }
+
+      if (markerRef.current) {
+        markerRef.current.setLatLng([mapCenter.lat, mapCenter.lng]);
+
+        const name = settings?.name ?? "ED Barbearia";
+        const address = settings?.address ?? "";
+
+        markerRef.current.bindPopup(
+          `
+            <div style="text-align: center; padding: 8px;">
+              <strong style="font-size: 16px; display: block; margin-bottom: 4px;">${name}</strong>
+              <p style="margin: 0; color: #666;">${address}</p>
+            </div>
+          `.trim()
+        );
+      }
     });
 
-    // Import Leaflet CSS
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-    document.head.appendChild(link);
-  }, []);
+    return () => {
+      // Do not destroy map on re-render; keep instance.
+    };
+  }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name]);
+
+  const addressLines = (settings?.address ?? "").split("\n").filter(Boolean);
+  const hoursSummary = buildHoursSummary(settings?.openingHours ?? {});
 
   return (
     <section className="py-20 bg-white">
@@ -95,24 +159,61 @@ export function MapSection() {
             <div className="p-6 bg-gray-50 rounded-lg">
               <div className="text-3xl mb-3">📍</div>
               <h3 className="font-semibold text-gray-900 mb-2">Endereço</h3>
-              <p className="text-gray-600">Rua Exemplo, 123</p>
-              <p className="text-gray-600">São Paulo - SP</p>
+              {addressLines.length > 0 ? (
+                addressLines.map((line) => (
+                  <p key={line} className="text-gray-600">
+                    {line}
+                  </p>
+                ))
+              ) : (
+                <p className="text-gray-600">Endereço não informado</p>
+              )}
             </div>
             <div className="p-6 bg-gray-50 rounded-lg">
               <div className="text-3xl mb-3">📞</div>
               <h3 className="font-semibold text-gray-900 mb-2">Telefone</h3>
-              <p className="text-gray-600">(11) 9999-9999</p>
-              <p className="text-gray-600">Segunda a Sábado</p>
+              <p className="text-gray-600">
+                {settings?.phone ? settings.phone : "Telefone não informado"}
+              </p>
             </div>
             <div className="p-6 bg-gray-50 rounded-lg">
               <div className="text-3xl mb-3">🕐</div>
               <h3 className="font-semibold text-gray-900 mb-2">Horário</h3>
-              <p className="text-gray-600">Seg-Sex: 9h às 20h</p>
-              <p className="text-gray-600">Sábado: 9h às 18h</p>
+              {hoursSummary.map((line) => (
+                <p key={line} className="text-gray-600">
+                  {line}
+                </p>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+function buildHoursSummary(openingHours: Record<string, string>): string[] {
+  const monday = openingHours.monday;
+  const tuesday = openingHours.tuesday;
+  const wednesday = openingHours.wednesday;
+  const thursday = openingHours.thursday;
+  const friday = openingHours.friday;
+  const saturday = openingHours.saturday;
+  const sunday = openingHours.sunday;
+
+  const week = [monday, tuesday, wednesday, thursday, friday].filter(Boolean);
+  const allWeekSame = week.length === 5 && week.every((v) => v === week[0]);
+
+  const lines: string[] = [];
+  if (allWeekSame) {
+    lines.push(`Seg-Sex: ${week[0]}`);
+  } else if (week.length > 0) {
+    lines.push("Seg-Sex: consulte horários");
+  }
+
+  if (saturday) lines.push(`Sábado: ${saturday}`);
+  if (sunday) lines.push(`Domingo: ${sunday}`);
+
+  if (lines.length === 0) return ["Horário não informado"];
+  return lines;
 }
