@@ -61,20 +61,20 @@ export function InstagramFeed() {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-white mb-4">
             Siga-nos no Instagram
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto mb-6">
             Confira nossos trabalhos e fique por dentro das novidades
           </p>
           <a
             href={settings?.instagramUrl ?? "https://instagram.com/edbarbearia"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
+            className="inline-flex items-center font-semibold text-yellow-500 hover:text-yellow-400"
           >
             <svg
               className="w-6 h-6 mr-2"
@@ -88,7 +88,7 @@ export function InstagramFeed() {
         </div>
 
         {posts.length === 0 ? (
-          <div className="text-center text-gray-500">Feed indisponível no momento.</div>
+          <div className="text-center text-white/70">Feed indisponível no momento.</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {posts.map((post) => {

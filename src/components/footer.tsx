@@ -58,7 +58,7 @@ export function Footer() {
   const storeName = settings?.name ?? "ED Barbearia";
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-black text-gray-300">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -100,7 +100,7 @@ export function Footer() {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-gray-300 hover:text-white transition-colors"
+              className="inline-flex items-center gap-3 text-gray-300 transition-colors hover:text-yellow-500"
               aria-label="Instagram"
             >
               <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
@@ -111,7 +111,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+        <div className="border-t border-white/10 mt-8 pt-8 text-center text-sm">
           <p>
             &copy; {currentYear} {storeName}. Todos os direitos reservados.
           </p>
