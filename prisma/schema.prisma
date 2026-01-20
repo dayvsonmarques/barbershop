@@ -303,20 +303,15 @@ enum CourseType {
   ONLINE
 }
 
-enum CourseStatus {
-  ATIVO
-  INATIVO
-}
-
 model Course {
   id              Int          @id @default(autoincrement())
-  title           String
-  description     String       @db.Text
+  name            String
+  description     String?      @db.Text
   type            CourseType
-  duration        Int          // Duration in hours
-  price           Decimal?     @db.Decimal(10, 2)
+  durationHours   Int          // Duration in hours
+  price           Decimal      @db.Decimal(10, 2)
   imageUrl        String?
-  status          CourseStatus @default(ATIVO)
+  isActive        Boolean      @default(true)
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   

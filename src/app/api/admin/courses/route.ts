@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const courses = await prisma.course.findMany({
-      orderBy: { title: "asc" },
+      orderBy: { name: "asc" },
     });
 
     return NextResponse.json(courses);

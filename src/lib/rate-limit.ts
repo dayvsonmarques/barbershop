@@ -29,6 +29,13 @@ export interface RateLimitResult {
   resetAt: number;
 }
 
+export const rateLimiter = {
+  check: (identifier: string): boolean => {
+    const result = checkRateLimit(identifier);
+    return result.allowed;
+  },
+};
+
 export function checkRateLimit(
   identifier: string,
   config: RateLimitConfig = { maxRequests: 5, windowMs: 15 * 60 * 1000 }
