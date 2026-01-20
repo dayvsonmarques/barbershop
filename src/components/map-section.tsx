@@ -141,11 +141,6 @@ export function MapSection() {
     };
   }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name, defaultAddress]);
 
-  const addressLines = (settings?.address ?? defaultAddress)
-    .split("\n")
-    .filter(Boolean);
-  const hoursSummary = buildHoursSummary(settings?.openingHours ?? {});
-
   return (
     <section className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
@@ -166,63 +161,8 @@ export function MapSection() {
               style={{ filter: "grayscale(1) contrast(1.08)" }}
             />
           </div>
-
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="rounded-lg border border-white/10 bg-white p-6 text-black">
-              <h3 className="font-semibold mb-2">Endereço</h3>
-              {addressLines.length > 0 ? (
-                addressLines.map((line) => (
-                  <p key={line} className="text-black/70">
-                    {line}
-                  </p>
-                ))
-              ) : (
-                <p className="text-black/70">Endereço não informado</p>
-              )}
-            </div>
-            <div className="rounded-lg border border-white/10 bg-white p-6 text-black">
-              <h3 className="font-semibold mb-2">Telefone</h3>
-              <p className="text-black/70">
-                {settings?.phone ? settings.phone : "Telefone não informado"}
-              </p>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-white p-6 text-black">
-              <h3 className="font-semibold mb-2">Horário</h3>
-              {hoursSummary.map((line) => (
-                <p key={line} className="text-black/70">
-                  {line}
-                </p>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>
   );
-}
-
-function buildHoursSummary(openingHours: Record<string, string>): string[] {
-  const monday = openingHours.monday;
-  const tuesday = openingHours.tuesday;
-  const wednesday = openingHours.wednesday;
-  const thursday = openingHours.thursday;
-  const friday = openingHours.friday;
-  const saturday = openingHours.saturday;
-  const sunday = openingHours.sunday;
-
-  const week = [monday, tuesday, wednesday, thursday, friday].filter(Boolean);
-  const allWeekSame = week.length === 5 && week.every((v) => v === week[0]);
-
-  const lines: string[] = [];
-  if (allWeekSame) {
-    lines.push(`Seg-Sex: ${week[0]}`);
-  } else if (week.length > 0) {
-    lines.push("Seg-Sex: consulte horários");
-  }
-
-  if (saturday) lines.push(`Sábado: ${saturday}`);
-  if (sunday) lines.push(`Domingo: ${sunday}`);
-
-  if (lines.length === 0) return ["Horário não informado"];
-  return lines;
 }

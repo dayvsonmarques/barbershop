@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { AgendarHeader } from "@/components/agendar-header";
 import { Footer } from "@/components/footer";
 
 interface Service {
@@ -125,8 +126,9 @@ export default function AgendarPage() {
       setClientName("");
       setClientPhone("");
       setAvailableSlots([]);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Erro ao criar agendamento";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -139,7 +141,9 @@ export default function AgendarPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
+      <AgendarHeader />
+
+      <div className="container mx-auto px-4 pb-12 pt-24">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
             Agendar Horário
