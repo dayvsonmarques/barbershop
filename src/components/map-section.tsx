@@ -18,15 +18,18 @@ export function MapSection() {
 
   const [settings, setSettings] = useState<PublicSettings | null>(null);
 
+  const defaultAddress = "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330";
+
   const tileUrl =
     process.env.NEXT_PUBLIC_MAP_TILE_URL ??
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const tileAttribution =
-    process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ?? "© OpenStreetMap contributors";
+    process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ??
+    "© OpenStreetMap contributors © CARTO";
 
-  const fallbackLat = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -23.55052);
-  const fallbackLng = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -46.633308);
-  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 15);
+  const fallbackLat = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -8.0260634);
+  const fallbackLng = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -34.9196525);
+  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 16);
 
   const mapCenter = useMemo(() => {
     const lat = settings?.latitude ?? fallbackLat;
@@ -81,7 +84,7 @@ export function MapSection() {
           className: "custom-marker",
           html: `
             <div style="
-              background-color: #2563eb;
+              background-color: #000;
               width: 40px;
               height: 40px;
               border-radius: 50% 50% 50% 0;
@@ -94,8 +97,11 @@ export function MapSection() {
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%) rotate(45deg);
-                font-size: 20px;
-              ">💈</div>
+                width: 14px;
+                height: 14px;
+                border-radius: 9999px;
+                background: white;
+              "></div>
             </div>
           `,
           iconSize: [40, 40],
@@ -117,7 +123,7 @@ export function MapSection() {
         markerRef.current.setLatLng([mapCenter.lat, mapCenter.lng]);
 
         const name = settings?.name ?? "ED Barbearia";
-        const address = settings?.address ?? "";
+        const address = settings?.address ?? defaultAddress;
 
         markerRef.current.bindPopup(
           `
@@ -133,87 +139,30 @@ export function MapSection() {
     return () => {
       // Do not destroy map on re-render; keep instance.
     };
-  }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name]);
-
-  const addressLines = (settings?.address ?? "").split("\n").filter(Boolean);
-  const hoursSummary = buildHoursSummary(settings?.openingHours ?? {});
+  }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name, defaultAddress]);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-white mb-4">
             Onde Estamos
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Venha nos visitar e conheça nossas instalações
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div
-            ref={mapRef}
-            className="w-full h-[500px] rounded-lg shadow-lg overflow-hidden"
-          />
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="p-6 bg-gray-50 rounded-lg">
-              <div className="text-3xl mb-3">📍</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Endereço</h3>
-              {addressLines.length > 0 ? (
-                addressLines.map((line) => (
-                  <p key={line} className="text-gray-600">
-                    {line}
-                  </p>
-                ))
-              ) : (
-                <p className="text-gray-600">Endereço não informado</p>
-              )}
-            </div>
-            <div className="p-6 bg-gray-50 rounded-lg">
-              <div className="text-3xl mb-3">📞</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Telefone</h3>
-              <p className="text-gray-600">
-                {settings?.phone ? settings.phone : "Telefone não informado"}
-              </p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-lg">
-              <div className="text-3xl mb-3">🕐</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Horário</h3>
-              {hoursSummary.map((line) => (
-                <p key={line} className="text-gray-600">
-                  {line}
-                </p>
-              ))}
-            </div>
+        <div>
+          <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
+            <div
+              ref={mapRef}
+              className="h-[75vh] w-screen overflow-hidden"
+              style={{ filter: "grayscale(1) contrast(1.08)" }}
+            />
           </div>
         </div>
       </div>
     </section>
   );
-}
-
-function buildHoursSummary(openingHours: Record<string, string>): string[] {
-  const monday = openingHours.monday;
-  const tuesday = openingHours.tuesday;
-  const wednesday = openingHours.wednesday;
-  const thursday = openingHours.thursday;
-  const friday = openingHours.friday;
-  const saturday = openingHours.saturday;
-  const sunday = openingHours.sunday;
-
-  const week = [monday, tuesday, wednesday, thursday, friday].filter(Boolean);
-  const allWeekSame = week.length === 5 && week.every((v) => v === week[0]);
-
-  const lines: string[] = [];
-  if (allWeekSame) {
-    lines.push(`Seg-Sex: ${week[0]}`);
-  } else if (week.length > 0) {
-    lines.push("Seg-Sex: consulte horários");
-  }
-
-  if (saturday) lines.push(`Sábado: ${saturday}`);
-  if (sunday) lines.push(`Domingo: ${sunday}`);
-
-  if (lines.length === 0) return ["Horário não informado"];
-  return lines;
 }

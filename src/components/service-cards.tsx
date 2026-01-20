@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 type ServiceCard = {
-  icon: string;
   title: string;
   description: string;
   link: string;
@@ -10,7 +9,6 @@ type ServiceCard = {
 
 const cards: ServiceCard[] = [
   {
-    icon: "✂️",
     title: "Serviços",
     description:
       "Cortes modernos, barba completa, design e muito mais. Confira todos os nossos serviços e agende seu horário.",
@@ -18,7 +16,6 @@ const cards: ServiceCard[] = [
     linkText: "Ver Serviços",
   },
   {
-    icon: "🎓",
     title: "Cursos",
     description:
       "Aprenda com os melhores profissionais. Oferecemos cursos presenciais e online para todos os níveis.",
@@ -26,7 +23,6 @@ const cards: ServiceCard[] = [
     linkText: "Conhecer Cursos",
   },
   {
-    icon: "📅",
     title: "Agendamentos",
     description:
       "Sistema de agendamento online fácil e rápido. Escolha o barbeiro, serviço e horário que preferir.",
@@ -37,7 +33,7 @@ const cards: ServiceCard[] = [
 
 export function ServiceCards() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -54,14 +50,14 @@ export function ServiceCards() {
               key={index}
               className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow"
             >
-              <div className="text-5xl mb-4">{card.icon}</div>
+              <div className="h-1 w-12 rounded bg-yellow-500 mb-6" />
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 {card.title}
               </h3>
               <p className="text-gray-600 mb-6">{card.description}</p>
               <Link
                 href={card.link}
-                className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
+                className="inline-flex items-center font-semibold text-black hover:text-yellow-500"
               >
                 {card.linkText}
                 <svg

@@ -96,7 +96,7 @@ export function BannerSlider() {
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="absolute inset-0 bg-black/50 z-10" />
+          <div className="absolute inset-0 bg-black/75 z-10" />
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -113,7 +113,7 @@ export function BannerSlider() {
               </p>
               <Link
                 href="/agendar"
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors"
+                className="inline-block rounded-lg bg-yellow-500 px-8 py-4 font-semibold text-black transition-colors hover:bg-yellow-600"
               >
                 Agendar Agora
               </Link>

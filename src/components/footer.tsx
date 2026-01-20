@@ -56,9 +56,12 @@ export function Footer() {
   const instagramUrl = settings?.instagramUrl ?? "https://instagram.com/edbarbearia";
   const instagramUsername = settings?.instagramUsername ?? "edbarbearia";
   const storeName = settings?.name ?? "ED Barbearia";
+  const phoneRaw = (settings as any)?.phone as string | undefined;
+  const phoneDigits = (phoneRaw ?? "").replace(/\D/g, "");
+  const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-black text-gray-300">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -100,7 +103,7 @@ export function Footer() {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-gray-300 hover:text-white transition-colors"
+              className="inline-flex items-center gap-3 text-gray-300 transition-colors hover:text-yellow-500"
               aria-label="Instagram"
             >
               <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
@@ -108,10 +111,40 @@ export function Footer() {
               </svg>
               <span className="text-lg font-semibold">@{instagramUsername}</span>
             </a>
+
+            {whatsappHref ? (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-3 text-gray-300 transition-colors hover:text-yellow-500"
+                aria-label="WhatsApp"
+              >
+                <svg
+                  className="w-10 h-10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 21a9 9 0 1 0-7.62-4.23L3 21l4.34-1.17A8.96 8.96 0 0 0 12 21Z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.2 9.7c.2-.6.4-1 .7-1.3.2-.2.5-.2.8-.1l1.1.4c.2.1.4.3.4.5 0 .3-.1.7-.3 1.1-.2.4-.2.7 0 1.1.4.8 1 1.5 1.8 2 .4.2.7.2 1.1 0 .4-.2.8-.3 1.1-.3.2 0 .4.2.5.4l.4 1.1c.1.3.1.6-.1.8-.3.3-.7.5-1.3.7-.9.3-1.9.1-3-.5-1.6-.8-3-2.2-3.8-3.8-.6-1.1-.8-2.1-.5-3Z"
+                  />
+                </svg>
+                <span className="text-lg font-semibold">WhatsApp</span>
+              </a>
+            ) : null}
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+        <div className="border-t border-white/10 mt-8 pt-8 text-center text-sm">
           <p>
             &copy; {currentYear} {storeName}. Todos os direitos reservados.
           </p>

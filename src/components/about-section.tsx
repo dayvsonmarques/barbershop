@@ -26,19 +26,19 @@ export function AboutSection() {
             </p>
             <div className="grid grid-cols-3 gap-6 text-center">
               <div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-3xl font-bold text-yellow-500 mb-2">
                   10+
                 </div>
                 <div className="text-sm text-gray-600">Anos de Experiência</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-3xl font-bold text-yellow-500 mb-2">
                   5000+
                 </div>
                 <div className="text-sm text-gray-600">Clientes Satisfeitos</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-3xl font-bold text-yellow-500 mb-2">
                   100%
                 </div>
                 <div className="text-sm text-gray-600">Qualidade Garantida</div>
