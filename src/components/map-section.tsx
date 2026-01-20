@@ -18,15 +18,18 @@ export function MapSection() {
 
   const [settings, setSettings] = useState<PublicSettings | null>(null);
 
+  const defaultAddress = "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330";
+
   const tileUrl =
     process.env.NEXT_PUBLIC_MAP_TILE_URL ??
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const tileAttribution =
-    process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ?? "© OpenStreetMap contributors";
+    process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ??
+    "© OpenStreetMap contributors © CARTO";
 
-  const fallbackLat = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -8.047562);
-  const fallbackLng = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -34.877);
-  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 15);
+  const fallbackLat = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -8.0260634);
+  const fallbackLng = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -34.9196525);
+  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 16);
 
   const mapCenter = useMemo(() => {
     const lat = settings?.latitude ?? fallbackLat;
@@ -120,7 +123,7 @@ export function MapSection() {
         markerRef.current.setLatLng([mapCenter.lat, mapCenter.lng]);
 
         const name = settings?.name ?? "ED Barbearia";
-        const address = settings?.address ?? "";
+        const address = settings?.address ?? defaultAddress;
 
         markerRef.current.bindPopup(
           `
@@ -136,9 +139,11 @@ export function MapSection() {
     return () => {
       // Do not destroy map on re-render; keep instance.
     };
-  }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name]);
+  }, [mapCenter.lat, mapCenter.lng, fallbackZoom, tileUrl, tileAttribution, settings?.address, settings?.name, defaultAddress]);
 
-  const addressLines = (settings?.address ?? "").split("\n").filter(Boolean);
+  const addressLines = (settings?.address ?? defaultAddress)
+    .split("\n")
+    .filter(Boolean);
   const hoursSummary = buildHoursSummary(settings?.openingHours ?? {});
 
   return (
@@ -155,7 +160,11 @@ export function MapSection() {
 
         <div>
           <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
-            <div ref={mapRef} className="h-[75vh] w-screen overflow-hidden" />
+            <div
+              ref={mapRef}
+              className="h-[75vh] w-screen overflow-hidden"
+              style={{ filter: "grayscale(1) contrast(1.08)" }}
+            />
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
