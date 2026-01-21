@@ -71,10 +71,12 @@ export function MapSection() {
 
       // Initialize map once
       if (!mapInstanceRef.current) {
-        const map = L.map(mapRef.current!).setView(
-          [mapCenter.lat, mapCenter.lng],
-          fallbackZoom
-        );
+        const map = L.map(mapRef.current!, {
+          scrollWheelZoom: false,
+        }).setView([mapCenter.lat, mapCenter.lng], fallbackZoom);
+
+        // Safety: ensure scroll wheel zoom is disabled.
+        map.scrollWheelZoom.disable();
 
         L.tileLayer(tileUrl, {
           attribution: tileAttribution,
