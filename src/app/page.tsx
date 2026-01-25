@@ -14,7 +14,7 @@ export default function Home() {
       <div id="sobre">
         <AboutSection />
       </div>
-      <div id="diferenciais">
+      <div id="servicos">
         <ServiceCards />
       </div>
       <div id="instagram">

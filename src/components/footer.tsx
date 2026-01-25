@@ -61,7 +61,7 @@ export function Footer() {
   const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
   return (
-    <footer className="bg-black text-gray-300">
+    <footer id="contato" className="bg-black text-gray-300">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -72,10 +72,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white text-lg font-bold mb-4">Dados da loja</h3>
+            <h3 className="text-white text-lg font-bold mb-4">Horário de funcionamento</h3>
             <div className="space-y-3 text-sm">
               <div>
-                <p className="text-gray-400">Horário</p>
                 {hoursSummary.map((line) => (
                   <p key={line} className="text-gray-300">
                     {line}
@@ -117,7 +116,7 @@ export function Footer() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-3 text-gray-300 transition-colors hover:text-yellow-500"
+                className="mt-6 inline-flex flex-col items-start gap-2 text-gray-300 transition-colors hover:text-yellow-500"
                 aria-label="WhatsApp"
               >
                 <svg
@@ -138,7 +137,7 @@ export function Footer() {
                     d="M9.2 9.7c.2-.6.4-1 .7-1.3.2-.2.5-.2.8-.1l1.1.4c.2.1.4.3.4.5 0 .3-.1.7-.3 1.1-.2.4-.2.7 0 1.1.4.8 1 1.5 1.8 2 .4.2.7.2 1.1 0 .4-.2.8-.3 1.1-.3.2 0 .4.2.5.4l.4 1.1c.1.3.1.6-.1.8-.3.3-.7.5-1.3.7-.9.3-1.9.1-3-.5-1.6-.8-3-2.2-3.8-3.8-.6-1.1-.8-2.1-.5-3Z"
                   />
                 </svg>
-                <span className="text-lg font-semibold">WhatsApp</span>
+                <span className="text-lg font-semibold">{phoneRaw ?? "WhatsApp"}</span>
               </a>
             ) : null}
           </div>
