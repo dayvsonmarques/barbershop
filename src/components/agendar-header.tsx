@@ -43,7 +43,7 @@ export function AgendarHeader() {
         <Link
           href="/"
           aria-label="Página inicial"
-          className="hidden md:flex absolute left-1/2 top-full mt-4 -translate-x-1/2 -translate-y-1/2 items-center z-50"
+          className="hidden md:flex absolute left-1/2 top-full mt-2 -translate-x-1/2 -translate-y-1/2 items-center z-50"
         >
           <span className="px-4 py-2">
             <Image

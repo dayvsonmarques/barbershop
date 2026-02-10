@@ -143,7 +143,7 @@ export default function AgendarPage() {
     <div className="min-h-screen bg-gray-50">
       <AgendarHeader />
 
-      <div className="container mx-auto px-4 pb-12 pt-24">
+      <div className="container mx-auto px-4 pb-12 pt-40">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
             Agendar Horário

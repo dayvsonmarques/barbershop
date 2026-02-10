@@ -82,7 +82,7 @@ export function HomeHeader() {
           aria-label="Página inicial"
           className={
             "hidden md:flex absolute left-1/2 -translate-x-1/2 items-center z-50 top-full -translate-y-1/2 " +
-            (isFixed ? "" : "mt-8")
+            (isFixed ? "-mt-2" : "mt-8")
           }
         >
           <span className="px-4 py-2">
