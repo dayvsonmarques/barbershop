@@ -5,15 +5,13 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "md" | "lg";
 };
 
-const variantClasses: Record<string, string> = {
-  primary:
-    "bg-gold text-text-inverse hover:bg-gold-light",
-  outline:
-    "border border-gold text-gold hover:bg-gold hover:text-text-inverse",
+const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
+  primary: "bg-gold text-text-inverse hover:bg-gold-light",
+  outline: "border border-gold text-gold hover:bg-gold hover:text-text-inverse",
   ghost: "text-gold hover:opacity-75",
 };
 
-const sizeClasses: Record<string, string> = {
+const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
   sm: "px-4 py-2",
   md: "px-6 py-3",
   lg: "px-8 py-4",

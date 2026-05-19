@@ -25,11 +25,18 @@ describe("Button", () => {
     render(<Button variant="ghost">Test</Button>);
     const btn = screen.getByRole("button");
     expect(btn.className).toContain("text-gold");
+    expect(btn.className).not.toContain("border-gold");
+    expect(btn.className).not.toContain("bg-gold");
   });
 
   it("applies sm size classes", () => {
     render(<Button size="sm">Test</Button>);
     expect(screen.getByRole("button").className).toContain("px-4");
+  });
+
+  it("applies md size classes by default", () => {
+    render(<Button>Test</Button>);
+    expect(screen.getByRole("button").className).toContain("px-6");
   });
 
   it("applies lg size classes", () => {
