@@ -6,6 +6,8 @@ const mockObserve = vi.fn();
 const mockDisconnect = vi.fn();
 
 beforeEach(() => {
+  mockObserve.mockReset();
+  mockDisconnect.mockReset();
   vi.stubGlobal(
     "IntersectionObserver",
     vi.fn(function () {

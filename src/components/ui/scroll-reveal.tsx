@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { clsx } from "clsx";
 
 type ScrollRevealProps = {
   children: React.ReactNode;
@@ -32,9 +33,11 @@ export function ScrollReveal({ children, className }: ScrollRevealProps) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-300 ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      } ${className ?? ""}`}
+      className={clsx(
+        "transition-all duration-300 ease-out",
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        className
+      )}
     >
       {children}
     </div>
