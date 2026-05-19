@@ -32,4 +32,5 @@ body {
   color: #F5F5F0;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
