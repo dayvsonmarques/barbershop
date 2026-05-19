@@ -12,8 +12,13 @@ describe("SectionLabel", () => {
     expect(screen.getByText("— Test —").className).toContain("text-gold");
   });
 
-  it("applies wide tracking class", () => {
+  it("applies uppercase class", () => {
     render(<SectionLabel label="Test" />);
     expect(screen.getByText("— Test —").className).toContain("uppercase");
+  });
+
+  it("appends custom className when provided", () => {
+    render(<SectionLabel label="Test" className="mt-6" />);
+    expect(screen.getByText("— Test —").className).toContain("mt-6");
   });
 });
