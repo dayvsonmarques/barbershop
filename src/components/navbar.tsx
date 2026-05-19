@@ -45,6 +45,7 @@ export function Navbar() {
             className="md:hidden text-text-primary p-2"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
           >
             <svg
               width="24"
@@ -69,7 +70,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-background-primary flex flex-col items-center justify-center gap-10 md:hidden">
+        <div className="fixed inset-0 z-50 bg-background-primary flex flex-col items-center justify-center gap-10 md:hidden">
           {navLinks.map((link) => (
             <a
               key={link.href}

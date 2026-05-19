@@ -51,18 +51,12 @@ function Stars({ count }: { count: number }) {
 function TestimonialCard({ quote, author, rating }: Testimonial) {
   return (
     <div className="bg-background-secondary p-8 relative">
-      <svg
-        className="absolute top-6 left-6 text-gold opacity-25"
-        width="48"
-        height="48"
-        viewBox="0 0 48 48"
-        fill="#C9A84C"
+      <span
+        className="absolute top-4 left-6 text-gold opacity-25 font-heading text-7xl leading-none select-none"
         aria-hidden="true"
       >
-        <text x="0" y="44" fontSize="56" fontFamily="Georgia, serif">
-          &#8220;
-        </text>
-      </svg>
+        &#8220;
+      </span>
       <blockquote className="font-heading italic text-lg text-text-primary pt-8 leading-snug">
         {quote}
       </blockquote>
