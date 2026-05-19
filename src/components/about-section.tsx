@@ -1,57 +1,36 @@
+// src/components/about-section.tsx
+import { SectionLabel } from "@/components/ui/section-label";
+
 export function AboutSection() {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section id="sobre" className="bg-background-secondary py-24">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Sobre a ED Barbearia
-            </h2>
-            <p className="text-lg text-gray-600 mb-4">
-              Com anos de experiência, a ED Barbearia se consolidou como
-              referência em cortes masculinos e cuidados com a barba. Nossa
-              missão é proporcionar não apenas um corte de cabelo, mas uma
-              experiência completa de cuidado e estilo.
-            </p>
-            <p className="text-lg text-gray-600 mb-4">
-              Nossa equipe é formada por profissionais altamente qualificados e
-              apaixonados pelo que fazem. Utilizamos técnicas tradicionais
-              combinadas com tendências modernas para garantir que cada cliente
-              saia satisfeito.
-            </p>
-            <p className="text-lg text-gray-600 mb-6">
-              Além dos serviços de barbearia, oferecemos produtos de qualidade
-              premium e cursos profissionalizantes para quem deseja ingressar
-              nesta arte milenar.
-            </p>
-            <div className="grid grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-3xl font-bold text-yellow-500 mb-2">
-                  10+
-                </div>
-                <div className="text-sm text-gray-600">Anos de Experiência</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-yellow-500 mb-2">
-                  5000+
-                </div>
-                <div className="text-sm text-gray-600">Clientes Satisfeitos</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-yellow-500 mb-2">
-                  100%
-                </div>
-                <div className="text-sm text-gray-600">Qualidade Garantida</div>
-              </div>
-            </div>
-          </div>
-          <div className="relative h-[600px] rounded-lg overflow-hidden shadow-2xl">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
+            <SectionLabel label="Sobre nós" />
+            <h2
+              className="font-heading text-text-primary mb-6"
               style={{
-                backgroundImage: "url(/images/about.svg)",
+                fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                lineHeight: "1.1",
               }}
-            />
+            >
+              Tradição desde 2010
+            </h2>
+            <p className="text-text-secondary mb-4 leading-relaxed">
+              A ED Barbearia nasceu do amor pelo ofício. Mais de uma década
+              cuidando do visual de homens que valorizam estilo e precisão em
+              Recife.
+            </p>
+            <p className="text-text-secondary leading-relaxed">
+              Nossos barbeiros são artistas. Cada corte é uma obra — executada
+              com técnica, respeito e os melhores equipamentos do mercado.
+            </p>
+          </div>
+          <div className="border border-gold/30 p-12 flex items-center justify-center min-h-70">
+            <p className="font-heading text-gold text-2xl text-center italic leading-snug">
+              "A arte do <br /> corte perfeito."
+            </p>
           </div>
         </div>
       </div>
