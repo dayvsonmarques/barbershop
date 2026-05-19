@@ -1,28 +1,40 @@
-import { BannerSlider } from "@/components/banner-slider";
-import { HomeHeader } from "@/components/home-header";
+// src/app/page.tsx
+import { Navbar } from "@/components/navbar";
+import { HeroSection } from "@/components/hero-section";
+import { ServicesSection } from "@/components/services-section";
 import { AboutSection } from "@/components/about-section";
-import { ServiceCards } from "@/components/service-cards";
+import { TeamSection } from "@/components/team-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
 import { InstagramFeed } from "@/components/instagram-feed";
 import { MapSection } from "@/components/map-section";
+import { BookingCTA } from "@/components/booking-cta";
 import { Footer } from "@/components/footer";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export default function Home() {
   return (
     <main>
-      <HomeHeader />
-      <BannerSlider />
-      <div id="sobre">
+      <Navbar />
+      <HeroSection />
+      <ScrollReveal>
+        <ServicesSection />
+      </ScrollReveal>
+      <ScrollReveal>
         <AboutSection />
-      </div>
-      <div id="servicos">
-        <ServiceCards />
-      </div>
-      <div id="instagram">
+      </ScrollReveal>
+      <ScrollReveal>
+        <TeamSection />
+      </ScrollReveal>
+      <ScrollReveal>
+        <TestimonialsSection />
+      </ScrollReveal>
+      <ScrollReveal>
         <InstagramFeed />
-      </div>
-      <div id="local">
-        <MapSection />
-      </div>
+      </ScrollReveal>
+      <MapSection />
+      <ScrollReveal>
+        <BookingCTA />
+      </ScrollReveal>
       <Footer />
     </main>
   );
