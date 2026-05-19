@@ -32,19 +32,19 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Logo centralizada (absoluta) */}
+        {/* Logo flutuante centralizada (sobrepõe borda inferior) */}
         <Link
           href="/"
           aria-label="ED Barbearia — Página inicial"
-          className="absolute left-1/2 -translate-x-1/2"
+          className="absolute left-1/2 -translate-x-1/2 top-0 z-10"
         >
           <Image
             src="/barbershop-logo.png"
             alt="ED Barbearia"
-            width={48}
-            height={48}
+            width={96}
+            height={96}
             priority
-            className="h-12 w-auto object-contain"
+            className="h-24 w-auto object-contain drop-shadow-lg"
           />
         </Link>
 
