@@ -52,6 +52,14 @@
   box-sizing: border-box;
 }
 
+/* Override Tailwind text-size vars — only affects utility classes, not inline rem styles */
+:root {
+  --text-xs: 14px;
+  --text-sm: 16px;
+  --text-base: 18px;
+  --text-lg: 20px;
+}
+
 body {
   background-color: var(--c-bg-primary);
   color: var(--c-text-primary);
