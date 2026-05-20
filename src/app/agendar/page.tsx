@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AgendarHeader } from "@/components/agendar-header";
+import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import { SectionLabel } from "@/components/ui/section-label";
 
 interface Service {
   id: string;
   name: string;
   duration: number;
   price: number;
-  category: {
-    name: string;
-  };
+  category: { name: string };
 }
 
 interface Barber {
@@ -19,6 +19,12 @@ interface Barber {
   name: string;
   bio: string | null;
 }
+
+const fieldClass =
+  "w-full px-4 py-3 bg-background-secondary border border-border text-text-primary focus:outline-none focus:border-gold transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed";
+
+const labelClass =
+  "block text-text-secondary text-xs tracking-widest uppercase mb-2";
 
 export default function AgendarPage() {
   const [services, setServices] = useState<Service[]>([]);
@@ -34,7 +40,6 @@ export default function AgendarPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  // Load services
   useEffect(() => {
     fetch("/api/public/services")
       .then((res) => res.json())
@@ -42,7 +47,6 @@ export default function AgendarPage() {
       .catch((err) => console.error("Erro ao carregar serviços:", err));
   }, []);
 
-  // Load barbers when service is selected
   useEffect(() => {
     if (selectedService) {
       fetch(`/api/public/barbers?serviceId=${selectedService}`)
@@ -55,7 +59,6 @@ export default function AgendarPage() {
     }
   }, [selectedService]);
 
-  // Load available slots when date and barber are selected
   useEffect(() => {
     if (selectedService && selectedBarber && selectedDate) {
       setLoading(true);
@@ -67,8 +70,7 @@ export default function AgendarPage() {
           setAvailableSlots(data.slots || []);
           setLoading(false);
         })
-        .catch((err) => {
-          console.error("Erro ao carregar horários:", err);
+        .catch(() => {
           setAvailableSlots([]);
           setLoading(false);
         });
@@ -83,14 +85,7 @@ export default function AgendarPage() {
     setError("");
     setSuccess(false);
 
-    if (
-      !selectedService ||
-      !selectedBarber ||
-      !selectedDate ||
-      !selectedTime ||
-      !clientName ||
-      !clientPhone
-    ) {
+    if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !clientName || !clientPhone) {
       setError("Por favor, preencha todos os campos.");
       return;
     }
@@ -112,13 +107,9 @@ export default function AgendarPage() {
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Erro ao criar agendamento");
-      }
+      if (!response.ok) throw new Error(data.error || "Erro ao criar agendamento");
 
       setSuccess(true);
-      // Reset form
       setSelectedService("");
       setSelectedBarber("");
       setSelectedDate("");
@@ -127,210 +118,203 @@ export default function AgendarPage() {
       setClientPhone("");
       setAvailableSlots([]);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Erro ao criar agendamento";
-      setError(message);
+      setError(err instanceof Error ? err.message : "Erro ao criar agendamento");
     } finally {
       setLoading(false);
     }
   };
 
   const selectedServiceData = services.find((s) => s.id === selectedService);
-
-  // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AgendarHeader />
+    <div className="min-h-screen bg-background-primary">
+      <Navbar />
 
-      <div className="container mx-auto px-4 pb-12 pt-40">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
-            Agendar Horário
-          </h1>
-          <p className="text-gray-600 text-center mb-8">
-            Escolha o serviço, barbeiro e horário desejado
-          </p>
+      <section className="max-w-2xl mx-auto px-6 py-24">
+        <SectionLabel label="Agendamento" />
+        <h1
+          className="font-heading text-text-primary mb-3"
+          style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: "1.1" }}
+        >
+          Agendar Horário
+        </h1>
+        <p className="text-text-secondary mb-12 leading-relaxed">
+          Escolha o serviço, barbeiro e horário desejado.
+        </p>
 
-          {success && (
-            <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6">
-              <strong>Sucesso!</strong> Seu agendamento foi realizado. Entraremos
-              em contato para confirmar.
-            </div>
-          )}
+        {success && (
+          <div className="border-l-2 border-gold bg-background-secondary px-6 py-4 mb-8">
+            <p className="text-gold font-semibold text-sm tracking-wide">Agendamento confirmado</p>
+            <p className="text-text-secondary text-sm mt-1">
+              Entraremos em contato para confirmar.
+            </p>
+          </div>
+        )}
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6">
-              <strong>Erro:</strong> {error}
-            </div>
-          )}
+        {error && (
+          <div className="border-l-2 border-red-500 bg-background-secondary px-6 py-4 mb-8">
+            <p className="text-red-500 text-sm">{error}</p>
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8">
-            {/* Service Selection */}
-            <div className="mb-6">
-              <label
-                htmlFor="service"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Serviço *
-              </label>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Serviço */}
+          <div>
+            <label htmlFor="service" className={labelClass}>Serviço *</label>
+            <div className="relative">
               <select
                 id="service"
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className={`${fieldClass} appearance-none pr-10 cursor-pointer`}
                 required
               >
                 <option value="">Selecione um serviço</option>
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
-                    {service.name} - R$ {Number(service.price).toFixed(2)} (
-                    {service.duration} min)
+                    {service.name} — R$ {Number(service.price).toFixed(2)} ({service.duration} min)
                   </option>
                 ))}
               </select>
-              {selectedServiceData && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Categoria: {selectedServiceData.category.name}
-                </p>
-              )}
-            </div>
-
-            {/* Barber Selection */}
-            <div className="mb-6">
-              <label
-                htmlFor="barber"
-                className="block text-sm font-medium text-gray-700 mb-2"
+              <svg
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
+                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2"
               >
-                Barbeiro *
-              </label>
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            {selectedServiceData && (
+              <p className="text-text-secondary text-xs mt-2 tracking-wide">
+                {selectedServiceData.category.name}
+              </p>
+            )}
+          </div>
+
+          {/* Barbeiro */}
+          <div>
+            <label htmlFor="barber" className={labelClass}>Barbeiro *</label>
+            <div className="relative">
               <select
                 id="barber"
                 value={selectedBarber}
                 onChange={(e) => setSelectedBarber(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                disabled={!selectedService || barbers.length === 0}
+                className={`${fieldClass} appearance-none pr-10 cursor-pointer`}
+                disabled={!selectedService}
                 required
               >
                 <option value="">
-                  {selectedService
-                    ? barbers.length === 0
-                      ? "Carregando barbeiros..."
-                      : "Selecione um barbeiro"
-                    : "Primeiro selecione um serviço"}
+                  {!selectedService
+                    ? "Primeiro selecione um serviço"
+                    : barbers.length === 0
+                    ? "Carregando barbeiros..."
+                    : "Selecione um barbeiro"}
                 </option>
                 {barbers.map((barber) => (
                   <option key={barber.id} value={barber.id}>
                     {barber.name}
-                    {barber.bio ? ` - ${barber.bio.substring(0, 50)}` : ""}
                   </option>
                 ))}
               </select>
-            </div>
-
-            {/* Date Selection */}
-            <div className="mb-6">
-              <label
-                htmlFor="date"
-                className="block text-sm font-medium text-gray-700 mb-2"
+              <svg
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
+                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2"
               >
-                Data *
-              </label>
-              <input
-                type="date"
-                id="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                min={today}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                disabled={!selectedBarber}
-                required
-              />
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </div>
+          </div>
 
-            {/* Time Selection */}
-            <div className="mb-6">
-              <label
-                htmlFor="time"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Horário *
-              </label>
-              {loading && selectedDate && (
-                <p className="text-sm text-gray-500 mb-2">
-                  Carregando horários disponíveis...
-                </p>
-              )}
-              {!loading && selectedDate && availableSlots.length === 0 && (
-                <p className="text-sm text-red-600 mb-2">
-                  Não há horários disponíveis para esta data.
-                </p>
-              )}
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+          {/* Data */}
+          <div>
+            <label htmlFor="date" className={labelClass}>Data *</label>
+            <input
+              type="date"
+              id="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={today}
+              className={fieldClass}
+              disabled={!selectedBarber}
+              required
+            />
+          </div>
+
+          {/* Horário */}
+          <div>
+            <label className={labelClass}>Horário *</label>
+            {loading && selectedDate && (
+              <p className="text-text-secondary text-sm mb-3">Carregando horários...</p>
+            )}
+            {!loading && selectedDate && availableSlots.length === 0 && (
+              <p className="text-text-secondary text-sm mb-3">
+                Nenhum horário disponível para esta data.
+              </p>
+            )}
+            {availableSlots.length > 0 && (
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
                 {availableSlots.map((slot) => (
                   <button
                     key={slot}
                     type="button"
                     onClick={() => setSelectedTime(slot)}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
+                    className={`py-2 border text-sm transition-colors duration-200 ${
                       selectedTime === slot
-                        ? "bg-amber-600 text-white border-amber-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:border-amber-500 hover:bg-amber-50"
+                        ? "bg-gold text-text-inverse border-gold"
+                        : "bg-background-secondary text-text-secondary border-border hover:border-gold hover:text-text-primary"
                     }`}
                   >
                     {slot}
                   </button>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Client Info */}
-            <div className="mb-6">
-              <label
-                htmlFor="clientName"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Seu Nome *
-              </label>
-              <input
-                type="text"
-                id="clientName"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="João Silva"
-                required
-              />
-            </div>
+          {/* Divisor */}
+          <div className="border-t border-border" />
 
-            <div className="mb-6">
-              <label
-                htmlFor="clientPhone"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Telefone *
-              </label>
-              <input
-                type="tel"
-                id="clientPhone"
-                value={clientPhone}
-                onChange={(e) => setClientPhone(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="(11) 99999-9999"
-                required
-              />
-            </div>
+          {/* Nome */}
+          <div>
+            <label htmlFor="clientName" className={labelClass}>Seu Nome *</label>
+            <input
+              type="text"
+              id="clientName"
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              className={fieldClass}
+              placeholder="João Silva"
+              required
+            />
+          </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-amber-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-amber-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-            >
-              {loading ? "Processando..." : "Confirmar Agendamento"}
-            </button>
-          </form>
-        </div>
-      </div>
+          {/* Telefone */}
+          <div>
+            <label htmlFor="clientPhone" className={labelClass}>Telefone *</label>
+            <input
+              type="tel"
+              id="clientPhone"
+              value={clientPhone}
+              onChange={(e) => setClientPhone(e.target.value)}
+              className={fieldClass}
+              placeholder="(81) 99999-9999"
+              required
+            />
+          </div>
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? "Processando..." : "Confirmar Agendamento"}
+          </Button>
+        </form>
+      </section>
 
       <Footer />
     </div>
