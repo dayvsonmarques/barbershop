@@ -118,9 +118,9 @@ async function main() {
   
   const adminUser = await prisma.user.create({
     data: {
-      email: "admin@edbarbearia.com",
+      email: "edmilson.barbearia7@gmail.com",
       password: hashedPassword,
-      name: "Administrador",
+      name: "Edmilson Rodrigues",
     },
   });
 
@@ -220,10 +220,10 @@ async function main() {
   
   const barber1 = await prisma.barber.create({
     data: {
-      name: "Eduardo Silva",
-      email: "eduardo@edbarbearia.com",
-      phone: "(11) 98765-4321",
-      bio: "Barbeiro profissional com 10 anos de experiência",
+      name: "Edmilson Rodrigues",
+      email: "edmilson@edbarbearia.com",
+      phone: "(81) 99896-6292",
+      bio: "Fundador da ED Barbearia e barbeiro profissional em Recife",
     },
   });
 
@@ -231,7 +231,7 @@ async function main() {
     data: {
       name: "Carlos Santos",
       email: "carlos@edbarbearia.com",
-      phone: "(11) 98765-1234",
+      phone: "(81) 98765-1234",
       bio: "Especialista em cortes modernos e desenhos",
     },
   });
@@ -353,21 +353,21 @@ async function main() {
     data: {
       name: "ED Barbearia",
       openingHours: JSON.stringify({
-        monday: "09:00-18:00",
-        tuesday: "09:00-18:00",
-        wednesday: "09:00-18:00",
-        thursday: "09:00-18:00",
-        friday: "09:00-18:00",
-        saturday: "09:00-14:00",
+        monday: "09:00-19:00",
+        tuesday: "09:00-19:00",
+        wednesday: "09:00-19:00",
+        thursday: "09:00-19:00",
+        friday: "09:00-19:00",
+        saturday: "09:00-19:00",
         sunday: "Fechado",
       }),
-      address: "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330",
+      address: "Rua Casa Amarela, 73, Casa Amarela — Recife, PE",
       latitude: -8.0260634,
       longitude: -34.9196525,
       instagramUrl: "https://www.instagram.com/edbarbearia/",
       instagramUsername: "edbarbearia",
-      phone: "(81) 3456-7890",
-      email: "contato@edbarbearia.com",
+      phone: "(81) 99896-6292",
+      email: "edmilson.barbearia7@gmail.com",
     },
   });
 

@@ -15,8 +15,8 @@ export function HeroSection() {
               letterSpacing: "-0.02em",
             }}
           >
-            The Art of{" "}
-            <span className="text-gold">The Cut</span>
+            A Arte{" "}
+            <span className="text-gold">do Corte</span>
           </h1>
           <p className="text-text-secondary text-lg mb-10 max-w-xl leading-relaxed">
             Tradição, estilo e precisão. Em Recife, a barbearia que transforma

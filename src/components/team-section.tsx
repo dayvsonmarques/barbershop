@@ -11,16 +11,16 @@ type TeamMember = {
 
 const team: TeamMember[] = [
   {
-    name: "Eduardo Silva",
-    role: "Fundador & Barbeiro Sênior",
+    name: "Edmilson Rodrigues",
+    role: "Fundador & Barbeiro",
     imageSrc: "",
-    imageAlt: "Eduardo Silva",
+    imageAlt: "Edmilson Rodrigues",
   },
   {
-    name: "Carlos Mendes",
-    role: "Especialista em Barba",
+    name: "Carlos Santos",
+    role: "Especialista em Cortes Modernos",
     imageSrc: "",
-    imageAlt: "Carlos Mendes",
+    imageAlt: "Carlos Santos",
   },
   {
     name: "Rafael Costa",

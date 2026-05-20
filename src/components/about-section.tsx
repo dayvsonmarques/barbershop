@@ -18,13 +18,14 @@ export function AboutSection() {
               Tradição desde 2010
             </h2>
             <p className="text-text-secondary mb-4 leading-relaxed">
-              A ED Barbearia nasceu do amor pelo ofício. Mais de uma década
-              cuidando do visual de homens que valorizam estilo e precisão em
-              Recife.
+              Fundada por Edmilson Rodrigues, a ED Barbearia nasceu do amor
+              pelo ofício. Anos cuidando do visual de homens que valorizam
+              estilo e precisão em Recife.
             </p>
             <p className="text-text-secondary leading-relaxed">
-              Nossos barbeiros são artistas. Cada corte é uma obra — executada
-              com técnica, respeito e os melhores equipamentos do mercado.
+              Nossos barbeiros são artistas. Cada corte, barba e penteado é
+              uma obra — executada com técnica, respeito e os melhores
+              equipamentos do mercado.
             </p>
           </div>
           <div className="border border-gold/30 p-12 flex items-center justify-center min-h-70">
