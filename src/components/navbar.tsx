@@ -5,6 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
   { href: "#servicos", label: "Serviços" },
@@ -48,13 +49,15 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Right: CTA desktop + hamburger mobile */}
+        {/* Right: CTA desktop + theme toggle + hamburger mobile */}
         <div className="flex items-center gap-4">
           <Link href="/agendar" className="hidden md:block">
             <Button variant="primary" size="sm">
               Agendar
             </Button>
           </Link>
+
+          <ThemeToggle />
 
           <button
             className="md:hidden text-text-primary p-2"
