@@ -9,34 +9,34 @@ type Service = {
 
 const services: Service[] = [
   {
-    title: "Corte",
+    title: "Corte de Cabelo",
     description: "Corte tradicional ou moderno com acabamento preciso.",
-    price: "A partir de R$ 40",
+    price: "R$ 50",
   },
   {
-    title: "Barba Completa",
+    title: "Barba Simples",
     description: "Aparar, modelar e finalizar a barba com navalha.",
-    price: "A partir de R$ 30",
+    price: "R$ 35",
   },
   {
-    title: "Corte + Barba",
-    description: "Combo completo de cabelo e barba.",
-    price: "A partir de R$ 65",
+    title: "Combo Cabelo e Barba",
+    description: "Corte completo + barba simples em um só atendimento.",
+    price: "R$ 80",
   },
   {
-    title: "Tintura",
-    description: "Coloração profissional para cabelo ou barba.",
-    price: "Consulte",
+    title: "Barboterapia",
+    description: "Tratamento especial de barba com vapor e produtos premium.",
+    price: "R$ 50",
   },
   {
-    title: "Penteados",
-    description: "Finalização e estilização para qualquer ocasião.",
-    price: "Consulte",
+    title: "Corte + Hidratação",
+    description: "Corte de cabelo com hidratação profunda.",
+    price: "R$ 70",
   },
   {
     title: "Sobrancelha",
     description: "Design e modelagem com navalha.",
-    price: "A partir de R$ 20",
+    price: "R$ 20",
   },
 ];
 

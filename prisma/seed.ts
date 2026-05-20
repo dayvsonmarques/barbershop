@@ -152,64 +152,25 @@ async function main() {
   // ============================================
   console.log("✂️ Creating service categories and services...");
   
-  const hairCategory = await prisma.serviceCategory.create({
+  const barbeariaCategory = await prisma.serviceCategory.create({
     data: {
-      name: "Cabelo",
-      description: "Serviços de corte e tratamento capilar",
-    },
-  });
-
-  const beardCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Barba",
-      description: "Serviços de barba e bigode",
-    },
-  });
-
-  const comboCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Combo",
-      description: "Pacotes combinados",
+      name: "Barbearia",
+      description: "Serviços de barbearia",
     },
   });
 
   await prisma.service.createMany({
     data: [
-      {
-        categoryId: hairCategory.id,
-        name: "Corte Simples",
-        description: "Corte de cabelo tradicional",
-        duration: 30,
-        price: 40.0,
-      },
-      {
-        categoryId: hairCategory.id,
-        name: "Corte + Desenho",
-        description: "Corte com desenho personalizado",
-        duration: 45,
-        price: 55.0,
-      },
-      {
-        categoryId: beardCategory.id,
-        name: "Barba Completa",
-        description: "Aparar e finalizar barba",
-        duration: 20,
-        price: 30.0,
-      },
-      {
-        categoryId: beardCategory.id,
-        name: "Barba + Bigode",
-        description: "Barba e bigode aparados",
-        duration: 25,
-        price: 35.0,
-      },
-      {
-        categoryId: comboCategory.id,
-        name: "Cabelo + Barba",
-        description: "Corte de cabelo + barba completa",
-        duration: 50,
-        price: 65.0,
-      },
+      { categoryId: barbeariaCategory.id, name: "Corte de Cabelo",                       description: "", duration: 30, price: 50.0  },
+      { categoryId: barbeariaCategory.id, name: "Barba Simples",                          description: "", duration: 30, price: 35.0  },
+      { categoryId: barbeariaCategory.id, name: "Combo Cabelo e Barba",                   description: "", duration: 50, price: 80.0  },
+      { categoryId: barbeariaCategory.id, name: "Barboterapia",                           description: "", duration: 30, price: 50.0  },
+      { categoryId: barbeariaCategory.id, name: "Combo cabelo + barboterapia",            description: "", duration: 60, price: 90.0  },
+      { categoryId: barbeariaCategory.id, name: "Combo corte de cabelo + sobrancelha",   description: "", duration: 40, price: 65.0  },
+      { categoryId: barbeariaCategory.id, name: "Corte + Hidratação",                    description: "", duration: 60, price: 70.0  },
+      { categoryId: barbeariaCategory.id, name: "Corte de cabelo infantil",              description: "", duration: 50, price: 50.0  },
+      { categoryId: barbeariaCategory.id, name: "Sobrancelha",                           description: "", duration: 20, price: 20.0  },
+      { categoryId: barbeariaCategory.id, name: "Botox",                                 description: "", duration: 50, price: 100.0 },
     ],
   });
 
@@ -220,19 +181,37 @@ async function main() {
   
   const barber1 = await prisma.barber.create({
     data: {
-      name: "Edmilson Rodrigues",
+      name: "Edmílson",
       email: "edmilson@edbarbearia.com",
       phone: "(81) 99896-6292",
-      bio: "Fundador da ED Barbearia e barbeiro profissional em Recife",
+      bio: "Fundador da ED Barbearia",
     },
   });
 
   const barber2 = await prisma.barber.create({
     data: {
-      name: "Carlos Santos",
-      email: "carlos@edbarbearia.com",
-      phone: "(81) 98765-1234",
-      bio: "Especialista em cortes modernos e desenhos",
+      name: "Daniel",
+      email: "daniel@edbarbearia.com",
+      phone: "",
+      bio: "Barbeiro",
+    },
+  });
+
+  const barber3 = await prisma.barber.create({
+    data: {
+      name: "Erywerton (Vevel)",
+      email: "erywerton@edbarbearia.com",
+      phone: "",
+      bio: "Barbeiro",
+    },
+  });
+
+  const barber4 = await prisma.barber.create({
+    data: {
+      name: "Ronald Vinicius",
+      email: "ronald@edbarbearia.com",
+      phone: "",
+      bio: "Barbeiro",
     },
   });
 
@@ -240,10 +219,10 @@ async function main() {
   // 7. AVAILABILITY
   // ============================================
   console.log("📅 Creating barber availability...");
-  
+
   const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
-  
-  for (const barber of [barber1, barber2]) {
+
+  for (const barber of [barber1, barber2, barber3, barber4]) {
     for (const day of weekdays) {
       await prisma.barberAvailability.create({
         data: {
@@ -361,9 +340,9 @@ async function main() {
         saturday: "09:00-19:00",
         sunday: "Fechado",
       }),
-      address: "Rua Casa Amarela, 73, Casa Amarela — Recife, PE",
-      latitude: -8.0260634,
-      longitude: -34.9196525,
+      address: "Rua Paula Batista, 604, Casa Amarela — Recife, PE, 52070-070",
+      latitude: -8.027572,
+      longitude: -34.916773,
       instagramUrl: "https://www.instagram.com/edbarbearia/",
       instagramUsername: "edbarbearia",
       phone: "(81) 99896-6292",

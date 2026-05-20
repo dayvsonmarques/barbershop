@@ -11,22 +11,28 @@ type TeamMember = {
 
 const team: TeamMember[] = [
   {
-    name: "Edmilson Rodrigues",
+    name: "Edmílson",
     role: "Fundador & Barbeiro",
-    imageSrc: "",
-    imageAlt: "Edmilson Rodrigues",
+    imageSrc: "https://gendo-storage.s3.sa-east-1.amazonaws.com/vomo825/public/profile_63.jpeg",
+    imageAlt: "Edmílson — Fundador da ED Barbearia",
   },
   {
-    name: "Carlos Santos",
-    role: "Especialista em Cortes Modernos",
+    name: "Daniel",
+    role: "Barbeiro",
     imageSrc: "",
-    imageAlt: "Carlos Santos",
+    imageAlt: "Daniel",
   },
   {
-    name: "Rafael Costa",
-    role: "Mestre em Degradê",
+    name: "Erywerton (Vevel)",
+    role: "Barbeiro",
     imageSrc: "",
-    imageAlt: "Rafael Costa",
+    imageAlt: "Erywerton (Vevel)",
+  },
+  {
+    name: "Ronald Vinicius",
+    role: "Barbeiro",
+    imageSrc: "https://gendo-storage.s3.sa-east-1.amazonaws.com/vomo825/public/profile_149.jpeg",
+    imageAlt: "Ronald Vinicius",
   },
 ];
 
@@ -75,7 +81,7 @@ export function TeamSection() {
         >
           Nossos barbeiros
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {team.map((member) => (
             <TeamCard key={member.name} {...member} />
           ))}
