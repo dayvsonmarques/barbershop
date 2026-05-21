@@ -1,49 +1,32 @@
 // src/components/team-section.tsx
 import Image from "next/image";
 import { SectionLabel } from "@/components/ui/section-label";
+import { prisma } from "@/lib/prisma";
 
-type TeamMember = {
+async function getBarbers() {
+  return prisma.barber.findMany({
+    where: { isActive: true },
+    select: { id: true, name: true, bio: true, photoUrl: true },
+    orderBy: { id: "asc" },
+  });
+}
+
+function TeamCard({
+  name,
+  bio,
+  photoUrl,
+}: {
   name: string;
-  role: string;
-  imageSrc: string;
-  imageAlt: string;
-};
-
-const team: TeamMember[] = [
-  {
-    name: "Edmílson",
-    role: "Fundador & Barbeiro",
-    imageSrc: "https://gendo-storage.s3.sa-east-1.amazonaws.com/vomo825/public/profile_63.jpeg",
-    imageAlt: "Edmílson — Fundador da ED Barbearia",
-  },
-  {
-    name: "Daniel",
-    role: "Barbeiro",
-    imageSrc: "",
-    imageAlt: "Daniel",
-  },
-  {
-    name: "Erywerton (Vevel)",
-    role: "Barbeiro",
-    imageSrc: "",
-    imageAlt: "Erywerton (Vevel)",
-  },
-  {
-    name: "Ronald Vinicius",
-    role: "Barbeiro",
-    imageSrc: "https://gendo-storage.s3.sa-east-1.amazonaws.com/vomo825/public/profile_149.jpeg",
-    imageAlt: "Ronald Vinicius",
-  },
-];
-
-function TeamCard({ name, role, imageSrc, imageAlt }: TeamMember) {
+  bio: string | null;
+  photoUrl: string | null;
+}) {
   return (
     <div className="group">
       <div className="relative aspect-3/4 overflow-hidden mb-4 bg-background-tertiary border border-border">
-        {imageSrc ? (
+        {photoUrl ? (
           <Image
-            src={imageSrc}
-            alt={imageAlt}
+            src={photoUrl}
+            alt={name}
             fill
             className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
           />
@@ -65,12 +48,16 @@ function TeamCard({ name, role, imageSrc, imageAlt }: TeamMember) {
         )}
       </div>
       <h3 className="font-heading text-text-primary text-xl">{name}</h3>
-      <p className="text-gold text-xs tracking-wide uppercase mt-1">{role}</p>
+      {bio && (
+        <p className="text-gold text-xs tracking-wide uppercase mt-1">{bio}</p>
+      )}
     </div>
   );
 }
 
-export function TeamSection() {
+export async function TeamSection() {
+  const barbers = await getBarbers();
+
   return (
     <section id="equipe" className="bg-background-primary py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -82,8 +69,8 @@ export function TeamSection() {
           Nossos barbeiros
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {team.map((member) => (
-            <TeamCard key={member.name} {...member} />
+          {barbers.map((barber) => (
+            <TeamCard key={barber.id} {...barber} />
           ))}
         </div>
       </div>

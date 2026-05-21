@@ -1,58 +1,42 @@
 // src/components/services-section.tsx
 import { SectionLabel } from "@/components/ui/section-label";
+import { prisma } from "@/lib/prisma";
 
-type Service = {
-  title: string;
-  description: string;
-  price: string;
-};
+async function getServices() {
+  return prisma.service.findMany({
+    where: { isActive: true },
+    select: { id: true, name: true, description: true, price: true },
+    orderBy: { id: "asc" },
+  });
+}
 
-const services: Service[] = [
-  {
-    title: "Corte de Cabelo",
-    description: "Corte tradicional ou moderno com acabamento preciso.",
-    price: "R$ 50",
-  },
-  {
-    title: "Barba Simples",
-    description: "Aparar, modelar e finalizar a barba com navalha.",
-    price: "R$ 35",
-  },
-  {
-    title: "Combo Cabelo e Barba",
-    description: "Corte completo + barba simples em um só atendimento.",
-    price: "R$ 80",
-  },
-  {
-    title: "Barboterapia",
-    description: "Tratamento especial de barba com vapor e produtos premium.",
-    price: "R$ 50",
-  },
-  {
-    title: "Corte + Hidratação",
-    description: "Corte de cabelo com hidratação profunda.",
-    price: "R$ 70",
-  },
-  {
-    title: "Sobrancelha",
-    description: "Design e modelagem com navalha.",
-    price: "R$ 20",
-  },
-];
+function ServiceCard({
+  name,
+  description,
+  price,
+}: {
+  name: string;
+  description: string | null;
+  price: { toString(): string };
+}) {
+  const formatted = `R$ ${Number(price).toLocaleString("pt-BR", { minimumFractionDigits: 0 })}`;
 
-function ServiceCard({ title, description, price }: Service) {
   return (
     <div className="bg-background-secondary border-t-2 border-gold p-6 hover:bg-background-tertiary transition-colors duration-300">
-      <h3 className="font-heading text-text-primary text-xl mb-2">{title}</h3>
-      <p className="text-text-secondary text-sm mb-4 leading-relaxed">
-        {description}
-      </p>
-      <span className="text-gold font-semibold text-lg">{price}</span>
+      <h3 className="font-heading text-text-primary text-xl mb-2">{name}</h3>
+      {description && (
+        <p className="text-text-secondary text-sm mb-4 leading-relaxed">
+          {description}
+        </p>
+      )}
+      <span className="text-gold font-semibold text-lg">{formatted}</span>
     </div>
   );
 }
 
-export function ServicesSection() {
+export async function ServicesSection() {
+  const services = await getServices();
+
   return (
     <section id="servicos" className="bg-background-primary py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -65,7 +49,7 @@ export function ServicesSection() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
           {services.map((service) => (
-            <ServiceCard key={service.title} {...service} />
+            <ServiceCard key={service.id} {...service} />
           ))}
         </div>
       </div>
