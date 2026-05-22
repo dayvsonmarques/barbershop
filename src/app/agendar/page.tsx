@@ -23,8 +23,20 @@ interface Barber {
 const fieldClass =
   "w-full px-4 py-3 bg-background-secondary border border-border text-text-primary focus:outline-none focus:border-gold transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed";
 
+const fieldErrorClass =
+  "w-full px-4 py-3 bg-background-secondary border border-red-500 text-text-primary focus:outline-none focus:border-red-500 transition-colors duration-200";
+
 const labelClass =
   "block text-text-secondary text-xs tracking-widest uppercase mb-2";
+
+function maskPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
 
 export default function AgendarPage() {
   const [services, setServices] = useState<Service[]>([]);
@@ -36,6 +48,7 @@ export default function AgendarPage() {
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -90,6 +103,12 @@ export default function AgendarPage() {
       return;
     }
 
+    const rawPhone = clientPhone.replace(/\D/g, "");
+    if (rawPhone.length < 10 || rawPhone.length > 11) {
+      setPhoneError("Telefone inválido. Use o formato (XX) 9XXXX-XXXX.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -116,6 +135,7 @@ export default function AgendarPage() {
       setSelectedTime("");
       setClientName("");
       setClientPhone("");
+      setPhoneError("");
       setAvailableSlots([]);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erro ao criar agendamento");
@@ -297,11 +317,26 @@ export default function AgendarPage() {
               type="tel"
               id="clientPhone"
               value={clientPhone}
-              onChange={(e) => setClientPhone(e.target.value)}
-              className={fieldClass}
+              onChange={(e) => {
+                setPhoneError("");
+                setClientPhone(maskPhone(e.target.value));
+              }}
+              onBlur={() => {
+                const digits = clientPhone.replace(/\D/g, "");
+                if (clientPhone && (digits.length < 10 || digits.length > 11)) {
+                  setPhoneError("Telefone inválido. Use o formato (XX) 9XXXX-XXXX.");
+                }
+              }}
+              className={phoneError ? fieldErrorClass : fieldClass}
               placeholder="(81) 99999-9999"
+              maxLength={15}
+              inputMode="numeric"
+              autoComplete="tel"
               required
             />
+            {phoneError && (
+              <p className="mt-1.5 text-xs text-red-500">{phoneError}</p>
+            )}
           </div>
 
           <Button

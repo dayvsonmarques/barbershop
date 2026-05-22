@@ -35,12 +35,15 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-red-100 text-red-800",
 };
 
+function localDateStr(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [error, setError] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState(localDateStr);
 
   useEffect(() => {
     loadBookings();
@@ -48,14 +51,18 @@ export default function BookingsPage() {
   }, [selectedDate]);
 
   const loadBookings = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await fetch(`/api/admin/bookings?date=${selectedDate}`);
-      if (response.ok) {
-        const data = await response.json();
-        setBookings(data);
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error ?? `Erro ${response.status}`);
       }
-    } catch (error) {
-      console.error("Error loading bookings:", error);
+      setBookings(await response.json());
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Erro ao carregar agendamentos");
+      setBookings([]);
     } finally {
       setLoading(false);
     }
@@ -86,6 +93,12 @@ export default function BookingsPage() {
           Gerenciamento de agendamentos de serviços
         </p>
       </div>
+
+      {error && (
+        <div className="border-l-2 border-red-400 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
 
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-center justify-between mb-6">
@@ -160,7 +173,7 @@ export default function BookingsPage() {
                       {booking.service.name}
                     </div>
                     <div className="text-sm text-gray-500">
-                      R$ {booking.service.price.toFixed(2)}
+                      R$ {Number(booking.service.price).toFixed(2)}
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
