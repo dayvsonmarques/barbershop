@@ -260,11 +260,11 @@ export default function BookingsPage() {
       {/* ── Modal de edição ── */}
       {editing && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 sm:p-10"
           onClick={closeModal}
         >
           <div
-            className="bg-white w-full max-w-md shadow-xl"
+            className="bg-white w-full sm:max-w-2xl shadow-xl overflow-y-auto max-h-full"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
