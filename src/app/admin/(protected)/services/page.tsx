@@ -178,7 +178,7 @@ export default function ServicesPage() {
                     {service.duration} min
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900 font-medium">
-                    R$ {service.price.toFixed(2)}
+                    R$ {Number(service.price).toFixed(2)}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
                     <span

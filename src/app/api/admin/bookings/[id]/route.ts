@@ -88,6 +88,12 @@ export async function PUT(
 
     return NextResponse.json(booking);
   } catch (error: any) {
+    if (error.code === "P2002") {
+      return NextResponse.json(
+        { error: "Já existe um agendamento para esse barbeiro neste horário." },
+        { status: 409 }
+      );
+    }
     if (error.code === "P2025") {
       return NextResponse.json(
         { error: "Booking not found" },

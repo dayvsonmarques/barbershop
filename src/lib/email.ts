@@ -103,7 +103,7 @@ export function generatePasswordResetEmail(resetUrl: string, userName: string): 
       <p><strong>Este link expira em 1 hora.</strong></p>
       <p>Se você não solicitou a redefinição de senha, ignore este e-mail.</p>
     </div>
-    <div class="footer">
+    <div class="footer text-center">
       <p>&copy; ${new Date().getFullYear()} ED Barbearia. Todos os direitos reservados.</p>
     </div>
   </div>

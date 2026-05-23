@@ -156,7 +156,21 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json({ slots });
+    // Strip past slots when the requested date is today
+    const now = new Date();
+    const isToday =
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate();
+
+    const filtered = isToday
+      ? slots.filter((slot) => {
+          const [h, m] = slot.split(":").map(Number);
+          return h * 60 + m > now.getHours() * 60 + now.getMinutes();
+        })
+      : slots;
+
+    return NextResponse.json({ slots: filtered });
   } catch (error) {
     console.error("Error fetching availability:", error);
     return NextResponse.json(

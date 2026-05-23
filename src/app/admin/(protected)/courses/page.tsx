@@ -104,7 +104,7 @@ export default function CoursesPage() {
               <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                 <span>{course.durationHours}h</span>
                 <span className="font-semibold text-gray-900">
-                  R$ {course.price.toFixed(2)}
+                  R$ {Number(course.price).toFixed(2)}
                 </span>
               </div>
 

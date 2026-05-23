@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -11,7 +12,6 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // If already authenticated via cookie, go to dashboard
     fetch("/api/auth/me").then((res) => {
       if (res.ok) router.replace("/admin");
     });
@@ -43,58 +43,77 @@ export default function AdminLoginPage() {
     }
   };
 
+  const inputClass =
+    "mt-1 block w-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-sm text-[#18181B] placeholder-[#A1A1AA] focus:border-[#C9A84C] focus:outline-none transition-colors";
+
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Acesso Administrativo</h1>
-          <p className="mt-1 text-sm text-gray-600">Entre para acessar o painel</p>
+    <main className="min-h-screen bg-[#F7F7F8] flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <Image
+            src="/barbershop-logo.png"
+            alt="ED Barbearia"
+            width={56}
+            height={56}
+            className="object-contain mb-3"
+          />
+          <p className="text-xs tracking-widest uppercase text-[#A1A1AA] font-medium">
+            Painel Administrativo
+          </p>
         </div>
 
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
+        {/* Card */}
+        <div className="bg-white border border-[#E5E5E5] p-6">
+          {error && (
+            <div className="mb-4 border-l-2 border-red-400 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">E-mail</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="admin@edbarbearia.com"
-              required
-              autoComplete="email"
-            />
-          </div>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs tracking-widest uppercase text-[#71717A] font-medium mb-1">
+                E-mail
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={inputClass}
+                placeholder="email@edbarbearia.com"
+                required
+                autoComplete="email"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Senha</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              required
-              autoComplete="current-password"
-            />
-          </div>
+            <div>
+              <label className="block text-xs tracking-widest uppercase text-[#71717A] font-medium mb-1">
+                Senha
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={inputClass}
+                required
+                autoComplete="current-password"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
-          >
-            {loading ? "Entrando..." : "Entrar"}
-          </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-2.5 transition-colors disabled:opacity-60"
+            >
+              {loading ? "Entrando..." : "Entrar"}
+            </button>
+          </form>
+        </div>
 
-          <p className="text-xs text-gray-500">
-            Dica (seed): admin@edbarbearia.com / password123
-          </p>
-        </form>
+        <p className="mt-4 text-center text-xs text-[#A1A1AA]">
+          edmilson.barbearia7@gmail.com · password123
+        </p>
       </div>
     </main>
   );

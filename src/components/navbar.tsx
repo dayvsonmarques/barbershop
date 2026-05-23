@@ -1,9 +1,10 @@
 // src/components/navbar.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -16,10 +17,35 @@ const navLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    if (!isHome) return;
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > window.innerHeight * 0.8);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
+
+  const isCompact = !isHome || scrolled;
 
   return (
-    <nav className="sticky top-0 z-50 bg-background-primary/90 backdrop-blur-sm border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+    <nav
+      className={[
+        "z-50 w-full bg-background-primary/95 backdrop-blur-sm",
+        "transition-[height,border-color] duration-300 ease-in-out",
+        isCompact ? "border-b border-border" : "border-b border-transparent",
+        isHome ? "fixed top-0" : "sticky top-0",
+        isCompact ? "h-16" : "h-28",
+      ].join(" ")}
+    >
+      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between relative">
         {/* Desktop: nav links left */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
@@ -33,7 +59,7 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Logo flutuante centralizada (sobrepõe borda inferior) */}
+        {/* Logo centralizada — flutua para fora quando o nav encolhe */}
         <Link
           href="/"
           aria-label="ED Barbearia — Página inicial"
@@ -42,10 +68,13 @@ export function Navbar() {
           <Image
             src="/barbershop-logo.png"
             alt="ED Barbearia"
-            width={96}
-            height={96}
+            width={128}
+            height={128}
             priority
-            className="h-24 w-auto object-contain drop-shadow-lg"
+            className={[
+              "w-auto object-contain drop-shadow-lg transition-[height] duration-300 ease-in-out",
+              isCompact ? "h-24" : "h-32",
+            ].join(" ")}
           />
         </Link>
 
