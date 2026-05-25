@@ -151,26 +151,36 @@ async function main() {
   // 5. SERVICE CATEGORIES & SERVICES
   // ============================================
   console.log("✂️ Creating service categories and services...");
-  
-  const barbeariaCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Barbearia",
-      description: "Serviços de barbearia",
-    },
+
+  const catCorte = await prisma.serviceCategory.create({
+    data: { name: "Corte", description: "Cortes masculinos e infantil" },
+  });
+  const catBarba = await prisma.serviceCategory.create({
+    data: { name: "Barba", description: "Serviços de barba e barboterapia" },
+  });
+  const catCombo = await prisma.serviceCategory.create({
+    data: { name: "Combo", description: "Pacotes combinados com desconto" },
+  });
+  const catTratamento = await prisma.serviceCategory.create({
+    data: { name: "Tratamento", description: "Hidratação, botox e cuidados capilares" },
+  });
+  const catEstetica = await prisma.serviceCategory.create({
+    data: { name: "Estética", description: "Sobrancelha e cuidados com a aparência" },
   });
 
   await prisma.service.createMany({
     data: [
-      { categoryId: barbeariaCategory.id, name: "Corte de Cabelo",                       description: "", duration: 30, price: 50.0  },
-      { categoryId: barbeariaCategory.id, name: "Barba Simples",                          description: "", duration: 30, price: 35.0  },
-      { categoryId: barbeariaCategory.id, name: "Combo Cabelo e Barba",                   description: "", duration: 50, price: 80.0  },
-      { categoryId: barbeariaCategory.id, name: "Barboterapia",                           description: "", duration: 30, price: 50.0  },
-      { categoryId: barbeariaCategory.id, name: "Combo cabelo + barboterapia",            description: "", duration: 60, price: 90.0  },
-      { categoryId: barbeariaCategory.id, name: "Combo corte de cabelo + sobrancelha",   description: "", duration: 40, price: 65.0  },
-      { categoryId: barbeariaCategory.id, name: "Corte + Hidratação",                    description: "", duration: 60, price: 70.0  },
-      { categoryId: barbeariaCategory.id, name: "Corte de cabelo infantil",              description: "", duration: 50, price: 50.0  },
-      { categoryId: barbeariaCategory.id, name: "Sobrancelha",                           description: "", duration: 20, price: 20.0  },
-      { categoryId: barbeariaCategory.id, name: "Botox",                                 description: "", duration: 50, price: 100.0 },
+      { categoryId: catCorte.id,     name: "Corte de Cabelo",                     description: "", duration: 30, price: 50.0  },
+      { categoryId: catCorte.id,     name: "Corte Infantil",                       description: "", duration: 50, price: 50.0  },
+      { categoryId: catBarba.id,     name: "Barba Simples",                        description: "", duration: 30, price: 35.0  },
+      { categoryId: catBarba.id,     name: "Barboterapia",                         description: "", duration: 30, price: 50.0  },
+      { categoryId: catCombo.id,     name: "Corte + Barba",                        description: "", duration: 50, price: 80.0  },
+      { categoryId: catCombo.id,     name: "Corte + Barboterapia",                 description: "", duration: 60, price: 90.0  },
+      { categoryId: catCombo.id,     name: "Corte + Sobrancelha",                  description: "", duration: 40, price: 65.0  },
+      { categoryId: catCombo.id,     name: "Corte + Hidratação",                   description: "", duration: 60, price: 70.0  },
+      { categoryId: catTratamento.id, name: "Hidratação Capilar",                  description: "", duration: 40, price: 50.0  },
+      { categoryId: catTratamento.id, name: "Botox Capilar",                       description: "", duration: 50, price: 100.0 },
+      { categoryId: catEstetica.id,  name: "Design de Sobrancelha",                description: "", duration: 20, price: 20.0  },
     ],
   });
 
