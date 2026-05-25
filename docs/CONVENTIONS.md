@@ -88,7 +88,5 @@ update slider navigation
 
 # Has signature
 fix(blog): correct post date format
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
