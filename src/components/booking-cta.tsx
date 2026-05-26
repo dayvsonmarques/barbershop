@@ -1,6 +1,7 @@
 // src/components/booking-cta.tsx
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { SectionLabel } from "@/components/ui/section-label";
 
 export function BookingCTA() {
@@ -20,6 +21,7 @@ export function BookingCTA() {
         </p>
         <Link href="/agendar">
           <Button variant="primary" size="lg">
+            <CalendarIcon size={16} />
             Agendar Agora
           </Button>
         </Link>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
@@ -89,6 +90,7 @@ export function Navbar() {
         <div className="flex items-center gap-4 ml-auto">
           <Link href="/agendar" className="hidden md:block">
             <Button variant="primary" size="sm">
+              <CalendarIcon size={13} />
               Agendar
             </Button>
           </Link>
@@ -174,6 +176,7 @@ export function Navbar() {
 
         <Link href="/agendar" onClick={() => setOpen(false)}>
           <Button variant="primary" size="lg">
+            <CalendarIcon size={16} />
             Agendar Horário
           </Button>
         </Link>

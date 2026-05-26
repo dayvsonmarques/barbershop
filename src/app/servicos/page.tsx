@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { SectionLabel } from "@/components/ui/section-label";
 import { prisma } from "@/lib/prisma";
 import { categoryIcons, fallbackIcon } from "@/lib/category-icons";
@@ -85,6 +86,7 @@ export default async function ServicosPage() {
         <div className="mt-20 text-center">
           <Link href="/agendar">
             <Button variant="primary" size="lg">
+              <CalendarIcon size={16} />
               Agendar Horário
             </Button>
           </Link>

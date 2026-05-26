@@ -1,6 +1,7 @@
 // src/components/hero-section.tsx
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/components/ui/calendar-icon";
 
 export function HeroSection() {
   return (
@@ -25,6 +26,7 @@ export function HeroSection() {
           <div className="flex flex-wrap gap-4">
             <Link href="/agendar">
               <Button variant="primary" size="lg">
+                <CalendarIcon size={16} />
                 Agendar Horário
               </Button>
             </Link>

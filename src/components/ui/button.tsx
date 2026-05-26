@@ -27,6 +27,7 @@ export function Button({
   return (
     <button
       className={clsx(
+        "inline-flex items-center gap-2",
         "rounded-none uppercase tracking-widest text-xs font-semibold",
         "transition-colors duration-300 ease-out cursor-pointer",
         variantClasses[variant],
