@@ -37,12 +37,12 @@ export async function ServicesSection() {
           <Link
             key={category.id}
             href="/servicos"
-            className="aspect-square bg-background-secondary hover:bg-background-tertiary transition-colors duration-300 flex flex-col items-center justify-center gap-5 p-6 group"
+            className="aspect-square bg-background-secondary hover:bg-black dark:hover:bg-background-tertiary transition-colors duration-300 flex flex-col items-center justify-center gap-5 p-6 group"
           >
             <span className="text-gold [&>svg]:w-12 [&>svg]:h-12 transition-transform duration-300 group-hover:scale-110">
               {categoryIcons[category.name] ?? fallbackIcon}
             </span>
-            <span className="font-heading text-text-primary text-sm uppercase tracking-widest text-center leading-tight">
+            <span className="font-heading text-text-primary group-hover:text-white dark:group-hover:text-text-primary text-sm md:text-base uppercase tracking-widest text-center leading-tight transition-colors duration-300">
               {category.name}
             </span>
           </Link>
