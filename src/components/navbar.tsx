@@ -71,7 +71,11 @@ export function Navbar() {
         <Link
           href="/"
           aria-label="ED Barbearia — Página inicial"
-          className="absolute left-1/2 -translate-x-1/2 top-0 z-10"
+          className={[
+            "absolute left-1/2 -translate-x-1/2 top-0 z-20",
+            "transition-transform duration-300 ease-in-out",
+            isCompact ? "translate-y-4 bg-background-primary" : "",
+          ].join(" ")}
         >
           <Image
             src="/barbershop-logo.png"
@@ -81,6 +85,7 @@ export function Navbar() {
             priority
             className={[
               "w-auto object-contain drop-shadow-lg transition-[height] duration-300 ease-in-out",
+              isCompact ? "" : "mix-blend-multiply dark:mix-blend-screen",
               isCompact ? "h-24" : "h-32",
             ].join(" ")}
           />

@@ -32,7 +32,7 @@ export async function ServicesSection() {
       </div>
 
       {/* Grid full-bleed — quadrados responsivos perfeitos */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px bg-border mb-12">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px mb-12">
         {categories.map((category) => (
           <Link
             key={category.id}

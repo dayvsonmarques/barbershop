@@ -37,7 +37,7 @@ export default async function ServicosPage() {
         >
           Todos os Serviços
         </h1>
-        <p className="text-text-secondary mb-16 leading-relaxed">
+        <p className="text-text-secondary text-lg mb-16 leading-relaxed">
           Conheça tudo o que a ED Barbearia tem a oferecer.
         </p>
 
@@ -48,34 +48,36 @@ export default async function ServicosPage() {
                 <span className="text-gold">
                   {categoryIcons[category.name] ?? fallbackIcon}
                 </span>
-                <h2 className="font-heading text-text-primary text-2xl uppercase tracking-widest">
+                <h2 className="font-heading text-text-primary text-3xl uppercase tracking-widest">
                   {category.name}
                 </h2>
                 <div className="flex-1 h-px bg-border ml-2" />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px">
                 {category.services.map((service) => (
                   <div
                     key={service.id}
                     className="bg-background-secondary p-6 hover:bg-background-tertiary transition-colors duration-300"
                   >
-                    <h3 className="font-heading text-text-primary text-lg mb-1">
+                    <h3 className="font-heading text-text-primary text-xl mb-2">
                       {service.name}
                     </h3>
-                    {service.description && (
-                      <p className="text-text-secondary text-sm mb-3 leading-relaxed">
-                        {service.description}
-                      </p>
-                    )}
-                    <div className="flex items-center justify-between mt-3">
-                      <span className="text-gold font-semibold">
+                    <div className="flex items-start justify-between gap-4">
+                      {service.description ? (
+                        <p className="text-text-secondary text-base leading-relaxed">
+                          {service.description}
+                        </p>
+                      ) : (
+                        <span />
+                      )}
+                      <span className="text-gold font-semibold text-lg shrink-0">
                         R$ {Number(service.price).toLocaleString("pt-BR", { minimumFractionDigits: 0 })}
                       </span>
-                      <span className="text-text-secondary text-xs">
-                        {service.duration} min
-                      </span>
                     </div>
+                    <span className="text-text-secondary text-sm mt-2 block">
+                      {service.duration} min
+                    </span>
                   </div>
                 ))}
               </div>
