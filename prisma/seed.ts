@@ -191,10 +191,11 @@ async function main() {
   
   const barber1 = await prisma.barber.create({
     data: {
-      name: "Edmílson",
+      name: "ED",
       email: "edmilson@edbarbearia.com",
       phone: "(81) 99896-6292",
-      bio: "Fundador da ED Barbearia",
+      bio: null,
+      photoUrl: "/images/barbers/ed.png",
     },
   });
 
@@ -203,7 +204,8 @@ async function main() {
       name: "Daniel",
       email: "daniel@edbarbearia.com",
       phone: "",
-      bio: "Barbeiro",
+      bio: null,
+      photoUrl: "/images/barbers/daniel.png",
     },
   });
 
@@ -212,7 +214,8 @@ async function main() {
       name: "Erywerton (Vevel)",
       email: "erywerton@edbarbearia.com",
       phone: "",
-      bio: "Barbeiro",
+      bio: null,
+      photoUrl: "/images/barbers/vevel.png",
     },
   });
 
@@ -221,7 +224,7 @@ async function main() {
       name: "Ronald Vinicius",
       email: "ronald@edbarbearia.com",
       phone: "",
-      bio: "Barbeiro",
+      bio: null,
     },
   });
 
