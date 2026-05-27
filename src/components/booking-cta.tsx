@@ -15,7 +15,7 @@ export function BookingCTA() {
         >
           Pronto para o próximo corte?
         </h2>
-        <p className="text-text-secondary mb-10 max-w-xl mx-auto leading-relaxed">
+        <p className="text-text-secondary text-lg mb-10 max-w-xl mx-auto leading-relaxed">
           Agende agora mesmo e garanta seu horário com os melhores barbeiros de
           Recife.
         </p>
