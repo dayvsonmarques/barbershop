@@ -60,7 +60,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-heading text-text-secondary hover:text-gold transition-colors duration-300 text-sm uppercase tracking-widest"
+              className="font-bold text-black dark:text-white hover:text-gold dark:hover:text-gold transition-colors duration-300 text-xs uppercase tracking-widest"
             >
               {link.label}
             </a>
@@ -74,7 +74,7 @@ export function Navbar() {
           className={[
             "absolute left-1/2 -translate-x-1/2 top-0 z-20",
             "transition-transform duration-300 ease-in-out",
-            isCompact ? "translate-y-4 bg-background-primary" : "",
+            isCompact ? "translate-y-4 bg-background-primary rounded-full overflow-hidden" : "",
           ].join(" ")}
         >
           <Image
@@ -85,7 +85,7 @@ export function Navbar() {
             priority
             className={[
               "w-auto object-contain drop-shadow-lg transition-[height] duration-300 ease-in-out",
-              isCompact ? "" : "mix-blend-multiply dark:mix-blend-screen",
+              isCompact ? "rounded-full" : "mix-blend-multiply dark:mix-blend-screen p-3.5",
               isCompact ? "h-24" : "h-32",
             ].join(" ")}
           />
@@ -94,7 +94,11 @@ export function Navbar() {
         {/* Direita: CTA desktop + theme toggle + hamburger — ml-auto garante alinhamento direito no mobile */}
         <div className="flex items-center gap-4 ml-auto">
           <Link href="/agendar" className="hidden md:block">
-            <Button variant="primary" size="sm">
+            <Button
+              variant="primary"
+              size="sm"
+              className="font-bold"
+            >
               <CalendarIcon size={13} />
               Agendar
             </Button>

@@ -1,6 +1,8 @@
 /* src/app/globals.css */
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Dark theme (default + SSR fallback) */
 :root,
 .dark {

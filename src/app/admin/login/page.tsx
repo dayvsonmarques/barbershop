@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
             alt="ED Barbearia"
             width={56}
             height={56}
-            className="object-contain mb-3"
+            className="object-contain mb-3 rounded-full"
           />
           <p className="text-xs tracking-widest uppercase text-[#A1A1AA] font-medium">
             Painel Administrativo

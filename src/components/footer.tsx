@@ -119,7 +119,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-border pt-6">
-          <p className="text-text-secondary text-xs">
+          <p className="text-text-secondary text-xs text-center">
             © {new Date().getFullYear()} {storeName}. Todos os direitos reservados.
           </p>
         </div>

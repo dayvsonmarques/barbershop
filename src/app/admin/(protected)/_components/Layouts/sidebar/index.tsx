@@ -110,7 +110,7 @@ export function Sidebar() {
                 alt="ED Barbearia"
                 width={32}
                 height={32}
-                className="object-contain"
+                className="object-contain rounded-full"
               />
               <div>
                 <p className="text-sm font-semibold text-[#18181B] leading-tight">ED Barbearia</p>
