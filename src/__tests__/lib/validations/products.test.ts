@@ -38,4 +38,8 @@ describe("productSchema", () => {
     expect(result.success).toBe(true);
     if (result.success) expect(result.data.images).toEqual([]);
   });
+
+  it("rejects empty slug", () => {
+    expect(productSchema.safeParse({ ...valid, slug: "" }).success).toBe(false);
+  });
 });

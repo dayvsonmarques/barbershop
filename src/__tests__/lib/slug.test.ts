@@ -21,4 +21,8 @@ describe("generateSlug", () => {
   it("trims leading/trailing whitespace", () => {
     expect(generateSlug("  pomada  ")).toBe("pomada");
   });
+
+  it("returns empty string for all-special input", () => {
+    expect(generateSlug("---")).toBe("");
+  });
 });

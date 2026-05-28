@@ -18,7 +18,7 @@ export const productSchema = z
       .string()
       .min(1, "Slug obrigatório")
       .max(120)
-      .regex(/^[a-z0-9-]+$/, "Slug deve conter apenas letras minúsculas, números e hífens"),
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug deve conter apenas letras minúsculas, números e hífens"),
     description: z.string().max(5000).optional().nullable(),
     categoryId: z.number().int().positive("Categoria inválida"),
     price: z.number().min(0.01, "Preço deve ser positivo"),
