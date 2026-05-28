@@ -228,6 +228,7 @@ describe("Product Validations", () => {
     const validProduct = {
       categoryId: 1,
       name: "Pomada Modeladora",
+      slug: "pomada-modeladora",
       description: "Pomada para modelagem de cabelo",
       price: 45.0,
       stock: 10,
