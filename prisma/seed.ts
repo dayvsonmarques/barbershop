@@ -279,31 +279,196 @@ async function main() {
     },
   });
 
-  await prisma.product.createMany({
-    data: [
-      {
-        categoryId: pomadeCategory.id,
-        name: "Pomada Modeladora Forte",
-        description: "Fixação extra forte",
-        price: 45.0,
-        stock: 15,
-      },
-      {
-        categoryId: pomadeCategory.id,
-        name: "Pomada Brilho Natural",
-        description: "Brilho e fixação média",
-        price: 40.0,
-        stock: 20,
-      },
-      {
-        categoryId: beardOilCategory.id,
-        name: "Óleo para Barba Cedarwood",
-        description: "Aroma amadeirado",
-        price: 55.0,
-        stock: 10,
-      },
-    ],
+  const shampooCategory = await prisma.productCategory.create({
+    data: {
+      name: "Shampoos e Condicionadores",
+      description: "Shampoos e condicionadores para cabelo e barba",
+    },
   });
+
+  const products = [
+    // Pomadas (4 products, 2 with discount)
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Modeladora Extra Forte",
+      slug: "pomada-modeladora-extra-forte",
+      description: "Fixação extra forte para looks definidos e duradouros. Fórmula sem álcool.",
+      price: 49.90,
+      discountPrice: 39.90,
+      stock: 20,
+      images: [
+        { url: "https://picsum.photos/seed/pomada1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Brilho Natural",
+      slug: "pomada-brilho-natural",
+      description: "Brilho intenso com fixação média. Ideal para cabelos lisos.",
+      price: 44.90,
+      discountPrice: null,
+      stock: 15,
+      images: [
+        { url: "https://picsum.photos/seed/pomada2a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada2b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada2c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Matte Opaco",
+      slug: "pomada-matte-opaco",
+      description: "Acabamento matte sem brilho para looks naturais e modernos.",
+      price: 42.90,
+      discountPrice: 34.90,
+      stock: 18,
+      images: [
+        { url: "https://picsum.photos/seed/pomada3a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada3b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada3c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Cera Modeladora Flexível",
+      slug: "cera-modeladora-flexivel",
+      description: "Fixação flexível para retoques ao longo do dia. Fórmula leve.",
+      price: 38.90,
+      discountPrice: null,
+      stock: 25,
+      images: [
+        { url: "https://picsum.photos/seed/cera1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cera1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cera1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    // Óleos para Barba (4 products, 2 with discount)
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Cedarwood",
+      slug: "oleo-para-barba-cedarwood",
+      description: "Aroma amadeirado intenso. Hidrata e amacia a barba com óleo de argan.",
+      price: 59.90,
+      discountPrice: 49.90,
+      stock: 12,
+      images: [
+        { url: "https://picsum.photos/seed/oleo1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Citrus Fresh",
+      slug: "oleo-para-barba-citrus-fresh",
+      description: "Aroma cítrico refrescante com notas de bergamota e limão.",
+      price: 55.90,
+      discountPrice: null,
+      stock: 10,
+      images: [
+        { url: "https://picsum.photos/seed/oleo2a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo2b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo2c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Vanilla Musk",
+      slug: "oleo-para-barba-vanilla-musk",
+      description: "Combinação suave de baunilha e almíscar. Hidratação profunda.",
+      price: 57.90,
+      discountPrice: 45.90,
+      stock: 8,
+      images: [
+        { url: "https://picsum.photos/seed/oleo3a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo3b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo3c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Bálsamo Hidratante para Barba",
+      slug: "balsamo-hidratante-para-barba",
+      description: "Bálsamo leave-in para controle e hidratação da barba longa.",
+      price: 52.90,
+      discountPrice: null,
+      stock: 14,
+      images: [
+        { url: "https://picsum.photos/seed/balsamo1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/balsamo1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/balsamo1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    // Shampoos e Condicionadores (4 products, 1 with discount)
+    {
+      categoryId: shampooCategory.id,
+      name: "Shampoo Anticaspa Mentolado",
+      slug: "shampoo-anticaspa-mentolado",
+      description: "Controle eficaz da caspa com sensação refrescante de menta.",
+      price: 36.90,
+      discountPrice: 28.90,
+      stock: 22,
+      images: [
+        { url: "https://picsum.photos/seed/shampoo1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Shampoo Fortalecedor com Biotina",
+      slug: "shampoo-fortalecedor-com-biotina",
+      description: "Biotina e queratina para cabelos mais fortes e com menos queda.",
+      price: 42.90,
+      discountPrice: null,
+      stock: 18,
+      images: [
+        { url: "https://picsum.photos/seed/shampoo2a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo2b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo2c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Condicionador Nutritivo de Argan",
+      slug: "condicionador-nutritivo-de-argan",
+      description: "Óleo de argan marroquino para cabelos macios e sem frizz.",
+      price: 39.90,
+      discountPrice: null,
+      stock: 16,
+      images: [
+        { url: "https://picsum.photos/seed/cond1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cond1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cond1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Kit Shampoo + Condicionador Barba",
+      slug: "kit-shampoo-condicionador-barba",
+      description: "Kit completo para higiene e cuidado da barba. Uso diário.",
+      price: 79.90,
+      discountPrice: null,
+      stock: 9,
+      images: [
+        { url: "https://picsum.photos/seed/kit1a/800/800", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/kit1b/800/800", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/kit1c/800/800", position: 2, isPrimary: false },
+      ],
+    },
+  ];
+
+  for (const { images, discountPrice, ...data } of products) {
+    await prisma.product.create({
+      data: {
+        ...data,
+        discountPrice: discountPrice ?? undefined,
+        images: { create: images },
+      },
+    });
+  }
 
   // ============================================
   // 9. COURSES
@@ -360,6 +525,7 @@ async function main() {
       instagramUsername: "edbarbearia",
       phone: "(81) 99896-6292",
       email: "edmilson.barbearia7@gmail.com",
+      pixKey: "edmilson.barbearia7@gmail.com",
     },
   });
 
