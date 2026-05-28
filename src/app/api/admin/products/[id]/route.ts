@@ -6,8 +6,8 @@ import { prisma } from "@/lib/prisma";
 type Params = { params: Promise<{ id: string }> };
 
 function parseId(id: string) {
-  const n = parseInt(id, 10);
-  return isNaN(n) ? null : n;
+  if (!/^\d+$/.test(id)) return null;
+  return parseInt(id, 10);
 }
 
 export async function GET(request: NextRequest, { params }: Params) {
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: Params) {
   if (auth instanceof NextResponse) return auth;
 
   const id = parseId((await params).id);
-  if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  if (id === null) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
   const product = await prisma.product.findUnique({
     where: { id },
@@ -34,9 +34,14 @@ export async function PUT(request: NextRequest, { params }: Params) {
   if (auth instanceof NextResponse) return auth;
 
   const id = parseId((await params).id);
-  if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  if (id === null) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
-  const body = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
   const validation = productSchema.safeParse(body);
   if (!validation.success) {
     return NextResponse.json(
@@ -74,7 +79,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
   if (auth instanceof NextResponse) return auth;
 
   const id = parseId((await params).id);
-  if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  if (id === null) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
   try {
     await prisma.product.update({ where: { id }, data: { isActive: false } });
