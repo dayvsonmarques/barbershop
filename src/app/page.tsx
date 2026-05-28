@@ -6,6 +6,7 @@ import { AboutSection } from "@/components/about-section";
 import { TeamSection } from "@/components/team-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { InstagramFeed } from "@/components/instagram-feed";
+import { ProductsCarousel } from "@/components/products-carousel";
 import { MapSection } from "@/components/map-section";
 import { BookingCTA } from "@/components/booking-cta";
 import { Footer } from "@/components/footer";
@@ -31,6 +32,7 @@ export default function Home() {
       <ScrollReveal>
         <InstagramFeed />
       </ScrollReveal>
+      <ScrollReveal><ProductsCarousel /></ScrollReveal>
       <MapSection />
       <ScrollReveal>
         <BookingCTA />
