@@ -49,7 +49,7 @@ export function ProductForm({ productId, initialData }: Props) {
   });
 
   useEffect(() => {
-    fetch("/api/admin/categories")
+    fetch("/api/admin/product-categories")
       .then((r) => r.json())
       .then((data) => setCategories(Array.isArray(data) ? data : data.data ?? []));
   }, []);

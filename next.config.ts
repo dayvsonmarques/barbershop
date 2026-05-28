@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "gendo-storage.s3.sa-east-1.amazonaws.com",
         pathname: "/vomo825/**",
       },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
   },
 };
