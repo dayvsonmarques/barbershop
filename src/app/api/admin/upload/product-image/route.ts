@@ -34,16 +34,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "File exceeds 5 MB limit" }, { status: 400 });
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const filename = `${randomUUID()}.webp`;
-  const filepath = join(UPLOAD_DIR, filename);
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const filename = `${randomUUID()}.webp`;
+    const filepath = join(UPLOAD_DIR, filename);
 
-  await sharp(buffer)
-    .resize(1200, 1200, { fit: "inside", withoutEnlargement: true })
-    .webp({ quality: 85 })
-    .toFile(filepath);
+    await sharp(buffer)
+      .resize(1200, 1200, { fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 85 })
+      .toFile(filepath);
 
-  return NextResponse.json({ url: `/uploads/products/${filename}` });
+    return NextResponse.json({ url: `/uploads/products/${filename}` });
+  } catch (error) {
+    console.error("Error processing upload:", error);
+    return NextResponse.json({ error: "Failed to process image" }, { status: 500 });
+  }
 }
 
 export async function DELETE(request: NextRequest) {
