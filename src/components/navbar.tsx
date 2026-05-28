@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useCart } from "@/contexts/cart-context";
 
 const navLinks = [
   { href: "#servicos", label: "Serviços" },
@@ -18,6 +19,7 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const { totalItems } = useCart();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -103,6 +105,17 @@ export function Navbar() {
               <CalendarIcon size={13} />
               Agendar
             </Button>
+          </Link>
+
+          <Link href="/checkout" className="relative hidden md:flex items-center text-text-primary hover:text-gold transition-colors" aria-label="Carrinho">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
+            </svg>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
           </Link>
 
           <ThemeToggle />

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
+import { useCart } from "@/contexts/cart-context";
 
 type ProductImage = { id: number; url: string; position: number; isPrimary: boolean };
 
@@ -33,6 +34,7 @@ type Props = { product: Product; related: RelatedProduct[] };
 
 export function ProductDetail({ product, related }: Props) {
   const router = useRouter();
+  const { addItem } = useCart();
   const [activeImage, setActiveImage] = useState(
     product.images.find((i) => i.isPrimary) ?? product.images[0] ?? null
   );
@@ -47,11 +49,25 @@ export function ProductDetail({ product, related }: Props) {
     : null;
 
   function handleAddToCart() {
-    // Cart context added in Task 11 — placeholder for now
-    router.push("/checkout");
+    for (let i = 0; i < qty; i++) {
+      addItem({
+        productId: product.id,
+        name: product.name,
+        price: product.discountPrice ?? product.price,
+        imageUrl: product.images.find((img) => img.isPrimary)?.url ?? product.images[0]?.url ?? "",
+      });
+    }
   }
 
   function handleBuyNow() {
+    for (let i = 0; i < qty; i++) {
+      addItem({
+        productId: product.id,
+        name: product.name,
+        price: product.discountPrice ?? product.price,
+        imageUrl: product.images.find((img) => img.isPrimary)?.url ?? product.images[0]?.url ?? "",
+      });
+    }
     router.push("/checkout");
   }
 
