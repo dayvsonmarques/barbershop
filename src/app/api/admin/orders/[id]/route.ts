@@ -13,8 +13,9 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const auth = await requirePermission(request, "bookings", "update");
   if (auth instanceof NextResponse) return auth;
 
-  const id = parseInt((await params).id, 10);
-  if (isNaN(id)) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  const rawId = (await params).id;
+  if (!/^\d+$/.test(rawId)) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  const id = parseInt(rawId, 10);
 
   let body: unknown;
   try {

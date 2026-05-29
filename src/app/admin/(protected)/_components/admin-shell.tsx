@@ -28,6 +28,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         items: [
           { href: "/admin/services", label: "Serviços", icon: "✂️" },
           { href: "/admin/products", label: "Produtos", icon: "🛍️" },
+          { href: "/admin/orders", label: "Pedidos", icon: "📦" },
           { href: "/admin/courses", label: "Cursos", icon: "🎓" },
         ],
       },
@@ -80,6 +81,7 @@ function getAdminTitleFromPath(pathname: string): string {
     "/admin/availability": "Disponibilidade",
     "/admin/services": "Serviços",
     "/admin/products": "Produtos",
+    "/admin/orders": "Pedidos",
     "/admin/courses": "Cursos",
     "/admin/users": "Usuários",
     "/admin/settings": "Configurações",

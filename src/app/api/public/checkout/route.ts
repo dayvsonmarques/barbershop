@@ -1,100 +1,104 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { checkoutSchema } from "@/lib/validations/checkout";
 
 export async function POST(request: NextRequest) {
+  let body: unknown;
   try {
-    const body = await request.json();
-    const validated = checkoutSchema.parse(body);
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
-    // Fetch all products to validate stock
-    const productIds = validated.items.map((i) => i.productId);
-    const products = await prisma.product.findMany({
-      where: { id: { in: productIds }, isActive: true },
-      select: { id: true, name: true, price: true, discountPrice: true, stock: true },
-    });
+  const validation = checkoutSchema.safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: "Validation failed", details: validation.error.issues },
+      { status: 400 }
+    );
+  }
 
-    // Check all products exist and have sufficient stock
-    for (const item of validated.items) {
-      const product = products.find((p) => p.id === item.productId);
-      if (!product) {
-        return NextResponse.json(
-          { error: `Produto #${item.productId} não encontrado ou inativo` },
-          { status: 404 }
-        );
-      }
-      if (product.stock < item.quantity) {
-        return NextResponse.json(
-          { error: `Estoque insuficiente para "${product.name}"` },
-          { status: 409 }
-        );
-      }
+  const { customerName, customerPhone, items } = validation.data;
+
+  // Pre-check: products exist and are active
+  const productIds = items.map((i) => i.productId);
+  const products = await prisma.product.findMany({
+    where: { id: { in: productIds }, isActive: true },
+  });
+
+  for (const item of items) {
+    const product = products.find((p) => p.id === item.productId);
+    if (!product) {
+      return NextResponse.json(
+        { error: `Produto ${item.productId} não encontrado` },
+        { status: 400 }
+      );
     }
+    if (product.stock < item.quantity) {
+      return NextResponse.json(
+        { error: `Estoque insuficiente para "${product.name}"` },
+        { status: 400 }
+      );
+    }
+  }
 
-    // Calculate total
-    const total = validated.items.reduce((sum, item) => {
-      const product = products.find((p) => p.id === item.productId)!;
-      const unitPrice = Number(product.discountPrice ?? product.price);
-      return sum + unitPrice * item.quantity;
-    }, 0);
+  const total = items.reduce((sum, item) => {
+    const p = products.find((x) => x.id === item.productId)!;
+    return sum + Number(p.discountPrice ?? p.price) * item.quantity;
+  }, 0);
 
-    // Create order and items in a transaction
-    const order = await prisma.$transaction(async (tx) => {
-      const newOrder = await tx.order.create({
+  const settings = await prisma.establishmentSettings.findUnique({ where: { id: 1 } });
+
+  // Atomic: decrement stock + create order in one transaction
+  let order: { id: number };
+  try {
+    order = await prisma.$transaction(async (tx) => {
+      // Atomically decrement stock with a lower-bound guard
+      for (const item of items) {
+        const updated = await tx.product.updateMany({
+          where: { id: item.productId, stock: { gte: item.quantity } },
+          data: { stock: { decrement: item.quantity } },
+        });
+        if (updated.count === 0) {
+          const p = products.find((x) => x.id === item.productId)!;
+          throw new Error(`STOCK_INSUFFICIENT:${p.name}`);
+        }
+      }
+
+      return tx.order.create({
         data: {
-          customerName: validated.customerName,
-          customerPhone: validated.customerPhone,
+          customerName,
+          customerPhone,
           total,
-          status: "PENDING",
           items: {
-            create: validated.items.map((item) => {
-              const product = products.find((p) => p.id === item.productId)!;
+            create: items.map((item) => {
+              const p = products.find((x) => x.id === item.productId)!;
               return {
                 productId: item.productId,
                 quantity: item.quantity,
-                unitPrice: Number(product.discountPrice ?? product.price),
+                unitPrice: Number(p.discountPrice ?? p.price),
               };
             }),
           },
         },
       });
-      return newOrder;
     });
-
-    // Fetch store settings for PIX key and store name
-    const settings = await prisma.establishmentSettings.findUnique({
-      where: { id: 1 },
-      select: { name: true, pixKey: true, address: true },
-    });
-
-    return NextResponse.json(
-      {
-        orderId: order.id,
-        total,
-        pixKey: settings?.pixKey ?? null,
-        storeName: settings?.name ?? "ED Barbearia",
-        merchantCity: extractCity(settings?.address ?? "Recife"),
-      },
-      { status: 201 }
-    );
-  } catch (error: unknown) {
-    console.error("Checkout error:", error);
-
-    if (error instanceof z.ZodError) {
+  } catch (err: any) {
+    if (err.message?.startsWith("STOCK_INSUFFICIENT:")) {
+      const name = err.message.replace("STOCK_INSUFFICIENT:", "");
       return NextResponse.json(
-        { error: "Dados inválidos", details: error.issues },
-        { status: 400 }
+        { error: `Estoque insuficiente para "${name}"` },
+        { status: 409 }
       );
     }
-
-    return NextResponse.json({ error: "Erro ao processar pedido" }, { status: 500 });
+    throw err;
   }
-}
 
-function extractCity(address: string): string {
-  // Attempt to extract city from address string like "Rua X, Recife - PE"
-  const match = address.match(/,\s*([^,-]+)(?:\s*-|$)/);
-  if (match) return match[1].trim().slice(0, 15);
-  return address.slice(0, 15);
+  return NextResponse.json({
+    orderId: order.id,
+    total,
+    pixKey: settings?.pixKey ?? "",
+    storeName: settings?.name ?? "ED Barbearia",
+    merchantCity: settings?.address?.split(",")[1]?.trim().split("—")[0]?.trim() ?? "Recife",
+  });
 }

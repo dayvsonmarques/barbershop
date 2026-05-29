@@ -162,18 +162,26 @@ export function ProductDetail({ product, related }: Props) {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={handleAddToCart}
-              className="flex-1 bg-gold text-background-primary px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Adicionar ao Carrinho
-            </button>
-            <button
-              onClick={handleBuyNow}
-              className="flex-1 border border-gold text-gold px-6 py-3 text-sm font-medium hover:bg-gold hover:text-background-primary transition-colors"
-            >
-              Comprar Agora
-            </button>
+            {product.stock === 0 ? (
+              <div className="flex-1 border border-border px-6 py-3 text-sm text-text-secondary text-center">
+                Produto esgotado
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-gold text-background-primary px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity"
+                >
+                  Adicionar ao Carrinho
+                </button>
+                <button
+                  onClick={handleBuyNow}
+                  className="flex-1 border border-gold text-gold px-6 py-3 text-sm font-medium hover:bg-gold hover:text-background-primary transition-colors"
+                >
+                  Comprar Agora
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
