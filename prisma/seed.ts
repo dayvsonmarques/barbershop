@@ -297,9 +297,9 @@ async function main() {
       discountPrice: 39.90,
       stock: 20,
       images: [
-        { url: "https://picsum.photos/seed/pomada1a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada1b/800/800", title: "Textura do produto", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada1c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada1a/800/800", title: "Frasco principal", description: "Pote de 120g com tampa rosqueável. Ideal para uso diário.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada1b/800/800", title: "Textura do produto", description: "Consistência firme que se distribui facilmente pelo cabelo.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada1c/800/800", title: "Detalhe da embalagem", description: "Rótulo com lista completa de ingredientes e modo de uso.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -311,9 +311,9 @@ async function main() {
       discountPrice: null,
       stock: 15,
       images: [
-        { url: "https://picsum.photos/seed/pomada2a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada2b/800/800", title: "Brilho na mão", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada2c/800/800", title: "Detalhe da tampa", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada2a/800/800", title: "Frasco principal", description: "Pote de 100g com fórmula de alta brilhância e fixação média.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada2b/800/800", title: "Brilho na mão", description: "Textura leve que se espalha facilmente sem pesar o fio.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada2c/800/800", title: "Detalhe da tampa", description: "Tampa com vedação que preserva a fórmula por mais tempo.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -325,9 +325,9 @@ async function main() {
       discountPrice: 34.90,
       stock: 18,
       images: [
-        { url: "https://picsum.photos/seed/pomada3a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada3b/800/800", title: "Acabamento matte no cabelo", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada3c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada3a/800/800", title: "Frasco principal", description: "Pote de 100g com fórmula matte de longa duração.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada3b/800/800", title: "Acabamento matte no cabelo", description: "Resultado final: aspecto natural e texturizado sem reflexos.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada3c/800/800", title: "Detalhe da embalagem", description: "Design minimalista com informações de uso no verso.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -339,9 +339,9 @@ async function main() {
       discountPrice: null,
       stock: 25,
       images: [
-        { url: "https://picsum.photos/seed/cera1a/800/800", title: "Pote da cera", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/cera1b/800/800", title: "Textura flexível", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/cera1c/800/800", title: "Detalhe do rótulo", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/cera1a/800/800", title: "Pote da cera", description: "Pote de 80g com tampa de rosca. Prático para levar na bolsa.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cera1b/800/800", title: "Textura flexível", description: "Consistência maleável que permite remodelar o look durante o dia.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cera1c/800/800", title: "Detalhe do rótulo", description: "Ingredientes naturais incluindo cera de abelha e manteiga de karité.", position: 2, isPrimary: false },
       ],
     },
     // Óleos para Barba (4 products, 2 with discount)
@@ -354,9 +354,9 @@ async function main() {
       discountPrice: 49.90,
       stock: 12,
       images: [
-        { url: "https://picsum.photos/seed/oleo1a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo1b/800/800", title: "Aplicação na barba", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo1c/800/800", title: "Detalhe do conta-gotas", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo1a/800/800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com conta-gotas de precisão.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo1b/800/800", title: "Aplicação na barba", description: "Aplique 3 a 5 gotas nas palmas e massageie na barba úmida.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo1c/800/800", title: "Detalhe do conta-gotas", description: "Conta-gotas de vidro para dosagem precisa sem desperdício.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -368,9 +368,9 @@ async function main() {
       discountPrice: null,
       stock: 10,
       images: [
-        { url: "https://picsum.photos/seed/oleo2a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo2b/800/800", title: "Aroma cítrico", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo2c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo2a/800/800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com mistura de óleos essenciais cítricos.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo2b/800/800", title: "Aroma cítrico", description: "Blend de bergamota, limão siciliano e laranja doce.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo2c/800/800", title: "Detalhe da embalagem", description: "Caixa protetora com informações de composição e validade.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -382,9 +382,9 @@ async function main() {
       discountPrice: 45.90,
       stock: 8,
       images: [
-        { url: "https://picsum.photos/seed/oleo3a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo3b/800/800", title: "Textura do bálsamo", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo3c/800/800", title: "Detalhe da tampa", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo3a/800/800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com blend vegano de óleos nutritivos.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo3b/800/800", title: "Textura do óleo", description: "Óleo leve de rápida absorção que não deixa resíduo gorduroso.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo3c/800/800", title: "Detalhe da tampa", description: "Tampa rosqueável com vedação que preserva o aroma.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -396,9 +396,9 @@ async function main() {
       discountPrice: null,
       stock: 14,
       images: [
-        { url: "https://picsum.photos/seed/balsamo1a/800/800", title: "Frasco do bálsamo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/balsamo1b/800/800", title: "Aplicação na barba longa", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/balsamo1c/800/800", title: "Detalhe do rótulo", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/balsamo1a/800/800", title: "Frasco do bálsamo", description: "Bisnaga de 60g com bico preciso para aplicação localizada.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/balsamo1b/800/800", title: "Aplicação na barba longa", description: "Distribua uniformemente da raiz às pontas em barba seca ou úmida.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/balsamo1c/800/800", title: "Detalhe do rótulo", description: "Fórmula com manteiga de karité, aloe vera e vitamina E.", position: 2, isPrimary: false },
       ],
     },
     // Shampoos e Condicionadores (4 products, 1 with discount)
@@ -411,9 +411,9 @@ async function main() {
       discountPrice: 28.90,
       stock: 22,
       images: [
-        { url: "https://picsum.photos/seed/shampoo1a/800/800", title: "Frasco do shampoo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/shampoo1b/800/800", title: "Espuma de limpeza", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/shampoo1c/800/800", title: "Detalhe dos ingredientes", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo1a/800/800", title: "Frasco do shampoo", description: "Frasco de 250ml com bomba dosadora. Fórmula sem sulfatos agressivos.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo1b/800/800", title: "Espuma de limpeza", description: "Espuma densa e cremosa que limpa profundamente sem ressecar.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo1c/800/800", title: "Detalhe dos ingredientes", description: "Extrato de menta-pimenta, piritiona de zinco e ácido salicílico.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -425,9 +425,9 @@ async function main() {
       discountPrice: null,
       stock: 18,
       images: [
-        { url: "https://picsum.photos/seed/shampoo2a/800/800", title: "Frasco do shampoo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/shampoo2b/800/800", title: "Cabelo fortalecido", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/shampoo2c/800/800", title: "Detalhe da biotina", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo2a/800/800", title: "Frasco do shampoo", description: "Frasco de 300ml com tampa flip-top. Aroma suave de coco.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo2b/800/800", title: "Cabelo fortalecido", description: "Resultado visível após 4 semanas de uso: fios mais resistentes.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo2c/800/800", title: "Detalhe da biotina", description: "Complexo B7 + queratina hidrolisada para reconstrução do fio.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -439,9 +439,9 @@ async function main() {
       discountPrice: null,
       stock: 16,
       images: [
-        { url: "https://picsum.photos/seed/cond1a/800/800", title: "Frasco do condicionador", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/cond1b/800/800", title: "Textura cremosa", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/cond1c/800/800", title: "Detalhe do óleo de argan", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/cond1a/800/800", title: "Frasco do condicionador", description: "Frasco de 250ml com válvula dosadora. Textura rica e cremosa.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cond1b/800/800", title: "Textura cremosa", description: "Consistência densa que penetra profundamente na estrutura do fio.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cond1c/800/800", title: "Detalhe do óleo de argan", description: "Óleo 100% puro de argan marroquino prensado a frio.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -453,9 +453,9 @@ async function main() {
       discountPrice: null,
       stock: 9,
       images: [
-        { url: "https://picsum.photos/seed/kit1a/800/800", title: "Kit completo", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/kit1b/800/800", title: "Shampoo e condicionador juntos", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/kit1c/800/800", title: "Detalhe das embalagens", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/kit1a/800/800", title: "Kit completo", description: "Conjunto com shampoo 200ml e condicionador 150ml em embalagens coordenadas.", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/kit1b/800/800", title: "Shampoo e condicionador juntos", description: "Fórmulas desenvolvidas para uso em sequência e máximo resultado.", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/kit1c/800/800", title: "Detalhe das embalagens", description: "Embalagens compactas e resistentes, ideais para viagem.", position: 2, isPrimary: false },
       ],
     },
   ];

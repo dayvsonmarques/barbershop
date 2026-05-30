@@ -6,7 +6,7 @@ import Image from "next/image";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { generateSlug } from "@/lib/slug";
 
-type ProductImage = { url: string; title?: string | null; position: number; isPrimary: boolean };
+type ProductImage = { url: string; title?: string | null; description?: string | null; position: number; isPrimary: boolean };
 
 type FormState = {
   name: string;
@@ -82,7 +82,7 @@ export function ProductForm({ productId, initialData }: Props) {
           ...prev,
           images: [
             ...prev.images,
-            { url, title: null, position: prev.images.length, isPrimary: prev.images.length === 0 },
+            { url, title: null, description: null, position: prev.images.length, isPrimary: prev.images.length === 0 },
           ],
         }));
       }
@@ -116,6 +116,13 @@ export function ProductForm({ productId, initialData }: Props) {
     setForm((prev) => ({
       ...prev,
       images: prev.images.map((i) => (i.url === url ? { ...i, title: title || null } : i)),
+    }));
+  }
+
+  function setImageDescription(url: string, desc: string) {
+    setForm((prev) => ({
+      ...prev,
+      images: prev.images.map((i) => (i.url === url ? { ...i, description: desc || null } : i)),
     }));
   }
 
@@ -340,6 +347,14 @@ export function ProductForm({ productId, initialData }: Props) {
                           placeholder="Título"
                           maxLength={200}
                           className="w-24 rounded border border-gray-200 px-1.5 py-0.5 text-xs text-gray-600 focus:border-[#C9A84C] focus:outline-none"
+                        />
+                        <textarea
+                          value={img.description ?? ""}
+                          onChange={(e) => setImageDescription(img.url, e.target.value)}
+                          placeholder="Descrição"
+                          maxLength={1000}
+                          rows={2}
+                          className="w-24 rounded border border-gray-200 px-1.5 py-0.5 text-xs text-gray-600 focus:border-[#C9A84C] focus:outline-none resize-none"
                         />
                       </div>
                     )}

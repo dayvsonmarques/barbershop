@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { useCart } from "@/contexts/cart-context";
 
-type ProductImage = { id: number; url: string; title: string | null; position: number; isPrimary: boolean };
+type ProductImage = { id: number; url: string; title: string | null; description: string | null; position: number; isPrimary: boolean };
 
 type Product = {
   id: number;
@@ -99,12 +99,23 @@ export function ProductDetail({ product, related }: Props) {
               <div className="absolute inset-0 flex items-center justify-center text-border">Sem imagem</div>
             )}
           </div>
+          {activeImage && (activeImage.title || activeImage.description) && (
+            <div className="mb-3 px-1">
+              {activeImage.title && (
+                <p className="text-sm font-medium text-text-primary">{activeImage.title}</p>
+              )}
+              {activeImage.description && (
+                <p className="text-xs text-text-secondary mt-0.5">{activeImage.description}</p>
+              )}
+            </div>
+          )}
           {product.images.length > 1 && (
             <div className="flex gap-2 overflow-x-auto">
               {product.images.map((img) => (
                 <button
                   key={img.id}
                   onClick={() => setActiveImage(img)}
+                  title={img.title ?? undefined}
                   className={`relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors ${activeImage?.id === img.id ? "border-gold" : "border-border hover:border-gold/50"}`}
                 >
                   <Image src={img.url} alt={img.title ?? ""} fill className="object-cover" sizes="64px" />
