@@ -7,6 +7,7 @@ export const productCategorySchema = z.object({
 
 export const productImageSchema = z.object({
   url: z.string().min(1, "URL obrigatória"),
+  title: z.string().max(200).optional().nullable(),
   position: z.number().int().min(0),
   isPrimary: z.boolean(),
 });

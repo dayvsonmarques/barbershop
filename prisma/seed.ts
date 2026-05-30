@@ -297,9 +297,9 @@ async function main() {
       discountPrice: 39.90,
       stock: 20,
       images: [
-        { url: "https://picsum.photos/seed/pomada1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada1a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada1b/800/800", title: "Textura do produto", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada1c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
       ],
     },
     {
@@ -311,9 +311,9 @@ async function main() {
       discountPrice: null,
       stock: 15,
       images: [
-        { url: "https://picsum.photos/seed/pomada2a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada2b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada2c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada2a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada2b/800/800", title: "Brilho na mão", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada2c/800/800", title: "Detalhe da tampa", position: 2, isPrimary: false },
       ],
     },
     {
@@ -325,9 +325,9 @@ async function main() {
       discountPrice: 34.90,
       stock: 18,
       images: [
-        { url: "https://picsum.photos/seed/pomada3a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/pomada3b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/pomada3c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada3a/800/800", title: "Frasco principal", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/pomada3b/800/800", title: "Acabamento matte no cabelo", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/pomada3c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
       ],
     },
     {
@@ -339,9 +339,9 @@ async function main() {
       discountPrice: null,
       stock: 25,
       images: [
-        { url: "https://picsum.photos/seed/cera1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/cera1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/cera1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/cera1a/800/800", title: "Pote da cera", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cera1b/800/800", title: "Textura flexível", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cera1c/800/800", title: "Detalhe do rótulo", position: 2, isPrimary: false },
       ],
     },
     // Óleos para Barba (4 products, 2 with discount)
@@ -354,9 +354,9 @@ async function main() {
       discountPrice: 49.90,
       stock: 12,
       images: [
-        { url: "https://picsum.photos/seed/oleo1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo1a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo1b/800/800", title: "Aplicação na barba", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo1c/800/800", title: "Detalhe do conta-gotas", position: 2, isPrimary: false },
       ],
     },
     {
@@ -368,9 +368,9 @@ async function main() {
       discountPrice: null,
       stock: 10,
       images: [
-        { url: "https://picsum.photos/seed/oleo2a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo2b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo2c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo2a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo2b/800/800", title: "Aroma cítrico", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo2c/800/800", title: "Detalhe da embalagem", position: 2, isPrimary: false },
       ],
     },
     {
@@ -382,9 +382,9 @@ async function main() {
       discountPrice: 45.90,
       stock: 8,
       images: [
-        { url: "https://picsum.photos/seed/oleo3a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/oleo3b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/oleo3c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo3a/800/800", title: "Frasco do óleo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/oleo3b/800/800", title: "Textura do bálsamo", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/oleo3c/800/800", title: "Detalhe da tampa", position: 2, isPrimary: false },
       ],
     },
     {
@@ -396,9 +396,9 @@ async function main() {
       discountPrice: null,
       stock: 14,
       images: [
-        { url: "https://picsum.photos/seed/balsamo1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/balsamo1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/balsamo1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/balsamo1a/800/800", title: "Frasco do bálsamo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/balsamo1b/800/800", title: "Aplicação na barba longa", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/balsamo1c/800/800", title: "Detalhe do rótulo", position: 2, isPrimary: false },
       ],
     },
     // Shampoos e Condicionadores (4 products, 1 with discount)
@@ -411,9 +411,9 @@ async function main() {
       discountPrice: 28.90,
       stock: 22,
       images: [
-        { url: "https://picsum.photos/seed/shampoo1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/shampoo1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/shampoo1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo1a/800/800", title: "Frasco do shampoo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo1b/800/800", title: "Espuma de limpeza", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo1c/800/800", title: "Detalhe dos ingredientes", position: 2, isPrimary: false },
       ],
     },
     {
@@ -425,9 +425,9 @@ async function main() {
       discountPrice: null,
       stock: 18,
       images: [
-        { url: "https://picsum.photos/seed/shampoo2a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/shampoo2b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/shampoo2c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo2a/800/800", title: "Frasco do shampoo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/shampoo2b/800/800", title: "Cabelo fortalecido", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/shampoo2c/800/800", title: "Detalhe da biotina", position: 2, isPrimary: false },
       ],
     },
     {
@@ -439,9 +439,9 @@ async function main() {
       discountPrice: null,
       stock: 16,
       images: [
-        { url: "https://picsum.photos/seed/cond1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/cond1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/cond1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/cond1a/800/800", title: "Frasco do condicionador", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/cond1b/800/800", title: "Textura cremosa", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/cond1c/800/800", title: "Detalhe do óleo de argan", position: 2, isPrimary: false },
       ],
     },
     {
@@ -453,9 +453,9 @@ async function main() {
       discountPrice: null,
       stock: 9,
       images: [
-        { url: "https://picsum.photos/seed/kit1a/800/800", position: 0, isPrimary: true },
-        { url: "https://picsum.photos/seed/kit1b/800/800", position: 1, isPrimary: false },
-        { url: "https://picsum.photos/seed/kit1c/800/800", position: 2, isPrimary: false },
+        { url: "https://picsum.photos/seed/kit1a/800/800", title: "Kit completo", position: 0, isPrimary: true },
+        { url: "https://picsum.photos/seed/kit1b/800/800", title: "Shampoo e condicionador juntos", position: 1, isPrimary: false },
+        { url: "https://picsum.photos/seed/kit1c/800/800", title: "Detalhe das embalagens", position: 2, isPrimary: false },
       ],
     },
   ];

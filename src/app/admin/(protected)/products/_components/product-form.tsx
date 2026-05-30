@@ -6,7 +6,7 @@ import Image from "next/image";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { generateSlug } from "@/lib/slug";
 
-type ProductImage = { url: string; position: number; isPrimary: boolean };
+type ProductImage = { url: string; title?: string | null; position: number; isPrimary: boolean };
 
 type FormState = {
   name: string;
@@ -82,7 +82,7 @@ export function ProductForm({ productId, initialData }: Props) {
           ...prev,
           images: [
             ...prev.images,
-            { url, position: prev.images.length, isPrimary: prev.images.length === 0 },
+            { url, title: null, position: prev.images.length, isPrimary: prev.images.length === 0 },
           ],
         }));
       }
@@ -109,6 +109,13 @@ export function ProductForm({ productId, initialData }: Props) {
     setForm((prev) => ({
       ...prev,
       images: prev.images.map((i) => ({ ...i, isPrimary: i.url === url })),
+    }));
+  }
+
+  function setImageTitle(url: string, title: string) {
+    setForm((prev) => ({
+      ...prev,
+      images: prev.images.map((i) => (i.url === url ? { ...i, title: title || null } : i)),
     }));
   }
 
@@ -306,10 +313,10 @@ export function ProductForm({ productId, initialData }: Props) {
                         ref={drag.innerRef}
                         {...drag.draggableProps}
                         {...drag.dragHandleProps}
-                        className="relative group"
+                        className="relative group flex flex-col gap-1"
                       >
                         <div className={`relative h-24 w-24 overflow-hidden rounded border-2 ${img.isPrimary ? "border-[#C9A84C]" : "border-gray-200"}`}>
-                          <Image src={img.url} alt="" fill className="object-cover" />
+                          <Image src={img.url} alt={img.title ?? ""} fill className="object-cover" />
                         </div>
                         <button
                           type="button"
@@ -326,6 +333,14 @@ export function ProductForm({ productId, initialData }: Props) {
                         >
                           ×
                         </button>
+                        <input
+                          type="text"
+                          value={img.title ?? ""}
+                          onChange={(e) => setImageTitle(img.url, e.target.value)}
+                          placeholder="Título"
+                          maxLength={200}
+                          className="w-24 rounded border border-gray-200 px-1.5 py-0.5 text-xs text-gray-600 focus:border-[#C9A84C] focus:outline-none"
+                        />
                       </div>
                     )}
                   </Draggable>

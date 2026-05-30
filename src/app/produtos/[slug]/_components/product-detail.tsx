@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { useCart } from "@/contexts/cart-context";
 
-type ProductImage = { id: number; url: string; position: number; isPrimary: boolean };
+type ProductImage = { id: number; url: string; title: string | null; position: number; isPrimary: boolean };
 
 type Product = {
   id: number;
@@ -89,7 +89,7 @@ export function ProductDetail({ product, related }: Props) {
             {activeImage ? (
               <Image
                 src={activeImage.url}
-                alt={product.name}
+                alt={activeImage.title ?? product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover transition-opacity duration-200"
@@ -107,7 +107,7 @@ export function ProductDetail({ product, related }: Props) {
                   onClick={() => setActiveImage(img)}
                   className={`relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors ${activeImage?.id === img.id ? "border-gold" : "border-border hover:border-gold/50"}`}
                 >
-                  <Image src={img.url} alt="" fill className="object-cover" sizes="64px" />
+                  <Image src={img.url} alt={img.title ?? ""} fill className="object-cover" sizes="64px" />
                 </button>
               ))}
             </div>
