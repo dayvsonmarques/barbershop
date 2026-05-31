@@ -107,66 +107,66 @@ export function ProductsCarousel() {
 
   return (
     <section className="bg-background-secondary py-24">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 mb-12">
         <SectionLabel label="Loja" />
         <h2
-          className="font-heading text-text-primary mb-12"
+          className="font-heading text-text-primary"
           style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: "1.1" }}
         >
           Produtos em destaque
         </h2>
+      </div>
 
-        <div className="relative">
-          {/* Prev arrow */}
-          <button
-            onClick={() => { retreat(); resetTimer(); }}
-            aria-label="Anterior"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 h-10 w-10 flex items-center justify-center bg-background-primary border border-border text-text-primary hover:border-gold hover:text-gold transition-colors text-xl"
+      <div className="relative px-10">
+        {/* Prev arrow */}
+        <button
+          onClick={() => { retreat(); resetTimer(); }}
+          aria-label="Anterior"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 h-10 w-10 flex items-center justify-center bg-background-primary border border-border text-text-primary hover:border-gold hover:text-gold transition-colors text-xl"
+        >
+          ‹
+        </button>
+
+        <div className="overflow-hidden">
+          <div
+            className="flex"
+            style={{
+              width: `${trackPct}%`,
+              transform: `translateX(${translatePct}%)`,
+              transition: animated ? `transform ${TRANSITION_MS}ms ease-in-out` : "none",
+            }}
           >
-            ‹
-          </button>
-
-          <div className="overflow-hidden">
-            <div
-              className="flex"
-              style={{
-                width: `${trackPct}%`,
-                transform: `translateX(${translatePct}%)`,
-                transition: animated ? `transform ${TRANSITION_MS}ms ease-in-out` : "none",
-              }}
-            >
-              {allItems.map((p, i) => (
-                <div key={i} style={{ width: `${itemPct}%` }} className="px-2">
-                  <ProductCard
-                    name={p.name}
-                    slug={p.slug}
-                    price={p.price}
-                    discountPrice={p.discountPrice}
-                    primaryImageUrl={p.images[0]?.url ?? null}
-                  />
-                </div>
-              ))}
-            </div>
+            {allItems.map((p, i) => (
+              <div key={i} style={{ width: `${itemPct}%` }} className="px-2">
+                <ProductCard
+                  name={p.name}
+                  slug={p.slug}
+                  price={p.price}
+                  discountPrice={p.discountPrice}
+                  primaryImageUrl={p.images[0]?.url ?? null}
+                />
+              </div>
+            ))}
           </div>
-
-          {/* Next arrow */}
-          <button
-            onClick={() => { advance(); resetTimer(); }}
-            aria-label="Próximo"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 h-10 w-10 flex items-center justify-center bg-background-primary border border-border text-text-primary hover:border-gold hover:text-gold transition-colors text-xl"
-          >
-            ›
-          </button>
         </div>
 
-        <div className="mt-12 text-center">
-          <Link
-            href="/produtos"
-            className="inline-block border border-gold text-gold px-8 py-3 text-sm tracking-widest uppercase hover:bg-gold hover:text-background-primary transition-colors"
-          >
-            Ver mais produtos
-          </Link>
-        </div>
+        {/* Next arrow */}
+        <button
+          onClick={() => { advance(); resetTimer(); }}
+          aria-label="Próximo"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 h-10 w-10 flex items-center justify-center bg-background-primary border border-border text-text-primary hover:border-gold hover:text-gold transition-colors text-xl"
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="mt-12 text-center">
+        <Link
+          href="/produtos"
+          className="inline-block border border-gold text-gold px-8 py-3 text-sm tracking-widest uppercase hover:bg-gold hover:text-background-primary transition-colors"
+        >
+          Ver mais produtos
+        </Link>
       </div>
     </section>
   );
