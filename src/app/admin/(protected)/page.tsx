@@ -44,10 +44,14 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetch("/api/admin/dashboard")
       .then((r) => {
+        if (r.status === 401 || r.status === 403) {
+          window.location.href = "/admin/login";
+          return;
+        }
         if (!r.ok) throw new Error("Falha ao carregar dados");
         return r.json() as Promise<DashboardData>;
       })
-      .then(setData)
+      .then((data) => { if (data) setData(data); })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
