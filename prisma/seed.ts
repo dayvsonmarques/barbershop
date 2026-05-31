@@ -297,9 +297,9 @@ async function main() {
       discountPrice: 39.90,
       stock: 20,
       images: [
-        { url: "https://images.unsplash.com/photo-1587909209111-5097ee578ec3?auto=format&fit=crop&w=800&h=800", title: "Frasco principal", description: "Pote de 120g com tampa rosqueável. Ideal para uso diário.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1654424292734-c8e8b6d85a7b?auto=format&fit=crop&w=800&h=800", title: "Textura do produto", description: "Consistência firme que se distribui facilmente pelo cabelo.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1775126250995-8d2364537089?auto=format&fit=crop&w=800&h=800", title: "Detalhe da embalagem", description: "Rótulo com lista completa de ingredientes e modo de uso.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775127741393-2b571811bb01?auto=format&fit=crop&w=800&h=800", title: "Pomada sendo aplicada", description: "Produto de fixação extra forte — basta uma pequena quantidade para modelar.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775127741095-86ee33b6b385?auto=format&fit=crop&w=800&h=800", title: "Pote de 120g", description: "Tampa rosqueável que preserva a consistência e o aroma do produto.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126251005-09f10848a43c?auto=format&fit=crop&w=800&h=800", title: "Linha completa de pomadas", description: "Faça parte da linha premium de modelagem para cabelo masculino.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -311,9 +311,9 @@ async function main() {
       discountPrice: null,
       stock: 15,
       images: [
-        { url: "https://images.unsplash.com/photo-1560264641-1b5191cc63e2?auto=format&fit=crop&w=800&h=800", title: "Frasco principal", description: "Pote de 100g com fórmula de alta brilhância e fixação média.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1587225438173-701d7edc94f9?auto=format&fit=crop&w=800&h=800", title: "Brilho na mão", description: "Textura leve que se espalha facilmente sem pesar o fio.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1587909209111-5097ee578ec3?auto=format&fit=crop&w=800&h=800", title: "Detalhe da tampa", description: "Tampa com vedação que preserva a fórmula por mais tempo.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775127741095-86ee33b6b385?auto=format&fit=crop&w=800&h=800", title: "Frasco de pomada brilhante", description: "Fórmula de alta brilhância com fixação média para o dia a dia.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126454590-f6c47fbaa5c1?auto=format&fit=crop&w=800&h=800", title: "Coleção de produtos", description: "Combinação ideal com outros produtos da linha para resultado profissional.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775127741393-2b571811bb01?auto=format&fit=crop&w=800&h=800", title: "Textura do produto", description: "Textura leve que se espalha facilmente sem pesar o fio.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -325,9 +325,9 @@ async function main() {
       discountPrice: 34.90,
       stock: 18,
       images: [
-        { url: "https://images.unsplash.com/photo-1654424292734-c8e8b6d85a7b?auto=format&fit=crop&w=800&h=800", title: "Frasco principal", description: "Pote de 100g com fórmula matte de longa duração.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1560264641-1b5191cc63e2?auto=format&fit=crop&w=800&h=800", title: "Acabamento matte no cabelo", description: "Resultado final: aspecto natural e texturizado sem reflexos.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1587225438173-701d7edc94f9?auto=format&fit=crop&w=800&h=800", title: "Detalhe da embalagem", description: "Design minimalista com informações de uso no verso.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126251005-09f10848a43c?auto=format&fit=crop&w=800&h=800", title: "Duo matte", description: "Dois produtos coordenados para um look natural e texturizado sem reflexos.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1701976857871-a46363644519?auto=format&fit=crop&w=800&h=800", title: "Linha de produtos matte", description: "Diversos produtos para criar o visual mais natural e moderno.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1647140655311-b36dc374a95a?auto=format&fit=crop&w=800&h=800", title: "Grooming profissional", description: "Coleção de produtos de styling usados pelos melhores barbeiros.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -339,9 +339,9 @@ async function main() {
       discountPrice: null,
       stock: 25,
       images: [
-        { url: "https://images.unsplash.com/photo-1775126250995-8d2364537089?auto=format&fit=crop&w=800&h=800", title: "Pote da cera", description: "Pote de 80g com tampa de rosca. Prático para levar na bolsa.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1654424292734-c8e8b6d85a7b?auto=format&fit=crop&w=800&h=800", title: "Textura flexível", description: "Consistência maleável que permite remodelar o look durante o dia.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1560264641-1b5191cc63e2?auto=format&fit=crop&w=800&h=800", title: "Detalhe do rótulo", description: "Ingredientes naturais incluindo cera de abelha e manteiga de karité.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1732861612244-5704d12e9397?auto=format&fit=crop&w=800&h=800", title: "Pote de cera modeladora", description: "Embalagem compacta com cera de acabamento flexível. Ideal para retoques.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126454590-f6c47fbaa5c1?auto=format&fit=crop&w=800&h=800", title: "Linha styling", description: "A cera faz parte de uma linha completa de modelagem masculina.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1701976857871-a46363644519?auto=format&fit=crop&w=800&h=800", title: "Variedade de styling", description: "Combine com outros produtos da linha para um look personalizado.", position: 2, isPrimary: false },
       ],
     },
     // Óleos para Barba (4 products, 2 with discount)
@@ -354,9 +354,9 @@ async function main() {
       discountPrice: 49.90,
       stock: 12,
       images: [
-        { url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&h=800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com conta-gotas de precisão.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Aplicação na barba", description: "Aplique 3 a 5 gotas nas palmas e massageie na barba úmida.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1672761431764-61b8d9a00dbb?auto=format&fit=crop&w=800&h=800", title: "Detalhe do conta-gotas", description: "Conta-gotas de vidro para dosagem precisa sem desperdício.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Frasco âmbar 30ml", description: "Frasco conta-gotas que protege a fórmula da oxidação e luz UV.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1673350963924-cb4267d9b6eb?auto=format&fit=crop&w=800&h=800", title: "Óleo sobre madeira", description: "Aroma amadeirado de cedro que complementa o ambiente do banheiro.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Aplicação precisa", description: "Aplique 3 a 5 gotas nas palmas e massageie na barba úmida.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -368,9 +368,9 @@ async function main() {
       discountPrice: null,
       stock: 10,
       images: [
-        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com mistura de óleos essenciais cítricos.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1627876280688-24a58ba02f2c?auto=format&fit=crop&w=800&h=800", title: "Aroma cítrico", description: "Blend de bergamota, limão siciliano e laranja doce.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&h=800", title: "Detalhe da embalagem", description: "Caixa protetora com informações de composição e validade.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1673350963924-cb4267d9b6eb?auto=format&fit=crop&w=800&h=800", title: "Frasco sobre superfície natural", description: "Óleo de barba cítrico em frasco âmbar de 30ml com conta-gotas.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1694538991472-60a784a9b4cb?auto=format&fit=crop&w=800&h=800", title: "Blend de óleos", description: "Coleção de frascos escuros que preservam os óleos essenciais cítricos.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Detalhe do frasco", description: "Bergamota, limão siciliano e laranja doce em blend equilibrado.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -382,9 +382,9 @@ async function main() {
       discountPrice: 45.90,
       stock: 8,
       images: [
-        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Frasco do óleo", description: "Frasco âmbar de 30ml com blend vegano de óleos nutritivos.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1672761431764-61b8d9a00dbb?auto=format&fit=crop&w=800&h=800", title: "Textura do óleo", description: "Óleo leve de rápida absorção que não deixa resíduo gorduroso.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Detalhe da tampa", description: "Tampa rosqueável com vedação que preserva o aroma.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Frasco conta-gotas", description: "Óleo vegano de rápida absorção com notas de baunilha e almíscar.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Textura do óleo", description: "Óleo leve que não deixa resíduo gorduroso na barba.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1694538991472-60a784a9b4cb?auto=format&fit=crop&w=800&h=800", title: "Linha de óleos", description: "Frascos escuros que protegem a fórmula e mantêm o aroma duradouro.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -396,9 +396,9 @@ async function main() {
       discountPrice: null,
       stock: 14,
       images: [
-        { url: "https://images.unsplash.com/photo-1627876280688-24a58ba02f2c?auto=format&fit=crop&w=800&h=800", title: "Frasco do bálsamo", description: "Bisnaga de 60g com bico preciso para aplicação localizada.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&h=800", title: "Aplicação na barba longa", description: "Distribua uniformemente da raiz às pontas em barba seca ou úmida.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Detalhe do rótulo", description: "Fórmula com manteiga de karité, aloe vera e vitamina E.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126454589-53b494ca57ac?auto=format&fit=crop&w=800&h=800", title: "Frasco do bálsamo", description: "Embalagem com dosador que facilita a aplicação sem desperdício.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126455263-ed926ab25fa4?auto=format&fit=crop&w=800&h=800", title: "Bálsamo sobre fundo limpo", description: "Fórmula com manteiga de karité, aloe vera e vitamina E.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126454572-86a56047b286?auto=format&fit=crop&w=800&h=800", title: "Uso no banheiro", description: "Ideal para aplicar após o banho em barba seca ou ligeiramente úmida.", position: 2, isPrimary: false },
       ],
     },
     // Shampoos e Condicionadores (4 products, 1 with discount)
@@ -411,9 +411,9 @@ async function main() {
       discountPrice: 28.90,
       stock: 22,
       images: [
-        { url: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&h=800", title: "Frasco do shampoo", description: "Frasco de 250ml com bomba dosadora. Fórmula sem sulfatos agressivos.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1701992678972-d5a053ad0fb0?auto=format&fit=crop&w=800&h=800", title: "Espuma de limpeza", description: "Espuma densa e cremosa que limpa profundamente sem ressecar.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1700709678035-b6606373aa52?auto=format&fit=crop&w=800&h=800", title: "Detalhe dos ingredientes", description: "Extrato de menta-pimenta, piritiona de zinco e ácido salicílico.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1747858989102-cca0f4dc4a11?auto=format&fit=crop&w=800&h=800", title: "Frasco do shampoo", description: "Frasco de 250ml com bomba dosadora. Fórmula sem sulfatos agressivos.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1597931752949-98c74b5b159f?auto=format&fit=crop&w=800&h=800", title: "Embalagem com dosador", description: "Dosador preciso que evita desperdício e facilita a aplicação no banho.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1604603815783-2bd94c5a819f?auto=format&fit=crop&w=800&h=800", title: "Produto limpo e prático", description: "Extrato de menta-pimenta, piritiona de zinco e ácido salicílico.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -425,9 +425,9 @@ async function main() {
       discountPrice: null,
       stock: 18,
       images: [
-        { url: "https://images.unsplash.com/photo-1655892817271-c66841c2506e?auto=format&fit=crop&w=800&h=800", title: "Frasco do shampoo", description: "Frasco de 300ml com tampa flip-top. Aroma suave de coco.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&h=800", title: "Cabelo fortalecido", description: "Resultado visível após 4 semanas de uso: fios mais resistentes.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1701992678972-d5a053ad0fb0?auto=format&fit=crop&w=800&h=800", title: "Detalhe da biotina", description: "Complexo B7 + queratina hidrolisada para reconstrução do fio.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1747098393451-6b985f62a2c2?auto=format&fit=crop&w=800&h=800", title: "Dupla shampoo e condicionador", description: "Linha completa com shampoo fortalecedor e condicionador nutritivo.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1747858989102-cca0f4dc4a11?auto=format&fit=crop&w=800&h=800", title: "Frasco de shampoo", description: "Complexo B7 + queratina hidrolisada para reconstrução do fio.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1553265331-3032aacd1a76?auto=format&fit=crop&w=800&h=800", title: "Produto e escova", description: "Use em conjunto com escova de cerdas macias para melhores resultados.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -439,9 +439,9 @@ async function main() {
       discountPrice: null,
       stock: 16,
       images: [
-        { url: "https://images.unsplash.com/photo-1633171036157-78d53387fdc0?auto=format&fit=crop&w=800&h=800", title: "Frasco do condicionador", description: "Frasco de 250ml com válvula dosadora. Textura rica e cremosa.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1686121544103-f1bc403bd6da?auto=format&fit=crop&w=800&h=800", title: "Textura cremosa", description: "Consistência densa que penetra profundamente na estrutura do fio.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1686121544835-ce3f852fc86d?auto=format&fit=crop&w=800&h=800", title: "Detalhe do óleo de argan", description: "Óleo 100% puro de argan marroquino prensado a frio.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1643123158858-eac2aabaa1ec?auto=format&fit=crop&w=800&h=800", title: "Frasco do condicionador", description: "Frasco de 250ml com válvula dosadora. Textura rica e cremosa.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1643123158523-2950acbdfd68?auto=format&fit=crop&w=800&h=800", title: "Embalagem clean", description: "Design minimalista com ingredientes 100% naturais listados no rótulo.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1643123158509-b07b9fd5e802?auto=format&fit=crop&w=800&h=800", title: "Linha de cuidados", description: "Óleo de argan marroquino prensado a frio em fórmula de alta concentração.", position: 2, isPrimary: false },
       ],
     },
     {
@@ -453,9 +453,9 @@ async function main() {
       discountPrice: null,
       stock: 9,
       images: [
-        { url: "https://images.unsplash.com/photo-1635273051937-a0ddef9573b6?auto=format&fit=crop&w=800&h=800", title: "Kit completo", description: "Conjunto com shampoo 200ml e condicionador 150ml em embalagens coordenadas.", position: 0, isPrimary: true },
-        { url: "https://images.unsplash.com/photo-1599011176306-4a96f1516d4d?auto=format&fit=crop&w=800&h=800", title: "Shampoo e condicionador juntos", description: "Fórmulas desenvolvidas para uso em sequência e máximo resultado.", position: 1, isPrimary: false },
-        { url: "https://images.unsplash.com/photo-1567721971759-12402aedabf0?auto=format&fit=crop&w=800&h=800", title: "Detalhe das embalagens", description: "Embalagens compactas e resistentes, ideais para viagem.", position: 2, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1556228720-210aabb357b7?auto=format&fit=crop&w=800&h=800", title: "Kit de higiene pessoal", description: "Conjunto coordenado com shampoo e condicionador específicos para barba.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1747098393451-6b985f62a2c2?auto=format&fit=crop&w=800&h=800", title: "Shampoo e condicionador", description: "Fórmulas desenvolvidas para uso em sequência com máximo resultado.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1553265331-3032aacd1a76?auto=format&fit=crop&w=800&h=800", title: "Acessórios inclusos", description: "Kit acompanha escova para distribuição uniforme do produto na barba.", position: 2, isPrimary: false },
       ],
     },
   ];
