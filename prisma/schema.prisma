@@ -152,10 +152,11 @@ model Barber {
   updatedAt   DateTime             @updatedAt
   
   // Relations
-  bookings    Booking[]
-  availability BarberAvailability[]
-  exceptions  AvailabilityException[]
-  
+  bookings      Booking[]
+  availability  BarberAvailability[]
+  exceptions    AvailabilityException[]
+  blockedSlots  BlockedSlot[]
+
   @@map("barbers")
 }
 
@@ -374,6 +375,20 @@ model Course {
 // ============================================
 // ESTABLISHMENT SETTINGS
 // ============================================
+
+model BlockedSlot {
+  id        Int      @id @default(autoincrement())
+  barberId  Int
+  date      DateTime @db.Date
+  time      String
+  reason    String?
+  createdAt DateTime @default(now())
+
+  barber Barber @relation(fields: [barberId], references: [id], onDelete: Cascade)
+
+  @@unique([barberId, date, time])
+  @@map("blocked_slots")
+}
 
 model EstablishmentSettings {
   id                  Int      @id @default(1)

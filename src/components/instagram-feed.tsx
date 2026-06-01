@@ -25,7 +25,7 @@ export function InstagramFeed() {
       .catch(() => undefined);
   }, []);
 
-  const items = posts.length > 0 ? posts : Array.from({ length: 6 }, (_, i) => ({ id: String(i) }));
+  const items: Post[] = posts.length > 0 ? posts : Array.from({ length: 6 }, (_, i) => ({ id: String(i) }));
 
   return (
     <section id="instagram" className="bg-background-secondary py-24">

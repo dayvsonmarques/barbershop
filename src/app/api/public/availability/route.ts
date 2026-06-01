@@ -16,6 +16,15 @@ export async function GET(request: Request) {
     }
 
     const date = new Date(dateStr);
+
+    // Reject dates beyond 2 weeks from today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 13);
+    if (date < today || date > maxDate) {
+      return NextResponse.json({ slots: [] });
+    }
     const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
     
     // Map JS day of week to Prisma DayOfWeek enum
@@ -156,6 +165,17 @@ export async function GET(request: Request) {
       }
     }
 
+    // Filter out blocked slots
+    const blockedSlots = await prisma.blockedSlot.findMany({
+      where: {
+        barberId: parseInt(barberId),
+        date: { gte: startOfDay, lte: endOfDay },
+      },
+      select: { time: true },
+    });
+    const blockedTimes = new Set(blockedSlots.map((b) => b.time));
+    const unblocked = slots.filter((s) => !blockedTimes.has(s));
+
     // Strip past slots when the requested date is today
     const now = new Date();
     const isToday =
@@ -164,11 +184,11 @@ export async function GET(request: Request) {
       date.getDate() === now.getDate();
 
     const filtered = isToday
-      ? slots.filter((slot) => {
+      ? unblocked.filter((slot) => {
           const [h, m] = slot.split(":").map(Number);
           return h * 60 + m > now.getHours() * 60 + now.getMinutes();
         })
-      : slots;
+      : unblocked;
 
     return NextResponse.json({ slots: filtered });
   } catch (error) {

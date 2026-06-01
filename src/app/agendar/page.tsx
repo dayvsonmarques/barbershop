@@ -162,6 +162,8 @@ export default function AgendarPage() {
   const selectedServiceData = services.find((s) => s.id === selectedService);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const maxDate = new Date(today);
+  maxDate.setDate(today.getDate() + 13);
 
   function dateToStr(d: Date) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -298,7 +300,9 @@ export default function AgendarPage() {
                     setSelectedTime("");
                     setCalendarOpen(false);
                   }}
-                  disabled={{ before: today }}
+                  disabled={[{ before: today }, { after: maxDate }]}
+                  startMonth={today}
+                  endMonth={maxDate}
                   classNames={{
                     root: "!font-sans",
                     month_caption: "text-base font-semibold text-[#18181B] mb-2 capitalize",
