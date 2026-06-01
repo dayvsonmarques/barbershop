@@ -57,17 +57,37 @@ export function Navbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center relative">
-        {/* Desktop: nav links left */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-bold text-black dark:text-white hover:text-gold dark:hover:text-gold transition-colors duration-300 text-xs uppercase tracking-widest"
-            >
-              {link.label}
-            </a>
-          ))}
+        {/* Esquerda: hamburger (mobile) + nav links (desktop) */}
+        <div className="flex items-center gap-8">
+          <button
+            className="md:hidden text-text-primary p-2 -ml-2"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {open ? (
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+              ) : (
+                <>
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </>
+              )}
+            </svg>
+          </button>
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="font-bold text-black dark:text-white hover:text-gold dark:hover:text-gold transition-colors duration-300 text-xs uppercase tracking-widest"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Logo centrada */}
@@ -94,18 +114,16 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Direita: CTA desktop + theme toggle + hamburger — ml-auto garante alinhamento direito no mobile */}
+        {/* Direita: Agendar (desktop) + ThemeToggle + Carrinho */}
         <div className="flex items-center gap-4 ml-auto">
           <Link href="/agendar" className="hidden md:block">
-            <Button
-              variant="primary"
-              size="sm"
-              className="font-bold"
-            >
+            <Button variant="primary" size="sm" className="font-bold">
               <CalendarIcon size={13} />
               Agendar
             </Button>
           </Link>
+
+          <ThemeToggle />
 
           <Link href="/checkout" className="relative flex items-center text-text-primary hover:text-gold transition-colors" aria-label="Carrinho">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -117,27 +135,6 @@ export function Navbar() {
               </span>
             )}
           </Link>
-
-          <ThemeToggle />
-
-          <button
-            className="md:hidden text-text-primary p-2 -mr-2"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={open}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {open ? (
-                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-              ) : (
-                <>
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </>
-              )}
-            </svg>
-          </button>
         </div>
       </div>
 
