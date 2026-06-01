@@ -27,15 +27,15 @@ export default function Home() {
         <TeamSection />
       </ScrollReveal>
       <ScrollReveal>
-        <TestimonialsSection />
+        <BookingCTA />
       </ScrollReveal>
-      <ScrollReveal>
+      {/* <ScrollReveal>
         <InstagramFeed />
-      </ScrollReveal>
+      </ScrollReveal> */}
       <ScrollReveal><ProductsCarousel /></ScrollReveal>
       <MapSection />
       <ScrollReveal>
-        <BookingCTA />
+        <TestimonialsSection />
       </ScrollReveal>
       <Footer />
     </main>
