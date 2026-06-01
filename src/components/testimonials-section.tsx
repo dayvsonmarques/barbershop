@@ -52,9 +52,9 @@ const testimonials: Testimonial[] = [
 
 function Stars() {
   return (
-    <div className="flex gap-1 mb-4">
+    <div className="flex gap-1 mb-2">
       {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#C9A84C" stroke="#C9A84C" strokeWidth="2">
+        <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="#C9A84C" stroke="#C9A84C" strokeWidth="2">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       ))}
@@ -62,19 +62,54 @@ function Stars() {
   );
 }
 
+function TestimonialCard({ quote, author, avatar }: Testimonial) {
+  return (
+    <div className="bg-background-secondary p-6 md:p-8 relative flex flex-col justify-between min-h-55">
+      <span
+        className="absolute top-4 left-6 text-gold opacity-20 font-heading text-7xl leading-none select-none"
+        aria-hidden="true"
+      >
+        &#8220;
+      </span>
+      <blockquote className="font-heading italic text-base md:text-lg text-text-primary pt-8 leading-snug">
+        {quote}
+      </blockquote>
+      <footer className="mt-6 flex items-center gap-3">
+        <div className="relative w-11 h-11 rounded-full overflow-hidden shrink-0 border border-gold/30">
+          <Image src={avatar} alt={author} fill sizes="44px" className="object-cover" />
+        </div>
+        <div>
+          <Stars />
+          <p className="text-text-secondary text-sm font-medium">{author}</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function useVisibleCount() {
+  const [count, setCount] = useState(1);
+  useEffect(() => {
+    const update = () => {
+      if (window.innerWidth >= 1280) setCount(4);
+      else if (window.innerWidth >= 1024) setCount(3);
+      else if (window.innerWidth >= 768) setCount(2);
+      else setCount(1);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return count;
+}
+
 export function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const visibleCount = useVisibleCount();
 
   const goTo = (index: number) => {
-    setCurrent((index + testimonials.length) % testimonials.length);
-  };
-
-  const resetTimer = (index: number) => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
     setCurrent(index);
   };
 
@@ -85,7 +120,16 @@ export function TestimonialsSection() {
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [current]);
 
-  const t = testimonials[current];
+  const visibleCards = Array.from(
+    { length: visibleCount },
+    (_, i) => testimonials[(current + i) % testimonials.length]
+  );
+
+  const gridCols =
+    visibleCount === 4 ? "grid-cols-4" :
+    visibleCount === 3 ? "grid-cols-3" :
+    visibleCount === 2 ? "grid-cols-2" :
+    "grid-cols-1";
 
   return (
     <section className="bg-background-primary py-24">
@@ -98,53 +142,25 @@ export function TestimonialsSection() {
           O que dizem nossos clientes
         </h2>
 
-        <div className="relative max-w-2xl mx-auto">
-          <div className="bg-background-secondary p-8 md:p-12 relative min-h-55 flex flex-col justify-between">
-            <span
-              className="absolute top-4 left-6 text-gold opacity-20 font-heading text-8xl leading-none select-none"
-              aria-hidden="true"
-            >
-              &#8220;
-            </span>
+        <div key={current} className={`grid gap-6 ${gridCols} animate-fade-in`}>
+          {visibleCards.map((t, i) => (
+            <TestimonialCard key={`${current}-${i}`} {...t} />
+          ))}
+        </div>
 
-            <blockquote
-              key={current}
-              className="font-heading italic text-lg md:text-xl text-text-primary pt-8 leading-snug animate-fade-in"
-            >
-              {t.quote}
-            </blockquote>
-
-            <footer className="mt-6 flex items-center gap-4">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-gold/30">
-                <Image
-                  src={t.avatar}
-                  alt={t.author}
-                  fill
-                  sizes="48px"
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <Stars />
-                <p className="text-text-secondary text-sm font-medium">{t.author}</p>
-              </div>
-            </footer>
-          </div>
-
-          <div className="flex items-center justify-center gap-3 mt-8">
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => resetTimer(i)}
-                aria-label={`Depoimento ${i + 1}`}
-                className={`transition-all duration-300 rounded-full ${
-                  i === current
-                    ? "w-6 h-2 bg-gold"
-                    : "w-2 h-2 bg-text-secondary/30 hover:bg-text-secondary/60"
-                }`}
-              />
-            ))}
-          </div>
+        <div className="flex items-center justify-center gap-3 mt-8">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Depoimento ${i + 1}`}
+              className={`transition-all duration-300 rounded-full ${
+                i === current
+                  ? "w-6 h-2 bg-gold"
+                  : "w-2 h-2 bg-text-secondary/30 hover:bg-text-secondary/60"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
