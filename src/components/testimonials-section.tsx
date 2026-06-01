@@ -9,21 +9,33 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
-    quote:
-      "Melhor barbearia de Recife, sem dúvida. O corte durou semanas perfeito.",
-    author: "Marcos Oliveira",
+    quote: "Muito agradável, um ótimo ambiente com ótimos profissionais.",
+    author: "Ronald Vinicius",
     rating: 5,
   },
   {
-    quote:
-      "Atendimento impecável e resultado acima das expectativas. Voltarei sempre.",
-    author: "João Paulo",
+    quote: "Profissionais sensacionais, excelente ambiente climatizado, cortes agendados sem necessidade de espera. Recomendo e sou cliente há anos!",
+    author: "Vinícius Lopes",
     rating: 5,
   },
   {
-    quote:
-      "A barba ficou exatamente como eu queria. Profissionais de verdade.",
-    author: "Lucas Ferreira",
+    quote: "Atendimento muito bom, os rapazes são muito educados e prestativos. Fazem aquilo que você pede, nada mais nada menos — eles até sugerem caso você peça. Muito bom o resultado do corte de cabelo.",
+    author: "Marcos Egito",
+    rating: 5,
+  },
+  {
+    quote: "Amei demais o meu corte de cabelo, foi realmente como eu esperava. Aconselho demais vocês fazerem nessa barbearia, todos são um amor de pessoa, top!",
+    author: "Adricia Rodrigues",
+    rating: 5,
+  },
+  {
+    quote: "Ambiente profissional, bastante organizado com barbeiros impecáveis. Preço acessível e tem até cafezinho. Nota 1000.",
+    author: "Mateus Willis",
+    rating: 5,
+  },
+  {
+    quote: "Ótima barbearia. Atendimento excelente, profissionais muito bons, ambiente aconchegante. Estou frequentando há mais de um ano, só tenho a agradecer.",
+    author: "Pato Marques",
     rating: 5,
   },
 ];
