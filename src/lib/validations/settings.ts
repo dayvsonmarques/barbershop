@@ -18,6 +18,8 @@ export const establishmentSettingsSchema = z.object({
   longitude: z.number().finite(),
   instagramUrl: z.string().url().optional().nullable(),
   instagramUsername: z.string().optional().nullable(),
+  instagramUserId: z.string().optional().nullable(),
+  instagramAccessToken: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
   email: z.string().email().optional().nullable(),
 });

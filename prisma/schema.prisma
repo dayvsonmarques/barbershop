@@ -382,12 +382,15 @@ model EstablishmentSettings {
   address             String   @db.Text
   latitude            Decimal  @db.Decimal(10, 7)
   longitude           Decimal  @db.Decimal(10, 7)
-  instagramUrl        String?
-  instagramUsername   String?
-  phone               String?
-  email               String?
-  pixKey              String?
-  updatedAt           DateTime @updatedAt
+  instagramUrl              String?
+  instagramUsername         String?
+  instagramUserId           String?
+  instagramAccessToken      String?  @db.Text
+  instagramTokenRefreshedAt DateTime?
+  phone                     String?
+  email                     String?
+  pixKey                    String?
+  updatedAt                 DateTime @updatedAt
   
   @@map("establishment_settings")
 }
