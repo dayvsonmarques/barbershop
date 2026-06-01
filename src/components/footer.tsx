@@ -1,14 +1,14 @@
 // src/components/footer.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type PublicSettings = {
   name?: string;
   address?: string;
   instagramUrl?: string | null;
   instagramUsername?: string | null;
-  openingHours?: Record<string, string>;
+  openingHours?: string;
   phone?: string | null;
 };
 
@@ -38,15 +38,7 @@ export function Footer() {
   const phoneDigits = (settings?.phone ?? "").replace(/\D/g, "");
   const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
-  const hoursSummary = useMemo(() => {
-    const h = settings?.openingHours ?? {};
-    const weekdays = [h.monday, h.tuesday, h.wednesday, h.thursday, h.friday].filter(Boolean);
-    const allSame = weekdays.length === 5 && weekdays.every((v) => v === weekdays[0]);
-    const lines: string[] = [];
-    if (allSame) lines.push(`Seg–Sex: ${weekdays[0]}`);
-    if (h.saturday) lines.push(`Sábado: ${h.saturday}`);
-    return lines.length ? lines : ["Horário não informado"];
-  }, [settings?.openingHours]);
+  const hoursSummary = settings?.openingHours ?? "Horário não informado";
 
   return (
     <footer className="bg-background-primary border-t border-gold/30 py-16">
@@ -59,11 +51,7 @@ export function Footer() {
             <p className="text-text-secondary text-sm leading-relaxed">
               Tradição, estilo e precisão em Recife.
             </p>
-            {hoursSummary.map((line) => (
-              <p key={line} className="text-text-secondary text-sm mt-1">
-                {line}
-              </p>
-            ))}
+            <p className="text-text-secondary text-sm mt-1">{hoursSummary}</p>
           </div>
 
           <div>

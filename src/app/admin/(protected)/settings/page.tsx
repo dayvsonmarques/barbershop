@@ -3,19 +3,9 @@
 import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
-type OpeningHours = {
-  monday: string;
-  tuesday: string;
-  wednesday: string;
-  thursday: string;
-  friday: string;
-  saturday: string;
-  sunday: string;
-};
-
 type Settings = {
   name: string;
-  openingHours: OpeningHours;
+  openingHours: string;
   address: string;
   latitude: number;
   longitude: number;
@@ -28,16 +18,6 @@ type Settings = {
   email: string | null;
 };
 
-const defaultHours: OpeningHours = {
-  monday: "09:00-18:00",
-  tuesday: "09:00-18:00",
-  wednesday: "09:00-18:00",
-  thursday: "09:00-18:00",
-  friday: "09:00-18:00",
-  saturday: "09:00-14:00",
-  sunday: "Fechado",
-};
-
 export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -46,7 +26,7 @@ export default function AdminSettingsPage() {
 
   const [form, setForm] = useState<Settings>({
     name: "",
-    openingHours: defaultHours,
+    openingHours: "",
     address: "",
     latitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -23.55052),
     longitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -46.633308),
@@ -67,10 +47,7 @@ export default function AdminSettingsPage() {
         const data = (await res.json()) as Settings;
         setForm({
           name: data.name ?? "",
-          openingHours: {
-            ...defaultHours,
-            ...(data.openingHours ?? {}),
-          },
+          openingHours: typeof data.openingHours === "string" ? data.openingHours : "",
           address: data.address ?? "",
           latitude: Number(data.latitude),
           longitude: Number(data.longitude),
@@ -239,18 +216,14 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className="border-t border-gray-200 pt-6">
-          <h2 className="text-lg font-semibold text-gray-900">Horário de funcionamento</h2>
-          <p className="mt-1 text-sm text-gray-600">Preencha no formato 09:00-18:00 ou “Fechado”.</p>
-
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DayField label="Segunda" value={form.openingHours.monday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, monday: v } }))} />
-            <DayField label="Terça" value={form.openingHours.tuesday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, tuesday: v } }))} />
-            <DayField label="Quarta" value={form.openingHours.wednesday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, wednesday: v } }))} />
-            <DayField label="Quinta" value={form.openingHours.thursday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, thursday: v } }))} />
-            <DayField label="Sexta" value={form.openingHours.friday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, friday: v } }))} />
-            <DayField label="Sábado" value={form.openingHours.saturday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, saturday: v } }))} />
-            <DayField label="Domingo" value={form.openingHours.sunday} onChange={(v) => setForm((s) => ({ ...s, openingHours: { ...s.openingHours, sunday: v } }))} />
-          </div>
+          <label className="block text-sm font-medium text-gray-700">Horário de funcionamento</label>
+          <input
+            value={form.openingHours}
+            onChange={(e) => setForm((s) => ({ ...s, openingHours: e.target.value }))}
+            className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+            placeholder="Segunda a Sábado das 9h às 19h"
+            required
+          />
         </div>
 
         <div className="flex justify-end">
@@ -263,28 +236,6 @@ export default function AdminSettingsPage() {
           </button>
         </div>
       </form>
-    </div>
-  );
-}
-
-function DayField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-        required
-      />
     </div>
   );
 }

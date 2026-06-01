@@ -1,16 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-function safeParseOpeningHours(value: string): Record<string, string> {
-  try {
-    const parsed = JSON.parse(value) as unknown;
-    if (!parsed || typeof parsed !== "object") return {};
-    return parsed as Record<string, string>;
-  } catch {
-    return {};
-  }
-}
-
 export async function GET() {
   try {
     const settings = await prisma.establishmentSettings.findUnique({
@@ -24,7 +14,7 @@ export async function GET() {
     return NextResponse.json({
       data: {
         name: settings.name,
-        openingHours: safeParseOpeningHours(settings.openingHours),
+        openingHours: settings.openingHours,
         address: settings.address,
         latitude: Number(settings.latitude),
         longitude: Number(settings.longitude),
@@ -41,15 +31,7 @@ export async function GET() {
       {
         data: {
           name: "ED Barbearia",
-          openingHours: {
-            monday: "09:00-18:00",
-            tuesday: "09:00-18:00",
-            wednesday: "09:00-18:00",
-            thursday: "09:00-18:00",
-            friday: "09:00-18:00",
-            saturday: "09:00-14:00",
-            sunday: "Fechado",
-          },
+          openingHours: "Segunda a Sábado das 9h às 18h",
           address: "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330",
           latitude: -8.0260634,
           longitude: -34.9196525,

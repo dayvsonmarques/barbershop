@@ -3,16 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/lib/auth-guards";
 import { establishmentSettingsSchema } from "@/lib/validations/settings";
 
-function safeParseOpeningHours(value: string): Record<string, string> {
-  try {
-    const parsed = JSON.parse(value) as unknown;
-    if (!parsed || typeof parsed !== "object") return {};
-    return parsed as Record<string, string>;
-  } catch {
-    return {};
-  }
-}
-
 export async function GET(request: NextRequest) {
   const auth = await requirePermission(request, "settings", "view");
   if (auth instanceof NextResponse) return auth;
@@ -29,7 +19,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       id: settings.id,
       name: settings.name,
-      openingHours: safeParseOpeningHours(settings.openingHours),
+      openingHours: settings.openingHours,
       address: settings.address,
       latitude: Number(settings.latitude),
       longitude: Number(settings.longitude),
@@ -73,7 +63,7 @@ export async function PUT(request: NextRequest) {
       create: {
         id: 1,
         name: validation.data.name,
-        openingHours: JSON.stringify(validation.data.openingHours),
+        openingHours: validation.data.openingHours,
         address: validation.data.address,
         latitude: validation.data.latitude,
         longitude: validation.data.longitude,
@@ -87,7 +77,7 @@ export async function PUT(request: NextRequest) {
       },
       update: {
         name: validation.data.name,
-        openingHours: JSON.stringify(validation.data.openingHours),
+        openingHours: validation.data.openingHours,
         address: validation.data.address,
         latitude: validation.data.latitude,
         longitude: validation.data.longitude,
@@ -104,7 +94,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({
       id: updated.id,
       name: updated.name,
-      openingHours: safeParseOpeningHours(updated.openingHours),
+      openingHours: updated.openingHours,
       address: updated.address,
       latitude: Number(updated.latitude),
       longitude: Number(updated.longitude),
