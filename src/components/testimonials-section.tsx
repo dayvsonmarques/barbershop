@@ -50,6 +50,9 @@ const testimonials: Testimonial[] = [
   },
 ];
 
+const INTERVAL = 3000;
+const DRAG_THRESHOLD = 50;
+
 function Stars() {
   return (
     <div className="flex gap-1 mb-2">
@@ -64,7 +67,7 @@ function Stars() {
 
 function TestimonialCard({ quote, author, avatar }: Testimonial) {
   return (
-    <div className="bg-background-secondary p-6 md:p-8 relative flex flex-col justify-between min-h-55">
+    <div className="bg-background-secondary p-6 md:p-8 relative flex flex-col justify-between min-h-55 select-none">
       <span
         className="absolute top-4 left-6 text-gold opacity-20 font-heading text-7xl leading-none select-none"
         aria-hidden="true"
@@ -87,12 +90,27 @@ function TestimonialCard({ quote, author, avatar }: Testimonial) {
   );
 }
 
+function ChevronLeft() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
 function useVisibleCount() {
   const [count, setCount] = useState(1);
   useEffect(() => {
     const update = () => {
-      if (window.innerWidth >= 1280) setCount(4);
-      else if (window.innerWidth >= 1024) setCount(3);
+      if (window.innerWidth >= 1024) setCount(3);
       else if (window.innerWidth >= 768) setCount(2);
       else setCount(1);
     };
@@ -106,7 +124,11 @@ function useVisibleCount() {
 export function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragStartX = useRef<number | null>(null);
   const visibleCount = useVisibleCount();
+
+  const prev = () => goTo((current - 1 + testimonials.length) % testimonials.length);
+  const next = () => goTo((current + 1) % testimonials.length);
 
   const goTo = (index: number) => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -114,11 +136,19 @@ export function TestimonialsSection() {
   };
 
   useEffect(() => {
-    timerRef.current = setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    timerRef.current = setTimeout(next, INTERVAL);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
+
+  const onDragStart = (clientX: number) => { dragStartX.current = clientX; };
+
+  const onDragEnd = (clientX: number) => {
+    if (dragStartX.current === null) return;
+    const diff = dragStartX.current - clientX;
+    if (Math.abs(diff) > DRAG_THRESHOLD) diff > 0 ? next() : prev();
+    dragStartX.current = null;
+  };
 
   const visibleCards = Array.from(
     { length: visibleCount },
@@ -126,7 +156,6 @@ export function TestimonialsSection() {
   );
 
   const gridCols =
-    visibleCount === 4 ? "grid-cols-4" :
     visibleCount === 3 ? "grid-cols-3" :
     visibleCount === 2 ? "grid-cols-2" :
     "grid-cols-1";
@@ -142,10 +171,36 @@ export function TestimonialsSection() {
           O que dizem nossos clientes
         </h2>
 
-        <div key={current} className={`grid gap-6 ${gridCols} animate-fade-in`}>
-          {visibleCards.map((t, i) => (
-            <TestimonialCard key={`${current}-${i}`} {...t} />
-          ))}
+        <div className="relative">
+          <button
+            onClick={prev}
+            aria-label="Anterior"
+            className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
+          >
+            <ChevronLeft />
+          </button>
+
+          <div
+            key={current}
+            className={`grid gap-4 md:gap-6 ${gridCols} animate-fade-in cursor-grab active:cursor-grabbing`}
+            onMouseDown={(e) => onDragStart(e.clientX)}
+            onMouseUp={(e) => onDragEnd(e.clientX)}
+            onMouseLeave={() => { dragStartX.current = null; }}
+            onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
+            onTouchEnd={(e) => onDragEnd(e.changedTouches[0].clientX)}
+          >
+            {visibleCards.map((t, i) => (
+              <TestimonialCard key={`${current}-${i}`} {...t} />
+            ))}
+          </div>
+
+          <button
+            onClick={next}
+            aria-label="Próximo"
+            className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
+          >
+            <ChevronRight />
+          </button>
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-8">
