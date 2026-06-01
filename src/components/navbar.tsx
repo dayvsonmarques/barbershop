@@ -146,6 +146,24 @@ export function Navbar() {
     {/* Overlay fullscreen — renderizado via portal fora do <nav> para escapar do stacking context do backdrop-filter */}
     {mounted && open && createPortal(
       <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center md:hidden">
+        <div className="absolute top-5 left-6">
+          <Link
+            href="/checkout"
+            onClick={() => setOpen(false)}
+            className="relative p-2 text-text-primary hover:text-gold transition-colors flex"
+            aria-label="Carrinho"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
+            </svg>
+            {totalItems > 0 && (
+              <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
+          </Link>
+        </div>
+
         <button
           className="absolute top-5 right-6 text-text-primary p-2 hover:text-gold transition-colors"
           onClick={() => setOpen(false)}
