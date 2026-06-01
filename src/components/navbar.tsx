@@ -107,7 +107,7 @@ export function Navbar() {
             </Button>
           </Link>
 
-          <Link href="/checkout" className="relative hidden md:flex items-center text-text-primary hover:text-gold transition-colors" aria-label="Carrinho">
+          <Link href="/checkout" className="relative flex items-center text-text-primary hover:text-gold transition-colors" aria-label="Carrinho">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
             </svg>
