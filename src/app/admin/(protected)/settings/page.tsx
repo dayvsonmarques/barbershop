@@ -215,41 +215,6 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-6 space-y-4">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900">Feed do Instagram (API)</h2>
-            <p className="mt-1 text-sm text-gray-600">
-              Token de longa duração gerado no Meta for Developers. O sistema renova automaticamente a cada 30 dias.
-            </p>
-            {form.instagramTokenRefreshedAt && (
-              <p className="mt-1 text-xs text-gray-400">
-                Último refresh: {new Date(form.instagramTokenRefreshedAt).toLocaleString("pt-BR")}
-              </p>
-            )}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Instagram User ID</label>
-            <input
-              value={form.instagramUserId ?? ""}
-              onChange={(e) => setForm((s) => ({ ...s, instagramUserId: e.target.value || null }))}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none font-mono"
-              placeholder="17841400000000000"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Access Token</label>
-            <input
-              type="password"
-              value={form.instagramAccessToken ?? ""}
-              onChange={(e) => setForm((s) => ({ ...s, instagramAccessToken: e.target.value || null }))}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none font-mono"
-              placeholder="IGQ..."
-            />
-          </div>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div>
