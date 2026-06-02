@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -15,17 +15,21 @@ const navLinks = [
   { href: "#sobre", label: "Sobre Nós" },
   { href: "#servicos", label: "Serviços" },
   { href: "#equipe", label: "Equipe" },
-  { href: "#depoimentos", label: "Depoimentos" },
-  { href: "/produtos", label: "Loja" },
+  { href: "#loja", label: "Loja" },
   { href: "#local", label: "Localização" },
+  { href: "#depoimentos", label: "Depoimentos" },
 ];
+
+const CLOSE_DURATION = 280;
 
 export function Navbar() {
   const { totalItems } = useCart();
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === "/";
 
   useEffect(() => setMounted(true), []);
@@ -46,6 +50,34 @@ export function Navbar() {
   }, [open]);
 
   const isCompact = !isHome || scrolled;
+
+  const closeMenu = (afterClose?: () => void) => {
+    setClosing(true);
+    setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+      afterClose?.();
+    }, CLOSE_DURATION);
+  };
+
+  const handleNavClick = (href: string) => {
+    if (!href.startsWith("#")) {
+      closeMenu(() => router.push(href));
+      return;
+    }
+    closeMenu(() => {
+      if (pathname !== "/") {
+        router.push("/" + href);
+        return;
+      }
+      const el = document.getElementById(href.slice(1));
+      if (el) {
+        const offset = 72; // altura da navbar compact
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    });
+  };
 
   return (
     <>
@@ -123,15 +155,24 @@ export function Navbar() {
 
     </nav>
 
-    {/* Overlay fullscreen — renderizado via portal fora do <nav> para escapar do stacking context do backdrop-filter */}
+    {/* Overlay fullscreen */}
     {mounted && open && createPortal(
-      <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center">
+      <div
+        className={[
+          "fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center",
+          "transition-[opacity,transform] ease-in-out",
+          closing
+            ? `opacity-0 scale-[0.98] duration-[${CLOSE_DURATION}ms]`
+            : "opacity-100 scale-100 duration-200",
+        ].join(" ")}
+        style={{ transitionDuration: closing ? `${CLOSE_DURATION}ms` : "200ms" }}
+      >
         {/* Barra superior espelhando exatamente a navbar para alinhar o botão fechar com o hamburger */}
         <div className="absolute top-0 left-0 right-0 h-16 flex items-center">
           <div className="max-w-7xl mx-auto px-6 w-full">
             <button
               className="text-text-primary p-2 -ml-2 hover:text-gold transition-colors duration-200"
-              onClick={() => setOpen(false)}
+              onClick={() => closeMenu()}
               aria-label="Fechar menu"
             >
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -141,19 +182,22 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-5 mb-8">
-          {navLinks.map((link) => (
-            <a
+        <nav className="flex flex-col items-center gap-5 mb-8">
+          {navLinks.map((link, i) => (
+            <button
               key={link.href}
-              href={link.href}
-              className="font-heading uppercase tracking-widest text-text-primary hover:text-gold transition-colors duration-200"
-              style={{ fontSize: "clamp(1.25rem, 4vw, 2rem)" }}
-              onClick={() => setOpen(false)}
+              onClick={() => handleNavClick(link.href)}
+              className="font-heading uppercase tracking-widest text-text-primary hover:text-gold transition-colors duration-200 animate-fade-in"
+              style={{
+                fontSize: "clamp(1.25rem, 4vw, 2rem)",
+                animationDelay: `${i * 50}ms`,
+                animationFillMode: "both",
+              }}
             >
               {link.label}
-            </a>
+            </button>
           ))}
-        </div>
+        </nav>
 
         <div className="w-10 h-px bg-border mb-6" />
 
@@ -183,7 +227,7 @@ export function Navbar() {
           </a>
         </div>
 
-        <Link href="/agendar" onClick={() => setOpen(false)}>
+        <Link href="/agendar" onClick={() => closeMenu()}>
           <Button variant="primary" size="lg">
             <CalendarIcon size={16} />
             Agendar Horário

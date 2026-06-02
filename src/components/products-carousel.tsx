@@ -106,7 +106,7 @@ export function ProductsCarousel() {
   const translatePct = -(pos / allItems.length) * 100;
 
   return (
-    <section className="bg-background-secondary py-24">
+    <section id="loja" className="bg-background-secondary py-24">
       <div className="max-w-7xl mx-auto px-6 mb-12">
         <SectionLabel label="Loja" />
         <h2

@@ -161,7 +161,7 @@ export function TestimonialsSection() {
     "grid-cols-1";
 
   return (
-    <section className="bg-background-primary py-24">
+    <section id="depoimentos" className="bg-background-primary py-24">
       <div className="max-w-7xl mx-auto px-6">
         <SectionLabel label="Depoimentos" />
         <h2
