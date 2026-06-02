@@ -11,11 +11,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useCart } from "@/contexts/cart-context";
 
 const navLinks = [
+  { href: "/", label: "Início" },
   { href: "#servicos", label: "Serviços" },
-  { href: "/produtos", label: "Produtos" },
-  { href: "#sobre", label: "Sobre" },
+  { href: "#sobre", label: "Sobre Nós" },
   { href: "#equipe", label: "Equipe" },
+  { href: "/produtos", label: "Loja" },
   { href: "#local", label: "Localização" },
+  { href: "#depoimentos", label: "Depoimentos" },
 ];
 
 export function Navbar() {
@@ -124,26 +126,8 @@ export function Navbar() {
     {/* Overlay fullscreen — renderizado via portal fora do <nav> para escapar do stacking context do backdrop-filter */}
     {mounted && open && createPortal(
       <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center">
-        <div className="absolute top-5 left-6">
-          <Link
-            href="/checkout"
-            onClick={() => setOpen(false)}
-            className="relative p-2 text-text-primary hover:text-gold transition-colors flex"
-            aria-label="Carrinho"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
-            </svg>
-            {totalItems > 0 && (
-              <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
-                {totalItems > 9 ? "9+" : totalItems}
-              </span>
-            )}
-          </Link>
-        </div>
-
         <button
-          className="absolute top-5 right-6 text-text-primary p-2 hover:text-gold transition-colors"
+          className="absolute top-5 left-6 text-text-primary p-2 hover:text-gold transition-colors"
           onClick={() => setOpen(false)}
           aria-label="Fechar menu"
         >
@@ -152,12 +136,13 @@ export function Navbar() {
           </svg>
         </button>
 
-        <div className="flex flex-col items-center gap-8 mb-10">
+        <div className="flex flex-col items-center gap-5 mb-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="font-heading text-4xl uppercase tracking-widest text-text-primary hover:text-gold transition-colors duration-200"
+              className="font-heading uppercase tracking-widest text-text-primary hover:text-gold transition-colors duration-200"
+              style={{ fontSize: "clamp(1.25rem, 4vw, 2rem)" }}
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -165,9 +150,9 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="w-10 h-px bg-border mb-10" />
+        <div className="w-10 h-px bg-border mb-6" />
 
-        <div className="flex items-center gap-6 mb-10">
+        <div className="flex items-center gap-6 mb-6">
           <a
             href="https://instagram.com/edbarbearia"
             target="_blank"
