@@ -17,6 +17,15 @@ type OrderResult = {
   merchantCity: string;
 };
 
+function maskPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
 export default function CheckoutPage() {
   const { items, totalPrice, totalItems, updateQuantity, removeItem, clearCart } = useCart();
   const [customerName, setCustomerName] = useState("");
@@ -181,7 +190,7 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <label className="block text-text-secondary text-sm mb-1.5" htmlFor="customerPhone">Telefone / WhatsApp</label>
-                    <input id="customerPhone" type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} required minLength={8} maxLength={20} className="w-full bg-background-secondary border border-border text-text-primary px-4 py-3 focus:outline-none focus:border-gold transition-colors" placeholder="(81) 99999-0000" />
+                    <input id="customerPhone" type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(maskPhone(e.target.value))} required minLength={14} maxLength={15} inputMode="numeric" autoComplete="tel" className="w-full bg-background-secondary border border-border text-text-primary px-4 py-3 focus:outline-none focus:border-gold transition-colors" placeholder="(81) 99999-0000" />
                   </div>
                   {error && (
                     <p className="text-red-500 text-sm bg-red-500/10 border border-red-500/20 px-4 py-3">{error}</p>
