@@ -13,11 +13,10 @@ import { useCart } from "@/contexts/cart-context";
 const navLinks = [
   { href: "/", label: "Início" },
   { href: "#servicos", label: "Serviços" },
-  { href: "#sobre", label: "Sobre Nós" },
   { href: "#equipe", label: "Equipe" },
+  { href: "#depoimentos", label: "Depoimentos" },
   { href: "/produtos", label: "Loja" },
   { href: "#local", label: "Localização" },
-  { href: "#depoimentos", label: "Depoimentos" },
 ];
 
 export function Navbar() {
@@ -126,15 +125,20 @@ export function Navbar() {
     {/* Overlay fullscreen — renderizado via portal fora do <nav> para escapar do stacking context do backdrop-filter */}
     {mounted && open && createPortal(
       <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center">
-        <button
-          className="absolute top-5 left-6 text-text-primary p-2 hover:text-gold transition-colors"
-          onClick={() => setOpen(false)}
-          aria-label="Fechar menu"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-          </svg>
-        </button>
+        {/* Barra superior espelhando exatamente a navbar para alinhar o botão fechar com o hamburger */}
+        <div className="absolute top-0 left-0 right-0 h-16 flex items-center">
+          <div className="max-w-7xl mx-auto px-6 w-full">
+            <button
+              className="text-text-primary p-2 -ml-2 hover:text-gold transition-colors duration-200"
+              onClick={() => setOpen(false)}
+              aria-label="Fechar menu"
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
         <div className="flex flex-col items-center gap-5 mb-8">
           {navLinks.map((link) => (
