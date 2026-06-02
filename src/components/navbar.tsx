@@ -57,38 +57,19 @@ export function Navbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center relative">
-        {/* Esquerda: hamburger (mobile) + nav links (desktop) */}
-        <div className="flex items-center gap-8">
-          <button
-            className="md:hidden text-text-primary p-2 -ml-2"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={open}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {open ? (
-                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-              ) : (
-                <>
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </>
-              )}
-            </svg>
-          </button>
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="font-bold text-black dark:text-white hover:text-gold dark:hover:text-gold transition-colors duration-300 text-xs uppercase tracking-widest"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* Esquerda: hamburger (todos os breakpoints) */}
+        <button
+          className="text-text-primary p-2 -ml-2 hover:text-gold transition-colors duration-200"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={open}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
 
         {/* Logo centrada */}
         <Link
@@ -116,7 +97,7 @@ export function Navbar() {
 
         {/* Direita: Agendar (desktop) + ThemeToggle + Carrinho */}
         <div className="flex items-center gap-4 ml-auto">
-          <Link href="/agendar" className="hidden md:block">
+          <Link href="/agendar" className="hidden sm:block">
             <Button variant="primary" size="sm" className="font-bold">
               <CalendarIcon size={13} />
               Agendar
@@ -142,7 +123,7 @@ export function Navbar() {
 
     {/* Overlay fullscreen — renderizado via portal fora do <nav> para escapar do stacking context do backdrop-filter */}
     {mounted && open && createPortal(
-      <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center md:hidden">
+      <div className="fixed inset-0 z-50 w-screen h-screen bg-background-primary flex flex-col items-center justify-center">
         <div className="absolute top-5 left-6">
           <Link
             href="/checkout"
