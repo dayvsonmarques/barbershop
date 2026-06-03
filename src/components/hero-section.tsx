@@ -1,18 +1,35 @@
-// src/components/hero-section.tsx
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 
 export function HeroSection() {
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (imgRef.current) {
+        imgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section className="relative w-screen flex items-center" style={{ height: "90vh" }}>
-      <Image
-        src="/barbershop.png"
-        alt="ED Barbearia"
-        fill
-        className="object-cover"
-        priority
+    <section className="relative w-screen overflow-hidden flex items-center" style={{ height: "90vh" }}>
+      <div
+        ref={imgRef}
+        className="absolute inset-0 will-change-transform"
+        style={{
+          backgroundImage: "url('/barbershop.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          top: "-20%",
+          bottom: "-20%",
+        }}
       />
       <div className="absolute inset-0 bg-black/60" />
 

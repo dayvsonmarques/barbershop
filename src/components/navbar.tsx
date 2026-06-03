@@ -86,7 +86,7 @@ export function Navbar() {
         "z-50 w-full transition-[height,border-color,background-color] duration-300 ease-in-out",
         isCompact ? "bg-background-primary/95 backdrop-blur-sm" : "bg-transparent",
         isCompact ? "border-b border-border" : "border-b border-transparent",
-        isCompact ? "fixed top-0" : (isHome ? "absolute top-0" : "sticky top-0"),
+        isHome ? (isCompact ? "fixed top-0" : "absolute top-0") : "sticky top-0",
         isCompact ? "h-16" : "h-28",
       ].join(" ")}
     >

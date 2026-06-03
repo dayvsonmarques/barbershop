@@ -56,6 +56,7 @@ export default function AgendarPage() {
   const [phoneError, setPhoneError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -144,6 +145,8 @@ export default function AgendarPage() {
       if (!response.ok) throw new Error(data.error || "Erro ao criar agendamento");
 
       setSuccess(true);
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 4000);
       setSelectedService("");
       setSelectedBarber("");
       setSelectedDate("");
@@ -187,14 +190,17 @@ export default function AgendarPage() {
           Escolha o serviço, barbeiro e horário desejado.
         </p>
 
-        {success && (
-          <div className="border-l-2 border-gold bg-background-secondary px-6 py-4 mb-8">
-            <p className="text-gold font-semibold text-sm tracking-wide">Agendamento confirmado</p>
-            <p className="text-text-secondary text-sm mt-1">
-              Entraremos em contato para confirmar.
-            </p>
-          </div>
-        )}
+        {/* Toast de confirmação */}
+        <div
+          className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-background-primary border border-gold px-6 py-4 shadow-lg transition-all duration-300 ${
+            toastVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+          }`}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gold shrink-0">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <p className="text-gold font-semibold text-sm tracking-wide whitespace-nowrap">Agendamento confirmado!</p>
+        </div>
 
         {error && (
           <div className="border-l-2 border-red-500 bg-background-secondary px-6 py-4 mb-8">
@@ -306,9 +312,9 @@ export default function AgendarPage() {
                   classNames={{
                     root: "!font-sans",
                     month_caption: "text-base font-semibold text-[#18181B] mb-2 capitalize",
-                    nav: "flex items-center gap-1",
-                    button_previous: "p-1 hover:text-[#C9A84C] transition-colors",
-                    button_next: "p-1 hover:text-[#C9A84C] transition-colors",
+                    nav: "hidden",
+                    button_previous: "hidden",
+                    button_next: "hidden",
                     weeks: "border-t border-[#E5E5E5] pt-2",
                     weekdays: "mb-1",
                     weekday: "text-sm font-medium text-[#71717A] w-10 text-center",
