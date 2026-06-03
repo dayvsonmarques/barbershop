@@ -145,8 +145,8 @@ export function Navbar() {
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
             </svg>
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
-                {totalItems > 9 ? "9+" : totalItems}
+              <span className="absolute -top-2 -right-2 flex min-w-[1.1rem] h-[1.1rem] px-0.5 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
+                {totalItems}
               </span>
             )}
           </Link>

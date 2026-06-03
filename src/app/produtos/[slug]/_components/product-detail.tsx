@@ -39,6 +39,7 @@ export function ProductDetail({ product, related }: Props) {
     product.images.find((i) => i.isPrimary) ?? product.images[0] ?? null
   );
   const [qty, setQty] = useState(1);
+  const [zoomed, setZoomed] = useState(false);
 
   const fmt = (n: number) =>
     n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -85,7 +86,10 @@ export function ProductDetail({ product, related }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
         {/* Gallery */}
         <div>
-          <div className="relative aspect-square overflow-hidden bg-background-tertiary border border-border mb-3">
+          <div
+            className="relative aspect-square overflow-hidden bg-background-tertiary border border-border mb-3 cursor-zoom-in"
+            onClick={() => activeImage && setZoomed(true)}
+          >
             {activeImage ? (
               <Image
                 src={activeImage.url}
@@ -99,6 +103,32 @@ export function ProductDetail({ product, related }: Props) {
               <div className="absolute inset-0 flex items-center justify-center text-border">Sem imagem</div>
             )}
           </div>
+
+          {zoomed && activeImage && (
+            <div
+              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center cursor-zoom-out"
+              onClick={() => setZoomed(false)}
+            >
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gold transition-colors"
+                onClick={() => setZoomed(false)}
+                aria-label="Fechar zoom"
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+                </svg>
+              </button>
+              <div className="relative w-full h-full max-w-4xl max-h-[90vh] m-4">
+                <Image
+                  src={activeImage.url}
+                  alt={activeImage.title ?? product.name}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                />
+              </div>
+            </div>
+          )}
           {activeImage && (activeImage.title || activeImage.description) && (
             <div className="mb-3 px-1">
               {activeImage.title && (
@@ -159,7 +189,7 @@ export function ProductDetail({ product, related }: Props) {
               >
                 −
               </button>
-              <span className="px-4 py-2 text-text-primary min-w-[3rem] text-center">{qty}</span>
+              <span className="px-4 py-2 text-text-primary min-w-12 text-center">{qty}</span>
               <button
                 onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
                 className="px-3 py-2 text-text-primary hover:text-gold transition-colors"
@@ -168,7 +198,6 @@ export function ProductDetail({ product, related }: Props) {
                 +
               </button>
             </div>
-            <span className="text-text-secondary text-xs">{product.stock} em estoque</span>
           </div>
 
           {/* CTA */}
