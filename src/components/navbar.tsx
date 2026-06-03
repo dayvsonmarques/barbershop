@@ -83,17 +83,17 @@ export function Navbar() {
     <>
     <nav
       className={[
-        "z-50 w-full bg-background-primary/95 backdrop-blur-sm",
-        "transition-[height,border-color] duration-300 ease-in-out",
+        "z-50 w-full transition-[height,border-color,background-color] duration-300 ease-in-out",
+        isCompact ? "bg-background-primary/95 backdrop-blur-sm" : "bg-transparent",
         isCompact ? "border-b border-border" : "border-b border-transparent",
-        isHome ? "fixed top-0" : "sticky top-0",
+        isHome ? (isCompact ? "fixed top-0" : "absolute top-0") : "sticky top-0",
         isCompact ? "h-16" : "h-28",
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center relative">
         {/* Esquerda: hamburger (todos os breakpoints) */}
         <button
-          className="text-text-primary p-2 -ml-2 hover:text-gold transition-colors duration-200"
+          className={`p-2 -ml-2 hover:text-gold transition-colors duration-200 ${isCompact ? "text-text-primary" : "text-white"}`}
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
@@ -111,7 +111,7 @@ export function Navbar() {
           aria-label="ED Barbearia — Página inicial"
           className={[
             "absolute left-1/2 -translate-x-1/2 top-0 z-20",
-            "transition-transform duration-300 ease-in-out",
+            "transition-all duration-300 ease-in-out",
             isCompact ? "translate-y-4 bg-background-primary rounded-full overflow-hidden" : "",
           ].join(" ")}
         >
@@ -123,8 +123,8 @@ export function Navbar() {
             priority
             className={[
               "w-auto object-contain drop-shadow-lg transition-[height] duration-300 ease-in-out",
-              isCompact ? "rounded-full" : "mix-blend-multiply dark:mix-blend-screen p-3.5",
-              isCompact ? "h-24" : "h-32",
+              isCompact ? "rounded-full" : "mix-blend-screen p-3.5",
+              isCompact ? "h-24" : "h-44",
             ].join(" ")}
           />
         </Link>
@@ -138,15 +138,15 @@ export function Navbar() {
             </Button>
           </Link>
 
-          <ThemeToggle />
+          <ThemeToggle className={isCompact ? "text-text-secondary" : "text-white"} />
 
-          <Link href="/checkout" className="relative flex items-center text-text-primary hover:text-gold transition-colors" aria-label="Carrinho">
+          <Link href="/checkout" className={`relative flex items-center hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`} aria-label="Carrinho">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
             </svg>
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
-                {totalItems > 9 ? "9+" : totalItems}
+              <span className="absolute -top-2 -right-2 flex min-w-[1.1rem] h-[1.1rem] px-0.5 items-center justify-center rounded-full bg-gold text-background-primary text-[10px] font-bold">
+                {totalItems}
               </span>
             )}
           </Link>

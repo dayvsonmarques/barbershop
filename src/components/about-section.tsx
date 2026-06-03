@@ -3,10 +3,10 @@ import { SectionLabel } from "@/components/ui/section-label";
 
 export function AboutSection() {
   return (
-    <section id="sobre" className="bg-background-secondary grid grid-cols-1 md:grid-cols-2">
-      {/* Texto */}
-      <div className="flex items-center py-24">
-        <div className="max-w-xl ml-auto px-8 md:px-12 lg:px-16">
+    <section id="sobre" className="bg-background-secondary relative overflow-hidden py-24">
+      {/* Texto alinhado com o container padrão */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="md:w-1/2 md:pr-12">
           <SectionLabel label="Sobre nós" />
           <h2
             className="font-heading text-text-primary mb-6"
@@ -27,13 +27,25 @@ export function AboutSection() {
         </div>
       </div>
 
-      {/* Imagem — full, sem padding */}
-      <div className="relative min-h-72 md:min-h-0">
+      {/* Imagem mobile: abaixo do texto */}
+      <div className="relative mt-12 min-h-72 md:hidden">
         <Image
           src="/images/barbearia-logo_croped.jpeg"
           alt="ED Barbearia"
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
+      </div>
+
+      {/* Imagem desktop: full-bleed na metade direita */}
+      <div className="hidden md:block absolute right-0 top-0 bottom-0 w-1/2">
+        <Image
+          src="/images/barbearia-logo_croped.jpeg"
+          alt="ED Barbearia"
+          fill
+          sizes="50vw"
           className="object-cover"
           priority
         />

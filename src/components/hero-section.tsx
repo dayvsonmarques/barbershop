@@ -1,17 +1,44 @@
-// src/components/hero-section.tsx
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 
 export function HeroSection() {
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (imgRef.current) {
+        imgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section className="min-h-screen bg-background-primary flex items-center">
-      <div className="max-w-7xl mx-auto px-6 py-24 w-full">
+    <section className="relative w-screen overflow-hidden flex items-center" style={{ height: "90vh" }}>
+      <div
+        ref={imgRef}
+        className="absolute inset-0 will-change-transform"
+        style={{
+          backgroundImage: "url('/barbershop.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          top: "-20%",
+          bottom: "-20%",
+        }}
+      />
+      <div className="absolute inset-0 bg-black/60" />
+
+      <div className="relative max-w-7xl mx-auto px-6 w-full">
         <div className="max-w-3xl">
           <h1
-            className="font-heading text-text-primary mb-6"
+            className="font-heading text-white mb-6"
             style={{
-              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontSize: "clamp(2rem, 5vw, 4rem)",
               lineHeight: "1.05",
               letterSpacing: "-0.02em",
             }}
@@ -19,7 +46,7 @@ export function HeroSection() {
             A Arte{" "}
             <span className="text-gold">do Corte</span>
           </h1>
-          <p className="text-text-secondary text-lg mb-10 max-w-xl leading-relaxed">
+          <p className="text-white/80 text-2xl mb-10 max-w-xl leading-relaxed">
             Tradição, estilo e precisão. Em Recife, a barbearia que transforma
             cada visita em experiência.
           </p>

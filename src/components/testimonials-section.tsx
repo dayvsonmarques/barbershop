@@ -50,7 +50,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const INTERVAL = 3000;
+const INTERVAL = 5000;
 const DRAG_THRESHOLD = 50;
 
 function Stars() {

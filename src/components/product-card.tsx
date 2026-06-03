@@ -14,7 +14,7 @@ export function ProductCard({ name, slug, price, discountPrice, primaryImageUrl 
   const discountPct = discountPrice ? Math.round((1 - discountPrice / price) * 100) : null;
 
   const fmt = (n: number) =>
-    n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    Number(n).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   return (
     <Link href={`/produtos/${slug}`} className="group block">
@@ -42,9 +42,9 @@ export function ProductCard({ name, slug, price, discountPrice, primaryImageUrl 
       </div>
       <h3 className="text-text-primary text-sm font-medium leading-snug mb-1 line-clamp-2">{name}</h3>
       <div className="flex items-baseline gap-2">
-        <span className="text-gold font-semibold text-sm">R$ {fmt(displayPrice)}</span>
+        <span className="text-gold font-semibold text-base">R$ {fmt(displayPrice)}</span>
         {discountPrice && (
-          <span className="text-text-secondary text-xs line-through">R$ {fmt(price)}</span>
+          <span className="text-text-secondary text-sm line-through">R$ {fmt(price)}</span>
         )}
       </div>
     </Link>
