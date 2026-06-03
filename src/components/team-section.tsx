@@ -49,9 +49,9 @@ function TeamCard({
           </div>
         )}
       </div>
-      <h3 className="font-heading text-text-primary text-xl">{name}</h3>
+      <h3 className="font-heading text-text-primary text-xl text-center">{name}</h3>
       {bio && (
-        <p className="text-gold text-xs tracking-wide uppercase mt-1">{bio}</p>
+        <p className="text-gold text-xs tracking-wide uppercase mt-1 text-center">{bio}</p>
       )}
     </div>
   );

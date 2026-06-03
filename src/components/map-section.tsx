@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionLabel } from "@/components/ui/section-label";
 
-const MARKET_LAT = -8.0267219;
-const MARKET_LNG = -34.9180477;
 
 type PublicSettings = {
   name?: string;
@@ -17,8 +15,6 @@ export function MapSection() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
-  const marketMarkerRef = useRef<any>(null);
-  const polylineRef = useRef<any>(null);
 
   const [settings, setSettings] = useState<PublicSettings | null>(null);
 
@@ -92,33 +88,6 @@ export function MapSection() {
         }).addTo(map);
         markerRef.current = marker;
 
-        // Proximity line to Mercado de Casa Amarela
-        const polyline = L.polyline(
-          [[mapCenter.lat, mapCenter.lng], [MARKET_LAT, MARKET_LNG]],
-          { color: "#C9A84C", weight: 2, dashArray: "6 8", opacity: 0.8 }
-        ).addTo(map);
-        polylineRef.current = polyline;
-
-        // Mercado de Casa Amarela marker
-        const marketIcon = L.divIcon({
-          className: "custom-marker",
-          html: `
-            <div style="background-color:#C9A84C;width:32px;height:32px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);width:10px;height:10px;border-radius:9999px;background:white;"></div>
-            </div>`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-        });
-        const marketMarker = L.marker([MARKET_LAT, MARKET_LNG], { icon: marketIcon })
-          .addTo(map)
-          .bindPopup(
-            `<div style="text-align:center;padding:6px;">
-              <strong style="font-size:14px;display:block;margin-bottom:4px;">Mercado de Casa Amarela</strong>
-              <p style="margin:0;color:#666;font-size:12px;">~150m da barbearia</p>
-            </div>`.trim()
-          );
-        marketMarkerRef.current = marketMarker;
-
         mapInstanceRef.current = map;
       }
 
@@ -159,13 +128,11 @@ export function MapSection() {
           {settings?.address ?? "Rua casa amarela, 73 — Recife, PE"}
         </p>
       </div>
-      <div className="border-y border-border">
-        <div
-          ref={mapRef}
-          className="h-[60vh] w-full"
-          style={{ filter: "grayscale(1) contrast(1.08)" }}
-        />
-      </div>
+      <div
+        ref={mapRef}
+        className="h-[60vh] w-full"
+        style={{ filter: "grayscale(1) contrast(1.08)" }}
+      />
     </section>
   );
 }
