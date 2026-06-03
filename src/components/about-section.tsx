@@ -30,7 +30,7 @@ export function AboutSection() {
       {/* Imagem — full, sem padding */}
       <div className="relative min-h-72 md:min-h-0">
         <Image
-          src="/images/about-photo.jpg"
+          src="/images/barbearia-logo_croped.jpeg"
           alt="ED Barbearia"
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
