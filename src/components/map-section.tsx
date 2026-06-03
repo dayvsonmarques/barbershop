@@ -155,7 +155,7 @@ export function MapSection() {
         >
           Onde estamos
         </h2>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary text-lg">
           {settings?.address ?? "Rua casa amarela, 73 — Recife, PE"}
         </p>
       </div>

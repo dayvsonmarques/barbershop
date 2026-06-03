@@ -48,14 +48,14 @@ export function Footer() {
             <p className="font-heading text-gold text-2xl font-bold mb-3">
               {storeName}
             </p>
-            <p className="text-text-secondary text-sm leading-relaxed">
+            <p className="text-text-secondary text-base leading-relaxed">
               Tradição, estilo e precisão em Recife.
             </p>
-            <p className="text-text-secondary text-sm mt-1">{hoursSummary}</p>
+            <p className="text-text-secondary text-base mt-1">{hoursSummary}</p>
           </div>
 
           <div>
-            <p className="text-text-primary font-semibold uppercase text-xs tracking-widest mb-4">
+            <p className="text-text-primary font-semibold uppercase text-sm tracking-widest mb-4">
               Navegação
             </p>
             <ul className="space-y-2">
@@ -63,7 +63,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-text-secondary hover:text-gold transition-colors text-sm"
+                    className="text-text-secondary hover:text-gold transition-colors text-base"
                   >
                     {link.label}
                   </a>
@@ -73,7 +73,7 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="text-text-primary font-semibold uppercase text-xs tracking-widest mb-4">
+            <p className="text-text-primary font-semibold uppercase text-sm tracking-widest mb-4">
               Redes Sociais
             </p>
             <div className="flex gap-4">
@@ -107,7 +107,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-border pt-6">
-          <p className="text-text-secondary text-xs text-center">
+          <p className="text-text-secondary text-sm text-center">
             © {new Date().getFullYear()} {storeName}. Todos os direitos reservados.
           </p>
         </div>
