@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle() {
+export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -16,7 +16,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="text-text-secondary hover:text-gold transition-colors duration-300 p-1"
+      className={`hover:text-gold transition-colors duration-300 p-1 ${className ?? "text-text-secondary"}`}
       aria-label={isDark ? "Ativar tema claro" : "Ativar tema escuro"}
     >
       {isDark ? (

@@ -1,17 +1,27 @@
 // src/components/hero-section.tsx
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen bg-background-primary flex items-center">
-      <div className="max-w-7xl mx-auto px-6 py-24 w-full">
+    <section className="relative w-screen flex items-center" style={{ height: "90vh" }}>
+      <Image
+        src="/barbershop.png"
+        alt="ED Barbearia"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0 bg-black/60" />
+
+      <div className="relative max-w-7xl mx-auto px-6 w-full">
         <div className="max-w-3xl">
           <h1
-            className="font-heading text-text-primary mb-6"
+            className="font-heading text-white mb-6"
             style={{
-              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontSize: "clamp(2rem, 5vw, 4rem)",
               lineHeight: "1.05",
               letterSpacing: "-0.02em",
             }}
@@ -19,7 +29,7 @@ export function HeroSection() {
             A Arte{" "}
             <span className="text-gold">do Corte</span>
           </h1>
-          <p className="text-text-secondary text-lg mb-10 max-w-xl leading-relaxed">
+          <p className="text-white/80 text-2xl mb-10 max-w-xl leading-relaxed">
             Tradição, estilo e precisão. Em Recife, a barbearia que transforma
             cada visita em experiência.
           </p>
