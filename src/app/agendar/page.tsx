@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { DayPicker } from "react-day-picker";
 import { ptBR } from "react-day-picker/locale";
 import "react-day-picker/style.css";
@@ -42,6 +43,7 @@ function maskPhone(value: string): string {
 }
 
 export default function AgendarPage() {
+  const router = useRouter();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
   const [services, setServices] = useState<Service[]>([]);
@@ -58,6 +60,16 @@ export default function AgendarPage() {
   const [success, setSuccess] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [error, setError] = useState("");
+  const [disabledDates, setDisabledDates] = useState<Date[]>([]);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const maxDate = new Date(today);
+  maxDate.setDate(today.getDate() + 13);
+
+  function dateToStr(d: Date) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
 
   useEffect(() => {
     fetch("/api/public/services")
@@ -87,6 +99,45 @@ export default function AgendarPage() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!selectedService || !selectedBarber) {
+      setDisabledDates((prev) => (prev.length === 0 ? prev : []));
+      return;
+    }
+
+    const dates: string[] = [];
+    for (let i = 0; i <= 13; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      dates.push(dateToStr(d));
+    }
+
+    Promise.all(
+      dates.map((date) =>
+        fetch(
+          `/api/public/availability?barberId=${selectedBarber}&serviceId=${selectedService}&date=${date}`
+        )
+          .then((r) => r.json())
+          .then((data) => ({ date, slots: (data.slots || []) as string[] }))
+          .catch(() => ({ date, slots: [] as string[] }))
+      )
+    ).then((results) => {
+      const disabled = results
+        .filter((r) => r.slots.length === 0)
+        .map((r) => new Date(r.date + "T00:00:00"));
+      setDisabledDates(disabled);
+
+      if (selectedDate) {
+        const stillDisabled = disabled.some((d) => dateToStr(d) === selectedDate);
+        if (stillDisabled) {
+          setSelectedDate("");
+          setSelectedTime("");
+        }
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedService, selectedBarber]);
 
   useEffect(() => {
     if (selectedService && selectedBarber && selectedDate) {
@@ -146,7 +197,7 @@ export default function AgendarPage() {
 
       setSuccess(true);
       setToastVisible(true);
-      setTimeout(() => setToastVisible(false), 4000);
+      setTimeout(() => router.push("/"), 5000);
       setSelectedService("");
       setSelectedBarber("");
       setSelectedDate("");
@@ -163,15 +214,6 @@ export default function AgendarPage() {
   };
 
   const selectedServiceData = services.find((s) => s.id === selectedService);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const maxDate = new Date(today);
-  maxDate.setDate(today.getDate() + 13);
-
-  function dateToStr(d: Date) {
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  }
-
   const selectedDateObj = selectedDate ? new Date(selectedDate + "T00:00:00") : undefined;
 
   return (
@@ -190,16 +232,26 @@ export default function AgendarPage() {
           Escolha o serviço, barbeiro e horário desejado.
         </p>
 
-        {/* Toast de confirmação */}
+        {/* Confirmação centralizada */}
         <div
-          className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-background-primary border border-gold px-6 py-4 shadow-lg transition-all duration-300 ${
-            toastVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+          className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ${
+            toastVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gold shrink-0">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          <p className="text-gold font-semibold text-sm tracking-wide whitespace-nowrap">Agendamento confirmado!</p>
+          <div className="absolute inset-0 bg-black/50" />
+          <div className={`relative flex flex-col items-center gap-6 bg-background-primary border border-gold px-16 py-12 shadow-2xl transition-all duration-300 ${
+            toastVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
+          }`}>
+            <div className="flex items-center justify-center w-20 h-20 rounded-full border-2 border-green-500">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <p className="font-heading text-black text-3xl font-bold tracking-wide">Agendamento confirmado!</p>
+              <p className="text-text-secondary mt-2 text-base">Entraremos em contato para confirmar seu horário.</p>
+            </div>
+          </div>
         </div>
 
         {error && (
@@ -306,7 +358,7 @@ export default function AgendarPage() {
                     setSelectedTime("");
                     setCalendarOpen(false);
                   }}
-                  disabled={[{ before: today }, { after: maxDate }]}
+                  disabled={[{ before: today }, { after: maxDate }, ...disabledDates]}
                   startMonth={today}
                   endMonth={maxDate}
                   classNames={{
