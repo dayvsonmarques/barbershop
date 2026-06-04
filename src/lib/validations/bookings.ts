@@ -21,7 +21,8 @@ export const bookingSchema = z.object({
 });
 
 export const bookingUpdateSchema = z.object({
-  status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"]),
+  status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"]).optional(),
+  scheduledAt: z.string().datetime("Data/hora inválida").optional(),
 });
 
 export type BookingInput = z.infer<typeof bookingSchema>;

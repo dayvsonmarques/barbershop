@@ -15,7 +15,17 @@ export async function GET(request: Request) {
       );
     }
 
-    const date = new Date(dateStr);
+    const [dy, dm, dd] = dateStr.split("-").map(Number);
+    const date = new Date(dy, dm - 1, dd);
+
+    // Reject dates beyond 2 weeks from today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 13);
+    if (date < today || date > maxDate) {
+      return NextResponse.json({ slots: [] });
+    }
     const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
     
     // Map JS day of week to Prisma DayOfWeek enum
@@ -70,10 +80,8 @@ export async function GET(request: Request) {
     }
 
     // Check for exceptions (holidays, days off, etc.)
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const startOfDay = new Date(dy, dm - 1, dd, 0, 0, 0, 0);
+    const endOfDay = new Date(dy, dm - 1, dd, 23, 59, 59, 999);
 
     const exception = await prisma.availabilityException.findFirst({
       where: {
@@ -156,7 +164,32 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json({ slots });
+    // Filter out blocked slots
+    const blockedSlots = await prisma.blockedSlot.findMany({
+      where: {
+        barberId: parseInt(barberId),
+        date: { gte: startOfDay, lte: endOfDay },
+      },
+      select: { time: true },
+    });
+    const blockedTimes = new Set(blockedSlots.map((b) => b.time));
+    const unblocked = slots.filter((s) => !blockedTimes.has(s));
+
+    // Strip past slots when the requested date is today
+    const now = new Date();
+    const isToday =
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate();
+
+    const filtered = isToday
+      ? unblocked.filter((slot) => {
+          const [h, m] = slot.split(":").map(Number);
+          return h * 60 + m > now.getHours() * 60 + now.getMinutes();
+        })
+      : unblocked;
+
+    return NextResponse.json({ slots: filtered });
   } catch (error) {
     console.error("Error fetching availability:", error);
     return NextResponse.json(

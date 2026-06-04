@@ -1,22 +1,49 @@
 /* src/app/globals.css */
 @import "tailwindcss";
 
-/* Static design tokens — baked into utility classes at build time */
-@theme {
-  --color-background-primary: #0A0A0A;
-  --color-background-secondary: #111111;
-  --color-background-tertiary: #1A1A1A;
-  --color-gold: #C9A84C;
-  --color-gold-light: #E2C068;
-  --color-gold-dark: #A07830;
-  --color-text-primary: #F5F5F0;
-  --color-text-secondary: #A0A09A;
-  --color-text-inverse: #0A0A0A;
-  --color-border: #2A2A2A;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Dark theme (default + SSR fallback) */
+:root,
+.dark {
+  --c-bg-primary: #0A0A0A;
+  --c-bg-secondary: #111111;
+  --c-bg-tertiary: #1A1A1A;
+  --c-gold: #C9A84C;
+  --c-gold-light: #E2C068;
+  --c-gold-dark: #A07830;
+  --c-text-primary: #F5F5F0;
+  --c-text-secondary: #A0A09A;
+  --c-text-inverse: #0A0A0A;
+  --c-border: #2A2A2A;
 }
 
-/* Dynamic tokens — resolved at runtime so var() from next/font works */
+/* Light theme */
+.light {
+  --c-bg-primary: #FFFFFF;
+  --c-bg-secondary: #F8F8F8;
+  --c-bg-tertiary: #F0F0F0;
+  --c-gold: #C9A84C;
+  --c-gold-light: #E2C068;
+  --c-gold-dark: #A07830;
+  --c-text-primary: #0A0A0A;
+  --c-text-secondary: #6B6B6B;
+  --c-text-inverse: #FFFFFF;
+  --c-border: #E0E0E0;
+}
+
+/* Design tokens referencing CSS vars (dynamic at runtime) */
 @theme inline {
+  --color-background-primary: var(--c-bg-primary);
+  --color-background-secondary: var(--c-bg-secondary);
+  --color-background-tertiary: var(--c-bg-tertiary);
+  --color-gold: var(--c-gold);
+  --color-gold-light: var(--c-gold-light);
+  --color-gold-dark: var(--c-gold-dark);
+  --color-text-primary: var(--c-text-primary);
+  --color-text-secondary: var(--c-text-secondary);
+  --color-text-inverse: var(--c-text-inverse);
+  --color-border: var(--c-border);
   --font-heading: var(--font-playfair), serif;
   --font-body: var(--font-inter), sans-serif;
 }
@@ -27,10 +54,19 @@
   box-sizing: border-box;
 }
 
+/* Override Tailwind text-size vars — only affects utility classes, not inline rem styles */
+:root {
+  --text-xs: 15px;
+  --text-sm: 18px;
+  --text-base: 20px;
+  --text-lg: 22px;
+}
+
 body {
-  background-color: #0A0A0A;
-  color: #F5F5F0;
+  background-color: var(--c-bg-primary);
+  color: var(--c-text-primary);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

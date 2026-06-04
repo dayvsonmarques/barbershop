@@ -7,70 +7,54 @@ export async function GET(request: NextRequest) {
   const auth = await requirePermission(request, "products", "view");
   if (auth instanceof NextResponse) return auth;
 
-  try {
-    const { searchParams } = new URL(request.url);
-    const categoryIdParam = searchParams.get("categoryId");
+  const { searchParams } = new URL(request.url);
+  const categoryIdParam = searchParams.get("categoryId");
+  const categoryId = categoryIdParam && /^\d+$/.test(categoryIdParam)
+    ? parseInt(categoryIdParam, 10)
+    : null;
 
-    const where = categoryIdParam
-      ? { categoryId: parseInt(categoryIdParam, 10) }
-      : {};
+  const products = await prisma.product.findMany({
+    where: categoryId ? { categoryId } : {},
+    orderBy: { name: "asc" },
+    include: {
+      category: { select: { id: true, name: true } },
+      images: { where: { isPrimary: true }, take: 1 },
+    },
+  });
 
-    const products = await prisma.product.findMany({
-      where,
-      orderBy: { name: "asc" },
-      include: {
-        category: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
-
-    return NextResponse.json(products);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch products" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(products);
 }
 
 export async function POST(request: NextRequest) {
   const auth = await requirePermission(request, "products", "create");
   if (auth instanceof NextResponse) return auth;
 
+  let body: unknown;
   try {
-    const body = await request.json();
-    const validation = productSchema.safeParse(body);
-
-    if (!validation.success) {
-      return NextResponse.json(
-        { error: "Validation failed", details: validation.error.issues },
-        { status: 400 }
-      );
-    }
-
-    const product = await prisma.product.create({
-      data: validation.data,
-      include: {
-        category: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
-
-    return NextResponse.json(product, { status: 201 });
-  } catch (error) {
-    console.error("Error creating product:", error);
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+  const validation = productSchema.safeParse(body);
+  if (!validation.success) {
     return NextResponse.json(
-      { error: "Failed to create product" },
-      { status: 500 }
+      { error: "Validation failed", details: validation.error.issues },
+      { status: 400 }
     );
   }
+
+  const { images, ...productData } = validation.data;
+
+  const product = await prisma.product.create({
+    data: {
+      ...productData,
+      images: { create: images },
+    },
+    include: {
+      category: { select: { id: true, name: true } },
+      images: { orderBy: { position: "asc" } },
+    },
+  });
+
+  return NextResponse.json(product, { status: 201 });
 }

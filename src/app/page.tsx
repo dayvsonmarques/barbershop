@@ -6,6 +6,7 @@ import { AboutSection } from "@/components/about-section";
 import { TeamSection } from "@/components/team-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { InstagramFeed } from "@/components/instagram-feed";
+import { ProductsCarousel } from "@/components/products-carousel";
 import { MapSection } from "@/components/map-section";
 import { BookingCTA } from "@/components/booking-cta";
 import { Footer } from "@/components/footer";
@@ -17,23 +18,24 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <ScrollReveal>
-        <ServicesSection />
+        <AboutSection />
       </ScrollReveal>
       <ScrollReveal>
-        <AboutSection />
+        <ServicesSection />
       </ScrollReveal>
       <ScrollReveal>
         <TeamSection />
       </ScrollReveal>
       <ScrollReveal>
-        <TestimonialsSection />
+        <BookingCTA />
       </ScrollReveal>
-      <ScrollReveal>
+      {/* <ScrollReveal>
         <InstagramFeed />
-      </ScrollReveal>
+      </ScrollReveal> */}
+      <ScrollReveal><ProductsCarousel /></ScrollReveal>
       <MapSection />
       <ScrollReveal>
-        <BookingCTA />
+        <TestimonialsSection />
       </ScrollReveal>
       <Footer />
     </main>

@@ -118,9 +118,9 @@ async function main() {
   
   const adminUser = await prisma.user.create({
     data: {
-      email: "admin@edbarbearia.com",
+      email: "edmilson.barbearia7@gmail.com",
       password: hashedPassword,
-      name: "Administrador",
+      name: "Edmilson Rodrigues",
     },
   });
 
@@ -151,65 +151,36 @@ async function main() {
   // 5. SERVICE CATEGORIES & SERVICES
   // ============================================
   console.log("✂️ Creating service categories and services...");
-  
-  const hairCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Cabelo",
-      description: "Serviços de corte e tratamento capilar",
-    },
-  });
 
-  const beardCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Barba",
-      description: "Serviços de barba e bigode",
-    },
+  const catCorte = await prisma.serviceCategory.create({
+    data: { name: "Corte", description: "Cortes masculinos e infantil" },
   });
-
-  const comboCategory = await prisma.serviceCategory.create({
-    data: {
-      name: "Combo",
-      description: "Pacotes combinados",
-    },
+  const catBarba = await prisma.serviceCategory.create({
+    data: { name: "Barba", description: "Serviços de barba e barboterapia" },
+  });
+  const catCombo = await prisma.serviceCategory.create({
+    data: { name: "Combo", description: "Pacotes combinados com desconto" },
+  });
+  const catTratamento = await prisma.serviceCategory.create({
+    data: { name: "Tratamento", description: "Hidratação, botox e cuidados capilares" },
+  });
+  const catEstetica = await prisma.serviceCategory.create({
+    data: { name: "Estética", description: "Sobrancelha e cuidados com a aparência" },
   });
 
   await prisma.service.createMany({
     data: [
-      {
-        categoryId: hairCategory.id,
-        name: "Corte Simples",
-        description: "Corte de cabelo tradicional",
-        duration: 30,
-        price: 40.0,
-      },
-      {
-        categoryId: hairCategory.id,
-        name: "Corte + Desenho",
-        description: "Corte com desenho personalizado",
-        duration: 45,
-        price: 55.0,
-      },
-      {
-        categoryId: beardCategory.id,
-        name: "Barba Completa",
-        description: "Aparar e finalizar barba",
-        duration: 20,
-        price: 30.0,
-      },
-      {
-        categoryId: beardCategory.id,
-        name: "Barba + Bigode",
-        description: "Barba e bigode aparados",
-        duration: 25,
-        price: 35.0,
-      },
-      {
-        categoryId: comboCategory.id,
-        name: "Cabelo + Barba",
-        description: "Corte de cabelo + barba completa",
-        duration: 50,
-        price: 65.0,
-      },
+      { categoryId: catCorte.id,     name: "Corte de Cabelo",                     description: "", duration: 30, price: 50.0  },
+      { categoryId: catCorte.id,     name: "Corte Infantil",                       description: "", duration: 50, price: 50.0  },
+      { categoryId: catBarba.id,     name: "Barba Simples",                        description: "", duration: 30, price: 35.0  },
+      { categoryId: catBarba.id,     name: "Barboterapia",                         description: "", duration: 30, price: 50.0  },
+      { categoryId: catCombo.id,     name: "Corte + Barba",                        description: "", duration: 50, price: 80.0  },
+      { categoryId: catCombo.id,     name: "Corte + Barboterapia",                 description: "", duration: 60, price: 90.0  },
+      { categoryId: catCombo.id,     name: "Corte + Sobrancelha",                  description: "", duration: 40, price: 65.0  },
+      { categoryId: catCombo.id,     name: "Corte + Hidratação",                   description: "", duration: 60, price: 70.0  },
+      { categoryId: catTratamento.id, name: "Hidratação Capilar",                  description: "", duration: 40, price: 50.0  },
+      { categoryId: catTratamento.id, name: "Botox Capilar",                       description: "", duration: 50, price: 100.0 },
+      { categoryId: catEstetica.id,  name: "Design de Sobrancelha",                description: "", duration: 20, price: 20.0  },
     ],
   });
 
@@ -220,19 +191,40 @@ async function main() {
   
   const barber1 = await prisma.barber.create({
     data: {
-      name: "Eduardo Silva",
-      email: "eduardo@edbarbearia.com",
-      phone: "(11) 98765-4321",
-      bio: "Barbeiro profissional com 10 anos de experiência",
+      name: "ED",
+      email: "edmilson@edbarbearia.com",
+      phone: "(81) 99896-6292",
+      bio: null,
+      photoUrl: "/images/barbers/ed.png",
     },
   });
 
   const barber2 = await prisma.barber.create({
     data: {
-      name: "Carlos Santos",
-      email: "carlos@edbarbearia.com",
-      phone: "(11) 98765-1234",
-      bio: "Especialista em cortes modernos e desenhos",
+      name: "Daniel",
+      email: "daniel@edbarbearia.com",
+      phone: "",
+      bio: null,
+      photoUrl: "/images/barbers/daniel.png",
+    },
+  });
+
+  const barber3 = await prisma.barber.create({
+    data: {
+      name: "Erywerton (Vevel)",
+      email: "erywerton@edbarbearia.com",
+      phone: "",
+      bio: null,
+      photoUrl: "/images/barbers/vevel.png",
+    },
+  });
+
+  const barber4 = await prisma.barber.create({
+    data: {
+      name: "Ronald Vinicius",
+      email: "ronald@edbarbearia.com",
+      phone: "",
+      bio: null,
     },
   });
 
@@ -240,10 +232,10 @@ async function main() {
   // 7. AVAILABILITY
   // ============================================
   console.log("📅 Creating barber availability...");
-  
+
   const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
-  
-  for (const barber of [barber1, barber2]) {
+
+  for (const barber of [barber1, barber2, barber3, barber4]) {
     for (const day of weekdays) {
       await prisma.barberAvailability.create({
         data: {
@@ -287,31 +279,196 @@ async function main() {
     },
   });
 
-  await prisma.product.createMany({
-    data: [
-      {
-        categoryId: pomadeCategory.id,
-        name: "Pomada Modeladora Forte",
-        description: "Fixação extra forte",
-        price: 45.0,
-        stock: 15,
-      },
-      {
-        categoryId: pomadeCategory.id,
-        name: "Pomada Brilho Natural",
-        description: "Brilho e fixação média",
-        price: 40.0,
-        stock: 20,
-      },
-      {
-        categoryId: beardOilCategory.id,
-        name: "Óleo para Barba Cedarwood",
-        description: "Aroma amadeirado",
-        price: 55.0,
-        stock: 10,
-      },
-    ],
+  const shampooCategory = await prisma.productCategory.create({
+    data: {
+      name: "Shampoos e Condicionadores",
+      description: "Shampoos e condicionadores para cabelo e barba",
+    },
   });
+
+  const products = [
+    // Pomadas (4 products, 2 with discount)
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Modeladora Extra Forte",
+      slug: "pomada-modeladora-extra-forte",
+      description: "Fixação extra forte para looks definidos e duradouros. Fórmula sem álcool.",
+      price: 49.90,
+      discountPrice: 39.90,
+      stock: 20,
+      images: [
+        { url: "https://images.unsplash.com/photo-1775127741393-2b571811bb01?auto=format&fit=crop&w=800&h=800", title: "Pomada sendo aplicada", description: "Produto de fixação extra forte — basta uma pequena quantidade para modelar.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775127741095-86ee33b6b385?auto=format&fit=crop&w=800&h=800", title: "Pote de 120g", description: "Tampa rosqueável que preserva a consistência e o aroma do produto.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126251005-09f10848a43c?auto=format&fit=crop&w=800&h=800", title: "Linha completa de pomadas", description: "Faça parte da linha premium de modelagem para cabelo masculino.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Brilho Natural",
+      slug: "pomada-brilho-natural",
+      description: "Brilho intenso com fixação média. Ideal para cabelos lisos.",
+      price: 44.90,
+      discountPrice: null,
+      stock: 15,
+      images: [
+        { url: "https://images.unsplash.com/photo-1775127741095-86ee33b6b385?auto=format&fit=crop&w=800&h=800", title: "Frasco de pomada brilhante", description: "Fórmula de alta brilhância com fixação média para o dia a dia.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126454590-f6c47fbaa5c1?auto=format&fit=crop&w=800&h=800", title: "Coleção de produtos", description: "Combinação ideal com outros produtos da linha para resultado profissional.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775127741393-2b571811bb01?auto=format&fit=crop&w=800&h=800", title: "Textura do produto", description: "Textura leve que se espalha facilmente sem pesar o fio.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Pomada Matte Opaco",
+      slug: "pomada-matte-opaco",
+      description: "Acabamento matte sem brilho para looks naturais e modernos.",
+      price: 42.90,
+      discountPrice: 34.90,
+      stock: 18,
+      images: [
+        { url: "https://images.unsplash.com/photo-1775126251005-09f10848a43c?auto=format&fit=crop&w=800&h=800", title: "Duo matte", description: "Dois produtos coordenados para um look natural e texturizado sem reflexos.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1701976857871-a46363644519?auto=format&fit=crop&w=800&h=800", title: "Linha de produtos matte", description: "Diversos produtos para criar o visual mais natural e moderno.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1647140655311-b36dc374a95a?auto=format&fit=crop&w=800&h=800", title: "Grooming profissional", description: "Coleção de produtos de styling usados pelos melhores barbeiros.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: pomadeCategory.id,
+      name: "Cera Modeladora Flexível",
+      slug: "cera-modeladora-flexivel",
+      description: "Fixação flexível para retoques ao longo do dia. Fórmula leve.",
+      price: 38.90,
+      discountPrice: null,
+      stock: 25,
+      images: [
+        { url: "https://images.unsplash.com/photo-1732861612244-5704d12e9397?auto=format&fit=crop&w=800&h=800", title: "Pote de cera modeladora", description: "Embalagem compacta com cera de acabamento flexível. Ideal para retoques.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126454590-f6c47fbaa5c1?auto=format&fit=crop&w=800&h=800", title: "Linha styling", description: "A cera faz parte de uma linha completa de modelagem masculina.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1701976857871-a46363644519?auto=format&fit=crop&w=800&h=800", title: "Variedade de styling", description: "Combine com outros produtos da linha para um look personalizado.", position: 2, isPrimary: false },
+      ],
+    },
+    // Óleos para Barba (4 products, 2 with discount)
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Cedarwood",
+      slug: "oleo-para-barba-cedarwood",
+      description: "Aroma amadeirado intenso. Hidrata e amacia a barba com óleo de argan.",
+      price: 59.90,
+      discountPrice: 49.90,
+      stock: 12,
+      images: [
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Frasco âmbar 30ml", description: "Frasco conta-gotas que protege a fórmula da oxidação e luz UV.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1673350963924-cb4267d9b6eb?auto=format&fit=crop&w=800&h=800", title: "Óleo sobre madeira", description: "Aroma amadeirado de cedro que complementa o ambiente do banheiro.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Aplicação precisa", description: "Aplique 3 a 5 gotas nas palmas e massageie na barba úmida.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Citrus Fresh",
+      slug: "oleo-para-barba-citrus-fresh",
+      description: "Aroma cítrico refrescante com notas de bergamota e limão.",
+      price: 55.90,
+      discountPrice: null,
+      stock: 10,
+      images: [
+        { url: "https://images.unsplash.com/photo-1673350963924-cb4267d9b6eb?auto=format&fit=crop&w=800&h=800", title: "Frasco sobre superfície natural", description: "Óleo de barba cítrico em frasco âmbar de 30ml com conta-gotas.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1694538991472-60a784a9b4cb?auto=format&fit=crop&w=800&h=800", title: "Blend de óleos", description: "Coleção de frascos escuros que preservam os óleos essenciais cítricos.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Detalhe do frasco", description: "Bergamota, limão siciliano e laranja doce em blend equilibrado.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Óleo para Barba Vanilla Musk",
+      slug: "oleo-para-barba-vanilla-musk",
+      description: "Combinação suave de baunilha e almíscar. Hidratação profunda.",
+      price: 57.90,
+      discountPrice: 45.90,
+      stock: 8,
+      images: [
+        { url: "https://images.unsplash.com/photo-1620018646973-e3e257a1002c?auto=format&fit=crop&w=800&h=800", title: "Frasco conta-gotas", description: "Óleo vegano de rápida absorção com notas de baunilha e almíscar.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1673350963997-fc802e774580?auto=format&fit=crop&w=800&h=800", title: "Textura do óleo", description: "Óleo leve que não deixa resíduo gorduroso na barba.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1694538991472-60a784a9b4cb?auto=format&fit=crop&w=800&h=800", title: "Linha de óleos", description: "Frascos escuros que protegem a fórmula e mantêm o aroma duradouro.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: beardOilCategory.id,
+      name: "Bálsamo Hidratante para Barba",
+      slug: "balsamo-hidratante-para-barba",
+      description: "Bálsamo leave-in para controle e hidratação da barba longa.",
+      price: 52.90,
+      discountPrice: null,
+      stock: 14,
+      images: [
+        { url: "https://images.unsplash.com/photo-1775126454589-53b494ca57ac?auto=format&fit=crop&w=800&h=800", title: "Frasco do bálsamo", description: "Embalagem com dosador que facilita a aplicação sem desperdício.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1775126455263-ed926ab25fa4?auto=format&fit=crop&w=800&h=800", title: "Bálsamo sobre fundo limpo", description: "Fórmula com manteiga de karité, aloe vera e vitamina E.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1775126454572-86a56047b286?auto=format&fit=crop&w=800&h=800", title: "Uso no banheiro", description: "Ideal para aplicar após o banho em barba seca ou ligeiramente úmida.", position: 2, isPrimary: false },
+      ],
+    },
+    // Shampoos e Condicionadores (4 products, 1 with discount)
+    {
+      categoryId: shampooCategory.id,
+      name: "Shampoo Anticaspa Mentolado",
+      slug: "shampoo-anticaspa-mentolado",
+      description: "Controle eficaz da caspa com sensação refrescante de menta.",
+      price: 36.90,
+      discountPrice: 28.90,
+      stock: 22,
+      images: [
+        { url: "https://images.unsplash.com/photo-1747858989102-cca0f4dc4a11?auto=format&fit=crop&w=800&h=800", title: "Frasco do shampoo", description: "Frasco de 250ml com bomba dosadora. Fórmula sem sulfatos agressivos.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1597931752949-98c74b5b159f?auto=format&fit=crop&w=800&h=800", title: "Embalagem com dosador", description: "Dosador preciso que evita desperdício e facilita a aplicação no banho.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1604603815783-2bd94c5a819f?auto=format&fit=crop&w=800&h=800", title: "Produto limpo e prático", description: "Extrato de menta-pimenta, piritiona de zinco e ácido salicílico.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Shampoo Fortalecedor com Biotina",
+      slug: "shampoo-fortalecedor-com-biotina",
+      description: "Biotina e queratina para cabelos mais fortes e com menos queda.",
+      price: 42.90,
+      discountPrice: null,
+      stock: 18,
+      images: [
+        { url: "https://images.unsplash.com/photo-1747098393451-6b985f62a2c2?auto=format&fit=crop&w=800&h=800", title: "Dupla shampoo e condicionador", description: "Linha completa com shampoo fortalecedor e condicionador nutritivo.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1747858989102-cca0f4dc4a11?auto=format&fit=crop&w=800&h=800", title: "Frasco de shampoo", description: "Complexo B7 + queratina hidrolisada para reconstrução do fio.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1553265331-3032aacd1a76?auto=format&fit=crop&w=800&h=800", title: "Produto e escova", description: "Use em conjunto com escova de cerdas macias para melhores resultados.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Condicionador Nutritivo de Argan",
+      slug: "condicionador-nutritivo-de-argan",
+      description: "Óleo de argan marroquino para cabelos macios e sem frizz.",
+      price: 39.90,
+      discountPrice: null,
+      stock: 16,
+      images: [
+        { url: "https://images.unsplash.com/photo-1643123158858-eac2aabaa1ec?auto=format&fit=crop&w=800&h=800", title: "Frasco do condicionador", description: "Frasco de 250ml com válvula dosadora. Textura rica e cremosa.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1643123158523-2950acbdfd68?auto=format&fit=crop&w=800&h=800", title: "Embalagem clean", description: "Design minimalista com ingredientes 100% naturais listados no rótulo.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1643123158509-b07b9fd5e802?auto=format&fit=crop&w=800&h=800", title: "Linha de cuidados", description: "Óleo de argan marroquino prensado a frio em fórmula de alta concentração.", position: 2, isPrimary: false },
+      ],
+    },
+    {
+      categoryId: shampooCategory.id,
+      name: "Kit Shampoo + Condicionador Barba",
+      slug: "kit-shampoo-condicionador-barba",
+      description: "Kit completo para higiene e cuidado da barba. Uso diário.",
+      price: 79.90,
+      discountPrice: null,
+      stock: 9,
+      images: [
+        { url: "https://images.unsplash.com/photo-1556228720-210aabb357b7?auto=format&fit=crop&w=800&h=800", title: "Kit de higiene pessoal", description: "Conjunto coordenado com shampoo e condicionador específicos para barba.", position: 0, isPrimary: true },
+        { url: "https://images.unsplash.com/photo-1747098393451-6b985f62a2c2?auto=format&fit=crop&w=800&h=800", title: "Shampoo e condicionador", description: "Fórmulas desenvolvidas para uso em sequência com máximo resultado.", position: 1, isPrimary: false },
+        { url: "https://images.unsplash.com/photo-1553265331-3032aacd1a76?auto=format&fit=crop&w=800&h=800", title: "Acessórios inclusos", description: "Kit acompanha escova para distribuição uniforme do produto na barba.", position: 2, isPrimary: false },
+      ],
+    },
+  ];
+
+  for (const { images, discountPrice, ...data } of products) {
+    await prisma.product.create({
+      data: {
+        ...data,
+        discountPrice: discountPrice ?? undefined,
+        images: { create: images },
+      },
+    });
+  }
 
   // ============================================
   // 9. COURSES
@@ -353,21 +510,22 @@ async function main() {
     data: {
       name: "ED Barbearia",
       openingHours: JSON.stringify({
-        monday: "09:00-18:00",
-        tuesday: "09:00-18:00",
-        wednesday: "09:00-18:00",
-        thursday: "09:00-18:00",
-        friday: "09:00-18:00",
-        saturday: "09:00-14:00",
+        monday: "09:00-19:00",
+        tuesday: "09:00-19:00",
+        wednesday: "09:00-19:00",
+        thursday: "09:00-19:00",
+        friday: "09:00-19:00",
+        saturday: "09:00-19:00",
         sunday: "Fechado",
       }),
-      address: "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330",
-      latitude: -8.0260634,
-      longitude: -34.9196525,
+      address: "Rua Paula Batista, 604, Casa Amarela — Recife, PE, 52070-070",
+      latitude: -8.027572,
+      longitude: -34.916773,
       instagramUrl: "https://www.instagram.com/edbarbearia/",
       instagramUsername: "edbarbearia",
-      phone: "(81) 3456-7890",
-      email: "contato@edbarbearia.com",
+      phone: "(81) 99896-6292",
+      email: "edmilson.barbearia7@gmail.com",
+      pixKey: "edmilson.barbearia7@gmail.com",
     },
   });
 

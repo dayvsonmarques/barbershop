@@ -1,4 +1,4 @@
-import { clsx } from "clsx";
+import { cn } from "@/lib/utils";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "outline" | "ghost";
@@ -26,7 +26,8 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={clsx(
+      className={cn(
+        "inline-flex items-center gap-2",
         "rounded-none uppercase tracking-widest text-xs font-semibold",
         "transition-colors duration-300 ease-out cursor-pointer",
         variantClasses[variant],

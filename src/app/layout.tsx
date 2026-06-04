@@ -1,6 +1,8 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { CartProvider } from "@/contexts/cart-context";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -23,9 +25,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${playfair.variable} ${inter.variable}`}>
-        {children}
+        <ThemeProvider><CartProvider>{children}</CartProvider></ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requirePermission } from "@/lib/auth-guards";
-import { bookingSchema, bookingUpdateSchema } from "@/lib/validations/bookings";
+import { bookingSchema } from "@/lib/validations/bookings";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
@@ -20,10 +20,9 @@ export async function GET(request: NextRequest) {
     }
 
     if (date) {
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
+      const [y, m, d] = date.split("-").map(Number);
+      const startOfDay = new Date(y, m - 1, d, 0, 0, 0, 0);
+      const endOfDay = new Date(y, m - 1, d, 23, 59, 59, 999);
 
       where.scheduledAt = {
         gte: startOfDay,

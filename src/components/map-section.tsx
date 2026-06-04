@@ -1,8 +1,8 @@
-// src/components/map-section.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionLabel } from "@/components/ui/section-label";
+
 
 type PublicSettings = {
   name?: string;
@@ -31,7 +31,7 @@ export function MapSection() {
   const fallbackLng = Number(
     process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -34.9196525
   );
-  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 16);
+  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 18);
 
   const mapCenter = useMemo(
     () => ({
@@ -87,6 +87,7 @@ export function MapSection() {
           icon: customIcon,
         }).addTo(map);
         markerRef.current = marker;
+
         mapInstanceRef.current = map;
       }
 
@@ -123,17 +124,26 @@ export function MapSection() {
         >
           Onde estamos
         </h2>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary text-lg mb-6">
           {settings?.address ?? "Rua casa amarela, 73 — Recife, PE"}
         </p>
+        <a
+          href={`https://www.google.com/maps/dir/?api=1&destination=${mapCenter.lat},${mapCenter.lng}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 border border-gold text-gold px-5 py-2.5 text-sm uppercase tracking-widest font-heading hover:bg-gold hover:text-background-primary transition-colors duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3 11 22 2 13 21 11 13 3 11" />
+          </svg>
+          Simular rota
+        </a>
       </div>
-      <div className="border-y border-border">
-        <div
-          ref={mapRef}
-          className="h-[60vh] w-full"
-          style={{ filter: "grayscale(1) contrast(1.08)" }}
-        />
-      </div>
+      <div
+        ref={mapRef}
+        className="h-[60vh] w-full"
+        style={{ filter: "grayscale(1) contrast(1.08)" }}
+      />
     </section>
   );
 }

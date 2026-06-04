@@ -1,14 +1,14 @@
 // src/components/footer.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type PublicSettings = {
   name?: string;
   address?: string;
   instagramUrl?: string | null;
   instagramUsername?: string | null;
-  openingHours?: Record<string, string>;
+  openingHours?: string;
   phone?: string | null;
 };
 
@@ -38,15 +38,7 @@ export function Footer() {
   const phoneDigits = (settings?.phone ?? "").replace(/\D/g, "");
   const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
-  const hoursSummary = useMemo(() => {
-    const h = settings?.openingHours ?? {};
-    const weekdays = [h.monday, h.tuesday, h.wednesday, h.thursday, h.friday].filter(Boolean);
-    const allSame = weekdays.length === 5 && weekdays.every((v) => v === weekdays[0]);
-    const lines: string[] = [];
-    if (allSame) lines.push(`Seg–Sex: ${weekdays[0]}`);
-    if (h.saturday) lines.push(`Sábado: ${h.saturday}`);
-    return lines.length ? lines : ["Horário não informado"];
-  }, [settings?.openingHours]);
+  const hoursSummary = settings?.openingHours ?? "Horário não informado";
 
   return (
     <footer className="bg-background-primary border-t border-gold/30 py-16">
@@ -56,18 +48,14 @@ export function Footer() {
             <p className="font-heading text-gold text-2xl font-bold mb-3">
               {storeName}
             </p>
-            <p className="text-text-secondary text-sm leading-relaxed">
+            <p className="text-text-secondary text-base leading-relaxed">
               Tradição, estilo e precisão em Recife.
             </p>
-            {hoursSummary.map((line) => (
-              <p key={line} className="text-text-secondary text-sm mt-1">
-                {line}
-              </p>
-            ))}
+            <p className="text-text-secondary text-base mt-1">{hoursSummary}</p>
           </div>
 
           <div>
-            <p className="text-text-primary font-semibold uppercase text-xs tracking-widest mb-4">
+            <p className="text-text-primary font-semibold uppercase text-sm tracking-widest mb-4">
               Navegação
             </p>
             <ul className="space-y-2">
@@ -75,7 +63,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-text-secondary hover:text-gold transition-colors text-sm"
+                    className="text-text-secondary hover:text-gold transition-colors text-base"
                   >
                     {link.label}
                   </a>
@@ -85,7 +73,7 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="text-text-primary font-semibold uppercase text-xs tracking-widest mb-4">
+            <p className="text-text-primary font-semibold uppercase text-sm tracking-widest mb-4">
               Redes Sociais
             </p>
             <div className="flex gap-4">
@@ -119,7 +107,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-border pt-6">
-          <p className="text-text-secondary text-xs">
+          <p className="text-text-secondary text-sm text-center">
             © {new Date().getFullYear()} {storeName}. Todos os direitos reservados.
           </p>
         </div>

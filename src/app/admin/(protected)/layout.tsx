@@ -18,11 +18,11 @@ export default async function AdminProtectedLayout({
 
   return (
     <Providers>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-[#F7F7F8]">
         <Sidebar />
-        <div className="w-full bg-gray-2 dark:bg-[#020d1a]">
+        <div className="flex flex-col flex-1 min-w-0">
           <Header />
-          <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+          <main className="flex-1 p-6 max-w-screen-2xl w-full mx-auto">
             {children}
           </main>
         </div>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { hasPermission, Permission } from "@/lib/rbac";
+import { prisma } from "@/lib/prisma";
 
 export interface AuthContext {
   userId: string;
@@ -25,6 +26,15 @@ export async function requireAuth(request: NextRequest): Promise<AuthContext | N
 
   if (!payload) {
     return NextResponse.json({ error: "Token inválido ou expirado" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: payload.userId },
+    select: { id: true },
+  });
+
+  if (!user) {
+    return NextResponse.json({ error: "Sessão expirada" }, { status: 401 });
   }
 
   return {

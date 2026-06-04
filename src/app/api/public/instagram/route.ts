@@ -1,55 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type InstagramMediaItem = {
+type BeholdPost = {
   id: string;
   caption?: string;
-  media_url?: string;
-  thumbnail_url?: string;
+  mediaUrl?: string;
+  thumbnailUrl?: string;
   permalink?: string;
-  media_type?: string;
+  mediaType?: string;
 };
 
 export async function GET(request: NextRequest) {
+  const widgetId = process.env.BEHOLD_WIDGET_ID;
+
+  if (!widgetId) {
+    return NextResponse.json({ data: [], warning: "Instagram não configurado" });
+  }
+
   try {
-    const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
-    const userId = process.env.INSTAGRAM_USER_ID;
-
-    if (!accessToken || !userId) {
-      return NextResponse.json({ data: [], warning: "Instagram não configurado" });
-    }
-
     const { searchParams } = new URL(request.url);
     const limit = Math.min(Math.max(Number(searchParams.get("limit") ?? 6), 1), 12);
 
-    const fields = [
-      "id",
-      "caption",
-      "media_url",
-      "thumbnail_url",
-      "permalink",
-      "media_type",
-    ].join(",");
-
-    const url = new URL(`https://graph.instagram.com/${userId}/media`);
-    url.searchParams.set("fields", fields);
-    url.searchParams.set("access_token", accessToken);
-    url.searchParams.set("limit", String(limit));
-
-    const response = await fetch(url.toString(), {
-      // Avoid Next.js caching a token-protected response unexpectedly
-      cache: "no-store",
+    const res = await fetch(`https://feeds.behold.so/${widgetId}`, {
+      next: { revalidate: 3600 },
     });
 
-    if (!response.ok) {
-      return NextResponse.json({ data: [] }, { status: 200 });
+    if (!res.ok) {
+      return NextResponse.json({ data: [] });
     }
 
-    const json = (await response.json()) as { data?: InstagramMediaItem[] };
-    const items = (json.data ?? []).filter((i) => i.permalink && (i.media_url || i.thumbnail_url));
+    const posts = (await res.json()) as BeholdPost[];
+    const items = posts
+      .filter((p) => p.permalink && (p.mediaUrl || p.thumbnailUrl))
+      .slice(0, limit)
+      .map((p) => ({
+        id: p.id,
+        caption: p.caption,
+        media_url: p.mediaUrl,
+        thumbnail_url: p.thumbnailUrl,
+        permalink: p.permalink,
+        media_type: p.mediaType,
+      }));
 
     return NextResponse.json({ data: items });
   } catch (error) {
     console.error("Error fetching Instagram feed:", error);
-    return NextResponse.json({ data: [] }, { status: 200 });
+    return NextResponse.json({ data: [] });
   }
 }

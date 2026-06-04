@@ -152,10 +152,11 @@ model Barber {
   updatedAt   DateTime             @updatedAt
   
   // Relations
-  bookings    Booking[]
-  availability BarberAvailability[]
-  exceptions  AvailabilityException[]
-  
+  bookings      Booking[]
+  availability  BarberAvailability[]
+  exceptions    AvailabilityException[]
+  blockedSlots  BlockedSlot[]
+
   @@map("barbers")
 }
 
@@ -277,21 +278,74 @@ model ProductCategory {
 }
 
 model Product {
-  id          Int              @id @default(autoincrement())
-  categoryId  Int
-  name        String
-  description String?          @db.Text
-  price       Decimal          @db.Decimal(10, 2)
-  stock       Int              @default(0)
-  imageUrl    String?
-  isActive    Boolean          @default(true)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  
-  // Relations
-  category    ProductCategory  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  
+  id            Int              @id @default(autoincrement())
+  categoryId    Int
+  name          String
+  slug          String           @unique
+  description   String?          @db.Text
+  price         Decimal          @db.Decimal(10, 2)
+  discountPrice Decimal?         @db.Decimal(10, 2)
+  stock         Int              @default(0)
+  isActive      Boolean          @default(true)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  category      ProductCategory  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  images        ProductImage[]
+  orderItems    OrderItem[]
+
   @@map("products")
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  url         String
+  title       String?
+  description String?
+  position    Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+  @@index([productId])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  customerName  String
+  customerPhone String
+  total         Decimal     @db.Decimal(10, 2)
+  status        OrderStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@map("order_items")
+  @@index([orderId])
+  @@index([productId])
 }
 
 // ============================================
@@ -322,6 +376,20 @@ model Course {
 // ESTABLISHMENT SETTINGS
 // ============================================
 
+model BlockedSlot {
+  id        Int      @id @default(autoincrement())
+  barberId  Int
+  date      DateTime @db.Date
+  time      String
+  reason    String?
+  createdAt DateTime @default(now())
+
+  barber Barber @relation(fields: [barberId], references: [id], onDelete: Cascade)
+
+  @@unique([barberId, date, time])
+  @@map("blocked_slots")
+}
+
 model EstablishmentSettings {
   id                  Int      @id @default(1)
   name                String   @default("ED Barbearia")
@@ -329,11 +397,15 @@ model EstablishmentSettings {
   address             String   @db.Text
   latitude            Decimal  @db.Decimal(10, 7)
   longitude           Decimal  @db.Decimal(10, 7)
-  instagramUrl        String?
-  instagramUsername   String?
-  phone               String?
-  email               String?
-  updatedAt           DateTime @updatedAt
+  instagramUrl              String?
+  instagramUsername         String?
+  instagramUserId           String?
+  instagramAccessToken      String?  @db.Text
+  instagramTokenRefreshedAt DateTime?
+  phone                     String?
+  email                     String?
+  pixKey                    String?
+  updatedAt                 DateTime @updatedAt
   
   @@map("establishment_settings")
 }

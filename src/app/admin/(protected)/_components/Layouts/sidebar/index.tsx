@@ -1,169 +1,174 @@
 "use client";
 
-import { Logo } from "@/components/logo";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { NAV_DATA } from "./data";
-import { ArrowLeftIcon, ChevronUp } from "./icons";
-import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { href: "/admin", label: "Dashboard", exact: true,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
+    ),
+  },
+  { href: "/admin/bookings", label: "Agendamentos",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+      </svg>
+    ),
+  },
+  { href: "/admin/barbers", label: "Barbeiros",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+      </svg>
+    ),
+  },
+  { href: "/admin/services", label: "Serviços",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <path d="M14.5 3.5c0 0-1 1-1 4s1 4 1 4m-5-8s1 1 1 4-1 4-1 4M5 14l2.5 5.5L10 17l2 2.5 2-2.5 2.5 2.5L19 14" />
+      </svg>
+    ),
+  },
+  { href: "/admin/availability", label: "Disponibilidade",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" />
+      </svg>
+    ),
+  },
+  { href: "/admin/products", label: "Produtos",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 01-8 0" />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/orders",
+    label: "Pedidos",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
+      </svg>
+    ),
+  },
+  { href: "/admin/courses", label: "Cursos",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+      </svg>
+    ),
+  },
+  { href: "/admin/users", label: "Usuários",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+        <path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87" />
+      </svg>
+    ),
+  },
+  { href: "/admin/settings", label: "Configurações",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+      </svg>
+    ),
+  },
+];
 
 export function Sidebar() {
-	const pathname = usePathname();
-	const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
-	const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const pathname = usePathname();
+  const { isOpen, setIsOpen, isMobile, toggleSidebar } = useSidebarContext();
 
-	const toggleExpanded = (title: string) => {
-		setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
-	};
+  return (
+    <>
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/30"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-	useEffect(() => {
-		NAV_DATA.some((section) => {
-			return section.items.some((item) => {
-				return item.items && item.items.some((subItem: any) => {
-					if (subItem.url === pathname) {
-						if (!expandedItems.includes(item.title)) {
-							toggleExpanded(item.title);
-						}
-						return true;
-					}
-				});
-			});
-		});
-	}, [pathname]);
+      <aside
+        className={cn(
+          "shrink-0 overflow-hidden bg-white border-r border-[#E5E5E5] transition-[width] duration-200 ease-in-out",
+          isMobile ? "fixed inset-y-0 left-0 z-50" : "sticky top-0 h-screen",
+          isOpen ? "w-[240px]" : "w-0",
+        )}
+        aria-label="Navegação principal"
+      >
+        <div className="flex h-full flex-col">
+          {/* Logo */}
+          <div className="flex items-center gap-3 px-5 py-5 border-b border-[#E5E5E5]">
+            <Link
+              href="/"
+              onClick={() => isMobile && toggleSidebar()}
+              className="flex items-center gap-2.5"
+            >
+              <Image
+                src="/barbershop-logo.png"
+                alt="ED Barbearia"
+                width={32}
+                height={32}
+                className="object-contain rounded-full"
+              />
+              <div>
+                <p className="text-sm font-semibold text-[#18181B] leading-tight">ED Barbearia</p>
+                <p className="text-[11px] text-[#A1A1AA] leading-tight">Admin</p>
+              </div>
+            </Link>
+          </div>
 
-	return (
-		<>
-			{isMobile && isOpen && (
-				<div
-					className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300"
-					onClick={() => setIsOpen(false)}
-					aria-hidden="true"
-				/>
-			)}
+          {/* Nav */}
+          <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+            {navItems.map((item) => {
+              const isActive = item.exact
+                ? pathname === item.href
+                : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => isMobile && setIsOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-[#FDF8EE] text-[#C9A84C]"
+                      : "text-[#52525B] hover:bg-[#F4F4F5] hover:text-[#18181B]",
+                  )}
+                >
+                  <span className={isActive ? "text-[#C9A84C]" : "text-[#A1A1AA]"}>
+                    {item.icon}
+                  </span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-			<aside
-				className={cn(
-					"max-w-[290px] overflow-hidden border-r border-gray-200 bg-white transition-[width] duration-200 ease-linear dark:border-gray-800 dark:bg-gray-dark",
-					isMobile ? "fixed bottom-0 top-0 z-50" : "sticky top-0 h-screen",
-					isOpen ? "w-full" : "w-0",
-				)}
-				aria-label="Main navigation"
-				aria-hidden={!isOpen}
-				inert={!isOpen}
-			>
-				<div className="flex h-full flex-col py-10 pl-[25px] pr-[7px]">
-					<div className="relative pr-4.5">
-						<Link
-							href={"/"}
-							onClick={() => isMobile && toggleSidebar()}
-							className="px-0 py-2.5 min-[850px]:py-0"
-						>
-							<Logo />
-						</Link>
-
-						{isMobile && (
-							<button
-								onClick={toggleSidebar}
-								className="absolute left-3/4 right-4.5 top-1/2 -translate-y-1/2 text-right"
-							>
-								<span className="sr-only">Close Menu</span>
-								<ArrowLeftIcon className="ml-auto size-7" />
-							</button>
-						)}
-					</div>
-
-					<div className="custom-scrollbar mt-6 flex-1 overflow-y-auto pr-3 min-[850px]:mt-10">
-						{NAV_DATA.map((section) => (
-							<div key={section.label} className="mb-6">
-								<h2 className="mb-5 text-sm font-medium text-dark-4 dark:text-dark-6">
-									{section.label}
-								</h2>
-
-								<nav role="navigation" aria-label={section.label}>
-									<ul className="space-y-2">
-										{section.items.map((item) => (
-											<li key={item.title}>
-												{item.items && item.items.length ? (
-													<div>
-														<MenuItem
-															isActive={item.items.some(
-																({ url }: any) => url === pathname,
-															)}
-															onClick={() => toggleExpanded(item.title)}
-														>
-															<item.icon
-																className="size-6 shrink-0"
-																aria-hidden="true"
-															/>
-
-															<span>{item.title}</span>
-
-															<ChevronUp
-																className={cn(
-																	"ml-auto rotate-180 transition-transform duration-200",
-																	expandedItems.includes(item.title) &&
-																		"rotate-0",
-																)}
-																aria-hidden="true"
-															/>
-														</MenuItem>
-
-														{expandedItems.includes(item.title) && (
-															<ul
-																className="ml-9 mr-0 space-y-1.5 pb-[15px] pr-0 pt-2"
-																role="menu"
-															>
-																{item.items.map((subItem: any) => (
-																	<li key={subItem.title} role="none">
-																		<MenuItem
-																			as="link"
-																			href={subItem.url}
-																			isActive={pathname === subItem.url}
-																		>
-																			<span>{subItem.title}</span>
-																		</MenuItem>
-																	</li>
-																))}
-															</ul>
-														)}
-													</div>
-												) : (
-													(() => {
-														const href =
-															"url" in item
-																? item.url + ""
-																: "/" +
-																	item.title.toLowerCase().split(" ").join("-");
-
-														return (
-															<MenuItem
-																className="flex items-center gap-3 py-3"
-																as="link"
-																href={href}
-																isActive={pathname === href}
-															>
-																<item.icon
-																	className="size-6 shrink-0"
-																	aria-hidden="true"
-																/>
-
-																<span>{item.title}</span>
-															</MenuItem>
-														);
-													})()
-												)}
-											</li>
-										))}
-									</ul>
-								</nav>
-							</div>
-						))}
-					</div>
-				</div>
-			</aside>
-		</>
-	);
+          {/* Footer */}
+          <div className="px-3 py-4 border-t border-[#E5E5E5]">
+            <a
+              href="/api/auth/logout"
+              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-[#52525B] hover:bg-[#F4F4F5] hover:text-[#18181B] transition-colors"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="text-[#A1A1AA]">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+              Sair
+            </a>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
 }

@@ -3,13 +3,25 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+const SEGMENT_LABELS: Record<string, string> = {
+  admin:     "Admin",
+  bookings:  "Agendamentos",
+  services:  "Serviços",
+  barbers:   "Barbeiros",
+  products:  "Produtos",
+  orders:    "Pedidos",
+  settings:  "Configurações",
+  users:     "Usuários",
+  categories: "Categorias",
+};
+
 export function Breadcrumbs() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
 
   const breadcrumbs = segments.map((segment, index) => {
     const path = `/${segments.slice(0, index + 1).join("/")}`;
-    const label = segment.charAt(0).toUpperCase() + segment.slice(1);
+    const label = SEGMENT_LABELS[segment] ?? (segment.charAt(0).toUpperCase() + segment.slice(1));
     return { path, label };
   });
 
