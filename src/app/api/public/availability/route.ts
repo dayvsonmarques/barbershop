@@ -15,7 +15,8 @@ export async function GET(request: Request) {
       );
     }
 
-    const date = new Date(dateStr);
+    const [dy, dm, dd] = dateStr.split("-").map(Number);
+    const date = new Date(dy, dm - 1, dd);
 
     // Reject dates beyond 2 weeks from today
     const today = new Date();
@@ -79,10 +80,8 @@ export async function GET(request: Request) {
     }
 
     // Check for exceptions (holidays, days off, etc.)
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const startOfDay = new Date(dy, dm - 1, dd, 0, 0, 0, 0);
+    const endOfDay = new Date(dy, dm - 1, dd, 23, 59, 59, 999);
 
     const exception = await prisma.availabilityException.findFirst({
       where: {

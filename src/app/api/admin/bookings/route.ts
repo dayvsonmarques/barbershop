@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
     }
 
     if (date) {
-      // Parse as local date (year, month-1, day) to avoid UTC-shift bugs
       const [y, m, d] = date.split("-").map(Number);
       const startOfDay = new Date(y, m - 1, d, 0, 0, 0, 0);
       const endOfDay = new Date(y, m - 1, d, 23, 59, 59, 999);
