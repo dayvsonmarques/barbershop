@@ -31,21 +31,20 @@ export async function ServicesSection() {
         </h2>
       </div>
 
-      {/* Grid full-bleed — quadrados responsivos perfeitos */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px mb-12">
+      {/* Grid responsivo: 1 col mobile, 2 cols médio, 5 cols desktop */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-px mb-12">
         {categories.map((category) => (
-          <Link
+          <div
             key={category.id}
-            href="/servicos"
-            className="aspect-square bg-background-secondary hover:bg-black dark:hover:bg-background-tertiary transition-colors duration-300 flex flex-col items-center justify-center gap-5 p-6 group"
+            className="aspect-square bg-background-secondary flex flex-col items-center justify-center gap-5 p-6"
           >
-            <span className="text-gold [&>svg]:w-12 [&>svg]:h-12 transition-transform duration-300 group-hover:scale-110">
+            <span className="text-gold [&>svg]:w-12 [&>svg]:h-12">
               {categoryIcons[category.name] ?? fallbackIcon}
             </span>
-            <span className="font-heading text-text-primary group-hover:text-white dark:group-hover:text-text-primary text-sm md:text-base uppercase tracking-widest text-center leading-tight transition-colors duration-300">
+            <span className="font-heading text-text-primary text-sm md:text-base uppercase tracking-widest text-center leading-tight">
               {category.name}
             </span>
-          </Link>
+          </div>
         ))}
       </div>
 

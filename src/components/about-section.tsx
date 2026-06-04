@@ -28,7 +28,7 @@ export function AboutSection() {
       </div>
 
       {/* Imagem mobile: abaixo do texto */}
-      <div className="relative mt-12 min-h-72 md:hidden">
+      <div className="relative mt-12 aspect-square md:hidden">
         <Image
           src="/images/barbearia-logo_croped.jpeg"
           alt="ED Barbearia"

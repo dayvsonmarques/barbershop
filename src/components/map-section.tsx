@@ -124,9 +124,20 @@ export function MapSection() {
         >
           Onde estamos
         </h2>
-        <p className="text-text-secondary text-lg">
+        <p className="text-text-secondary text-lg mb-6">
           {settings?.address ?? "Rua casa amarela, 73 — Recife, PE"}
         </p>
+        <a
+          href={`https://www.google.com/maps/dir/?api=1&destination=${mapCenter.lat},${mapCenter.lng}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 border border-gold text-gold px-5 py-2.5 text-sm uppercase tracking-widest font-heading hover:bg-gold hover:text-background-primary transition-colors duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3 11 22 2 13 21 11 13 3 11" />
+          </svg>
+          Simular rota
+        </a>
       </div>
       <div
         ref={mapRef}
