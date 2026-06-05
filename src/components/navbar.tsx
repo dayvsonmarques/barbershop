@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCart } from "@/contexts/cart-context";
+import { useCustomerAuth } from "@/contexts/customer-auth-context";
+import { CustomerLoginModal } from "@/components/customer-login-modal";
 
 const navLinks = [
   { href: "/", label: "Início" },
@@ -24,7 +26,9 @@ const CLOSE_DURATION = 280;
 
 export function Navbar() {
   const { totalItems } = useCart();
+  const { customer, logout } = useCustomerAuth();
   const [open, setOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [closing, setClosing] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -138,9 +142,29 @@ export function Navbar() {
             </Button>
           </Link>
 
+          {customer ? (
+            <button
+              onClick={() => logout()}
+              title={`Sair (${customer.name})`}
+              className={`flex items-center justify-center w-8 h-8 rounded-full bg-gold text-background-primary text-xs font-bold hover:opacity-80 transition-opacity`}
+            >
+              {customer.name.charAt(0).toUpperCase()}
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowLogin(true)}
+              aria-label="Entrar"
+              className={`hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" />
+              </svg>
+            </button>
+          )}
+
           <ThemeToggle className={isCompact ? "text-text-secondary" : "text-white"} />
 
-          <Link href="/checkout" className={`relative flex items-center hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`} aria-label="Carrinho">
+          <Link href="/carrinho" className={`relative flex items-center hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`} aria-label="Carrinho">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
             </svg>
@@ -233,9 +257,29 @@ export function Navbar() {
             Agendar Horário
           </Button>
         </Link>
+
+        <div className="mt-6">
+          {customer ? (
+            <button
+              onClick={() => { logout(); closeMenu(); }}
+              className="text-text-secondary text-sm hover:text-gold transition-colors"
+            >
+              Sair ({customer.name})
+            </button>
+          ) : (
+            <button
+              onClick={() => { closeMenu(() => setShowLogin(true)); }}
+              className="text-text-secondary text-sm hover:text-gold transition-colors"
+            >
+              Entrar / Cadastrar
+            </button>
+          )}
+        </div>
       </div>,
       document.body
     )}
+
+    {showLogin && <CustomerLoginModal onClose={() => setShowLogin(false)} />}
     </>
   );
 }

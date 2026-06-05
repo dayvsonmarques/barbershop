@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { TeamCard } from "@/components/team-card";
 
 type Barber = {
@@ -11,15 +11,31 @@ type Barber = {
 };
 
 const THRESHOLD = 50;
+const AUTO_MS = 3000;
 
 export function TeamCarousel({ barbers }: { barbers: Barber[] }) {
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [dragging, setDragging] = useState(false);
   const startX = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const prev = () => setCurrent((c) => (c - 1 + barbers.length) % barbers.length);
-  const next = () => setCurrent((c) => (c + 1) % barbers.length);
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(
+      () => setCurrent((c) => (c + 1) % barbers.length),
+      AUTO_MS
+    );
+  }, [barbers.length]);
+
+  useEffect(() => {
+    if (barbers.length <= 1) return;
+    resetTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [barbers.length, resetTimer]);
+
+  const prev = () => { setCurrent((c) => (c - 1 + barbers.length) % barbers.length); resetTimer(); };
+  const next = () => { setCurrent((c) => (c + 1) % barbers.length); resetTimer(); };
 
   const onStart = (clientX: number) => {
     startX.current = clientX;

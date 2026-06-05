@@ -229,14 +229,15 @@ export default function BookingsPage() {
         </div>
       )}
 
-      <div className="rounded-lg border border-gray-200 bg-white">
+      <div className="space-y-3">
 
-        {/* ── filter bar ── */}
-        <div className="px-6 py-4 border-b border-gray-200">
+        {/* ── filter card ── */}
+        <div className="rounded-lg border border-gray-200 bg-white px-6 py-4">
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-3">Filtrar por:</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 items-end">
             {/* Data */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Data</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Data</label>
               <input
                 type="date"
                 value={selectedDate}
@@ -247,7 +248,7 @@ export default function BookingsPage() {
 
             {/* Cliente */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Cliente</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Cliente</label>
               <input
                 type="text"
                 placeholder="Buscar nome..."
@@ -259,7 +260,7 @@ export default function BookingsPage() {
 
             {/* Serviço */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Serviço</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Serviço</label>
               <div className="relative">
                 <select
                   value={filterService}
@@ -277,7 +278,7 @@ export default function BookingsPage() {
 
             {/* Barbeiro */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Barbeiro</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Barbeiro</label>
               <div className="relative">
                 <select
                   value={filterBarber}
@@ -295,7 +296,7 @@ export default function BookingsPage() {
 
             {/* Turno */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Turno</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Turno</label>
               <div className="relative">
                 <select
                   value={filterTurno}
@@ -313,7 +314,7 @@ export default function BookingsPage() {
 
             {/* Status */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Status</label>
+              <label className="block text-xs font-semibold text-black uppercase tracking-wider mb-1">Status</label>
               <div className="relative">
                 <select
                   value={filterStatus}
@@ -330,6 +331,9 @@ export default function BookingsPage() {
             </div>
           </div>
         </div>
+
+        {/* ── listing card ── */}
+        <div className="rounded-lg border border-gray-200 bg-white">
 
         {/* ── table ── */}
         {loading ? (
@@ -352,7 +356,7 @@ export default function BookingsPage() {
                         {["Horário", "Cliente", "Serviço", "Barbeiro", "Status"].map((h) => (
                           <th
                             key={h}
-                            className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-black"
                           >
                             {h}
                           </th>
@@ -433,7 +437,7 @@ export default function BookingsPage() {
             {/* ── pagination footer ── */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-3 border-t border-gray-200 bg-gray-50">
               <p className="text-sm text-gray-500 text-center sm:text-left">
-                Total: <span className="font-medium text-gray-700">{filtered.length}</span> agendamento{filtered.length !== 1 ? "s" : ""}
+                <span className="font-semibold">Total:</span> <span className="font-medium text-gray-700">{filtered.length}</span> agendamento{filtered.length !== 1 ? "s" : ""}
                 {filtered.length !== bookings.length && (
                   <span className="ml-1 text-gray-400">(de {bookings.length})</span>
                 )}
@@ -461,6 +465,7 @@ export default function BookingsPage() {
             </div>
           </>
         )}
+        </div>
       </div>
 
       {/* ── modal de edição ── */}

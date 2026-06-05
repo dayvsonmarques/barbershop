@@ -390,6 +390,35 @@ model BlockedSlot {
   @@map("blocked_slots")
 }
 
+// ============================================
+// CUSTOMER AUTH
+// ============================================
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  phone     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  @@map("customers")
+}
+
+model PhoneOtp {
+  id        Int       @id @default(autoincrement())
+  phone     String
+  code      String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([phone])
+  @@map("phone_otps")
+}
+
+// ============================================
+// SETTINGS
+// ============================================
+
 model EstablishmentSettings {
   id                  Int      @id @default(1)
   name                String   @default("ED Barbearia")

@@ -25,6 +25,23 @@ export async function sendSMS(to: string, message: string): Promise<void> {
   });
 }
 
+export async function sendWhatsApp(to: string, message: string): Promise<void> {
+  const whatsappFrom = process.env.TWILIO_WHATSAPP_NUMBER;
+  if (!client || !whatsappFrom) {
+    console.warn("Twilio WhatsApp not configured — message:", message);
+    return;
+  }
+  await client.messages.create({
+    body: message,
+    from: `whatsapp:${whatsappFrom}`,
+    to: `whatsapp:${formatPhone(to)}`,
+  });
+}
+
+export function otpMessage(code: string): string {
+  return `Seu código de verificação ED Barbearia é: *${code}*\nVálido por 10 minutos.`;
+}
+
 export function bookingConfirmationMessage(data: {
   customerName: string;
   serviceName: string;

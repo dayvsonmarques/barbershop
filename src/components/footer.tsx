@@ -13,10 +13,13 @@ type PublicSettings = {
 };
 
 const navLinks = [
+  { href: "/", label: "Início" },
+  { href: "#sobre", label: "Sobre Nós" },
   { href: "#servicos", label: "Serviços" },
-  { href: "#sobre", label: "Sobre" },
   { href: "#equipe", label: "Equipe" },
+  { href: "#loja", label: "Loja" },
   { href: "#local", label: "Localização" },
+  { href: "#depoimentos", label: "Depoimentos" },
 ];
 
 export function Footer() {
@@ -43,7 +46,7 @@ export function Footer() {
   return (
     <footer className="bg-background-primary border-t border-gold/30 py-16">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
           <div>
             <p className="font-heading text-gold text-2xl font-bold mb-3">
               {storeName}

@@ -6,7 +6,7 @@ export function AboutSection() {
     <section id="sobre" className="bg-background-secondary relative overflow-hidden py-24">
       {/* Texto alinhado com o container padrão */}
       <div className="max-w-7xl mx-auto px-6">
-        <div className="md:w-1/2 md:pr-12">
+        <div className="lg:w-1/2 lg:pr-12">
           <SectionLabel label="Sobre nós" />
           <h2
             className="font-heading text-text-primary mb-6"
@@ -28,7 +28,7 @@ export function AboutSection() {
       </div>
 
       {/* Imagem mobile: abaixo do texto */}
-      <div className="relative mt-12 aspect-square md:hidden">
+      <div className="relative mt-12 aspect-square lg:hidden">
         <Image
           src="/images/barbearia-logo_croped.jpeg"
           alt="ED Barbearia"
@@ -40,7 +40,7 @@ export function AboutSection() {
       </div>
 
       {/* Imagem desktop: full-bleed na metade direita */}
-      <div className="hidden md:block absolute right-0 top-0 bottom-0 w-1/2">
+      <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2">
         <Image
           src="/images/barbearia-logo_croped.jpeg"
           alt="ED Barbearia"

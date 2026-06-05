@@ -141,7 +141,7 @@ export function MapSection() {
       </div>
       <div
         ref={mapRef}
-        className="h-[60vh] w-full"
+        className="h-[60vh] md:h-[30vh] lg:h-[60vh] w-full"
         style={{ filter: "grayscale(1) contrast(1.08)" }}
       />
     </section>
