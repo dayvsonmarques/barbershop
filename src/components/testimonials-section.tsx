@@ -52,6 +52,7 @@ const testimonials: Testimonial[] = [
 
 const INTERVAL = 5000;
 const DRAG_THRESHOLD = 50;
+const FADE_MS = 280;
 
 function Stars() {
   return (
@@ -123,17 +124,24 @@ function useVisibleCount() {
 
 export function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
+  const [fading, setFading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragStartX = useRef<number | null>(null);
   const visibleCount = useVisibleCount();
 
-  const prev = () => goTo((current - 1 + testimonials.length) % testimonials.length);
-  const next = () => goTo((current + 1) % testimonials.length);
-
   const goTo = (index: number) => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    setCurrent(index);
+    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    setFading(true);
+    fadeTimerRef.current = setTimeout(() => {
+      setCurrent(index);
+      setFading(false);
+    }, FADE_MS);
   };
+
+  const prev = () => goTo((current - 1 + testimonials.length) % testimonials.length);
+  const next = () => goTo((current + 1) % testimonials.length);
 
   useEffect(() => {
     timerRef.current = setTimeout(next, INTERVAL);
@@ -181,8 +189,8 @@ export function TestimonialsSection() {
           </button>
 
           <div
-            key={current}
-            className={`grid gap-4 md:gap-6 ${gridCols} animate-fade-in cursor-grab active:cursor-grabbing`}
+            className={`grid gap-4 md:gap-6 ${gridCols} cursor-grab active:cursor-grabbing transition-opacity ease-in-out ${fading ? "opacity-0" : "opacity-100"}`}
+            style={{ transitionDuration: `${FADE_MS}ms` }}
             onMouseDown={(e) => onDragStart(e.clientX)}
             onMouseUp={(e) => onDragEnd(e.clientX)}
             onMouseLeave={() => { dragStartX.current = null; }}

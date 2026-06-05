@@ -238,8 +238,8 @@ export default function AgendarPage() {
             toastVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
         >
-          <div className="absolute inset-0 bg-black/50" />
-          <div className={`relative flex flex-col items-center gap-6 bg-background-primary border border-gold px-16 py-12 shadow-2xl transition-all duration-300 ${
+          <div className="absolute inset-0 bg-black/60" />
+          <div className={`relative flex flex-col items-center gap-6 mx-4 w-full max-w-sm bg-background-secondary border border-gold px-8 sm:px-14 py-12 shadow-[0_20px_80px_rgba(0,0,0,0.7),0_0_0_1px_rgba(201,168,76,0.2)] transition-all duration-300 ${
             toastVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           }`}>
             <div className="flex items-center justify-center w-20 h-20 rounded-full border-2 border-green-500">
@@ -248,7 +248,7 @@ export default function AgendarPage() {
               </svg>
             </div>
             <div className="text-center">
-              <p className="font-heading text-black text-3xl font-bold tracking-wide">Agendamento confirmado!</p>
+              <p className="font-heading text-text-primary text-3xl font-bold tracking-wide">Agendamento confirmado!</p>
               <p className="text-text-secondary mt-2 text-base">Entraremos em contato para confirmar seu horário.</p>
             </div>
           </div>
@@ -337,18 +337,18 @@ export default function AgendarPage() {
               onClick={() => selectedBarber && setCalendarOpen((o) => !o)}
               className={`${fieldClass} text-left flex items-center justify-between ${!selectedBarber ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              <span className={selectedDate ? "text-[#18181B]" : "text-[#A1A1AA]"}>
+              <span className={selectedDate ? "text-text-primary" : "text-text-secondary"}>
                 {selectedDate
                   ? new Date(selectedDate + "T00:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
                   : "Selecione uma data"}
               </span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#A1A1AA] shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-text-secondary shrink-0">
                 <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
             </button>
 
             {calendarOpen && (
-              <div className="absolute z-50 mt-1 bg-white border border-[#E5E5E5] shadow-lg p-3">
+              <div className="absolute z-50 mt-1 bg-background-primary border border-border shadow-lg p-3">
                 <DayPicker
                   locale={ptBR}
                   mode="single"
@@ -363,17 +363,17 @@ export default function AgendarPage() {
                   endMonth={maxDate}
                   classNames={{
                     root: "!font-sans",
-                    month_caption: "text-base font-semibold text-[#18181B] mb-2 capitalize",
+                    month_caption: "text-base font-semibold text-text-primary mb-2 capitalize",
                     nav: "hidden",
                     button_previous: "hidden",
                     button_next: "hidden",
-                    weeks: "border-t border-[#E5E5E5] pt-2",
+                    weeks: "border-t border-border pt-2",
                     weekdays: "mb-1",
-                    weekday: "text-sm font-medium text-[#71717A] w-10 text-center",
-                    day: "w-10 h-10 text-base",
-                    day_button: "w-10 h-10 text-base rounded-none hover:bg-[#F7F7F8] transition-colors",
-                    selected: "[&>button]:bg-[#C9A84C] [&>button]:text-white [&>button]:hover:bg-[#B8963C]",
-                    today: "[&>button]:font-bold [&>button]:text-[#C9A84C]",
+                    weekday: "text-sm font-medium text-text-secondary w-10 text-center",
+                    day: "w-10 h-10 text-base text-text-primary",
+                    day_button: "w-10 h-10 text-base rounded-none hover:bg-background-secondary transition-colors",
+                    selected: "[&>button]:bg-gold [&>button]:text-text-inverse [&>button]:hover:bg-gold-dark",
+                    today: "[&>button]:font-bold [&>button]:text-gold",
                     disabled: "opacity-30 pointer-events-none",
                     outside: "opacity-20 pointer-events-none",
                   }}

@@ -19,7 +19,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-screen overflow-hidden flex items-center" style={{ height: "90vh" }}>
+    <section className="relative w-screen overflow-hidden flex items-center h-[75vh] md:h-[90vh]">
       <div
         ref={imgRef}
         className="absolute inset-0 will-change-transform"

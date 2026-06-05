@@ -13,7 +13,7 @@
   --c-gold-light: #E2C068;
   --c-gold-dark: #A07830;
   --c-text-primary: #F5F5F0;
-  --c-text-secondary: #A0A09A;
+  --c-text-secondary: #FFFFFF;
   --c-text-inverse: #0A0A0A;
   --c-border: #2A2A2A;
 }
@@ -69,4 +69,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dark ::placeholder {
+  color: var(--c-text-primary);
+  opacity: 0.6;
 }
