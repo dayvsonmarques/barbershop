@@ -69,7 +69,7 @@ export function ProductDetail({ product, related }: Props) {
         imageUrl: product.images.find((img) => img.isPrimary)?.url ?? product.images[0]?.url ?? "",
       });
     }
-    router.push("/checkout");
+    router.push("/carrinho");
   }
 
   return (
