@@ -13,6 +13,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   settings:  "Configurações",
   users:     "Usuários",
   categories: "Categorias",
+  testimonials: "Depoimentos",
 };
 
 export function Breadcrumbs() {
