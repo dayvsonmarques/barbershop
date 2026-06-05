@@ -7,11 +7,18 @@ export async function GET(request: NextRequest) {
   const auth = await requirePermission(request, "testimonials", "view");
   if (auth instanceof NextResponse) return auth;
 
-  const testimonials = await prisma.testimonial.findMany({
-    orderBy: { position: "asc" },
-  });
-
-  return NextResponse.json(testimonials);
+  try {
+    const testimonials = await prisma.testimonial.findMany({
+      orderBy: { position: "asc" },
+    });
+    return NextResponse.json(testimonials);
+  } catch (error) {
+    console.error("Error fetching testimonials:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch testimonials" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
