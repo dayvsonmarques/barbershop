@@ -14,14 +14,14 @@ async function main() {
   console.log("🌱 Starting database seed...");
 
   // Clean existing data (in development only)
-  await prisma.$executeRaw`TRUNCATE TABLE "users", "groups", "permissions", "user_groups", "group_permissions", "password_resets", "service_categories", "services", "barbers", "barber_availability", "availability_exceptions", "bookings", "product_categories", "products", "courses", "establishment_settings" CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "users", "groups", "permissions", "user_groups", "group_permissions", "password_resets", "service_categories", "services", "barbers", "barber_availability", "availability_exceptions", "bookings", "product_categories", "products", "courses", "establishment_settings", "testimonials" CASCADE`;
 
   // ============================================
   // 1. PERMISSIONS
   // ============================================
   console.log("📋 Creating permissions...");
   
-  const resources = ["users", "groups", "barbers", "services", "bookings", "products", "courses", "settings"];
+  const resources = ["users", "groups", "barbers", "services", "bookings", "products", "courses", "settings", "testimonials"];
   const actions = ["view", "create", "update", "delete"];
   
   const permissions = [];
@@ -502,7 +502,59 @@ async function main() {
   });
 
   // ============================================
-  // 10. ESTABLISHMENT SETTINGS
+  // 10. TESTIMONIALS
+  // ============================================
+  console.log("💬 Creating testimonials...");
+
+  await prisma.testimonial.createMany({
+    data: [
+      {
+        author: "Ronald Vinicius",
+        quote: "Muito agradável, um ótimo ambiente com ótimos profissionais.",
+        avatarUrl: "/images/testimonials/avatar-01.png",
+        rating: 5,
+        position: 0,
+      },
+      {
+        author: "Vinícius Lopes",
+        quote: "Profissionais sensacionais, excelente ambiente climatizado, cortes agendados sem necessidade de espera. Recomendo e sou cliente há anos!",
+        avatarUrl: "/images/testimonials/avatar-02.png",
+        rating: 5,
+        position: 1,
+      },
+      {
+        author: "Marcos Egito",
+        quote: "Atendimento muito bom, os rapazes são muito educados e prestativos. Fazem aquilo que você pede, nada mais nada menos — eles até sugerem caso você peça. Muito bom o resultado do corte de cabelo.",
+        avatarUrl: "/images/testimonials/avatar-03.png",
+        rating: 5,
+        position: 2,
+      },
+      {
+        author: "Adricia Rodrigues",
+        quote: "Amei demais o meu corte de cabelo, foi realmente como eu esperava. Aconselho demais vocês fazerem nessa barbearia, todos são um amor de pessoa, top!",
+        avatarUrl: "/images/testimonials/avatar-04.png",
+        rating: 5,
+        position: 3,
+      },
+      {
+        author: "Mateus Willis",
+        quote: "Ambiente profissional, bastante organizado com barbeiros impecáveis. Preço acessível e tem até cafezinho. Nota 1000.",
+        avatarUrl: "/images/testimonials/avatar-05.png",
+        rating: 5,
+        position: 4,
+      },
+      {
+        author: "Pato Marques",
+        quote: "Ótima barbearia. Atendimento excelente, profissionais muito bons, ambiente aconchegante. Estou frequentando há mais de um ano, só tenho a agradecer.",
+        avatarUrl: "/images/testimonials/avatar-06.png",
+        rating: 5,
+        position: 5,
+      },
+    ],
+  });
+
+  // ============================================
+  // 11. ESTABLISHMENT SETTINGS
   // ============================================
   console.log("⚙️ Creating establishment settings...");
   
