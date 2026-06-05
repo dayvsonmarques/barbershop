@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { useCart } from "@/contexts/cart-context";
+import { useCustomerAuth } from "@/contexts/customer-auth-context";
+import { CustomerLoginModal } from "@/components/customer-login-modal";
 import { generatePixCode } from "@/lib/pix";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -18,35 +20,26 @@ type OrderResult = {
   merchantCity: string;
 };
 
-function maskPhone(value: string): string {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
-  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  if (digits.length <= 10)
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-}
-
 export default function CheckoutPage() {
-  const { items, totalPrice, totalItems, clearCart } = useCart();
+  const { items, totalPrice, totalItems, hydrated, clearCart } = useCart();
+  const { customer, loading: authLoading, logout } = useCustomerAuth();
   const router = useRouter();
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderResult | null>(null);
 
   useEffect(() => {
-    if (totalItems === 0 && !order) {
+    if (hydrated && totalItems === 0 && !order) {
       router.replace("/carrinho");
     }
-  }, [totalItems, order, router]);
+  }, [hydrated, totalItems, order, router]);
 
   const fmt = (n: number) =>
     n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleConfirm() {
+    if (!customer) return;
     setError(null);
     setLoading(true);
 
@@ -55,8 +48,8 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customerName,
-          customerPhone,
+          customerName: customer.name,
+          customerPhone: customer.phone,
           items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
         }),
       });
@@ -144,7 +137,7 @@ export default function CheckoutPage() {
               )}
             </div>
             <button
-              onClick={() => { clearCart(); window.location.href = "/"; }}
+              onClick={() => { window.location.href = "/"; }}
               className="text-text-secondary text-sm hover:text-gold transition-colors"
             >
               Voltar para o início
@@ -152,104 +145,105 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        {/* Checkout review + form */}
+        {/* Checkout review + confirm */}
         {!order && totalItems > 0 && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-            <div className="flex items-center gap-3 mb-8 sm:mb-12">
-              <Link href="/carrinho" className="text-text-secondary hover:text-gold transition-colors">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-              <h1 className="font-heading text-text-primary text-2xl sm:text-4xl">Finalizar Pedido</h1>
-            </div>
+          <>
+            {/* Login modal — blocks until authenticated */}
+            {!authLoading && !customer && (
+              <CustomerLoginModal />
+            )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+              <div className="flex items-center gap-3 mb-8 sm:mb-12">
+                <Link href="/carrinho" className="text-text-secondary hover:text-gold transition-colors">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+                <h1 className="font-heading text-text-primary text-2xl sm:text-4xl">Finalizar Pedido</h1>
+              </div>
 
-              {/* Order review — read-only */}
-              <section>
-                <h2 className="font-heading text-text-primary text-xl mb-6 pb-3 border-b border-border">Revisão do Pedido</h2>
-                <ul className="space-y-4 mb-6">
-                  {items.map((item) => (
-                    <li key={item.productId} className="flex items-center gap-3">
-                      {item.imageUrl ? (
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden bg-background-tertiary border border-border">
-                          <Image src={item.imageUrl} alt={item.name} fill sizes="56px" className="object-cover" />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+                {/* Order review — read-only */}
+                <section>
+                  <h2 className="font-heading text-text-primary text-xl mb-6 pb-3 border-b border-border">Revisão do Pedido</h2>
+                  <ul className="space-y-4 mb-6">
+                    {items.map((item) => (
+                      <li key={item.productId} className="flex items-center gap-3">
+                        {item.imageUrl ? (
+                          <div className="relative h-14 w-14 shrink-0 overflow-hidden bg-background-tertiary border border-border">
+                            <Image src={item.imageUrl} alt={item.name} fill sizes="56px" className="object-cover" />
+                          </div>
+                        ) : (
+                          <div className="h-14 w-14 shrink-0 bg-background-tertiary border border-border" />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-text-primary text-sm font-medium truncate">{item.name}</p>
+                          <p className="text-text-secondary text-xs mt-0.5">
+                            {item.quantity} × R$ {fmt(item.price)}
+                          </p>
                         </div>
-                      ) : (
-                        <div className="h-14 w-14 shrink-0 bg-background-tertiary border border-border" />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-text-primary text-sm font-medium truncate">{item.name}</p>
-                        <p className="text-text-secondary text-xs mt-0.5">
-                          {item.quantity} × R$ {fmt(item.price)}
+                        <p className="text-text-primary text-sm font-medium shrink-0">
+                          R$ {fmt(item.price * item.quantity)}
                         </p>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex justify-between items-center py-4 border-t border-border">
+                    <span className="text-text-secondary">Total</span>
+                    <span className="text-gold font-semibold text-xl">R$ {fmt(totalPrice)}</span>
+                  </div>
+                </section>
+
+                {/* Customer info + confirm */}
+                <section>
+                  <h2 className="font-heading text-text-primary text-xl mb-6 pb-3 border-b border-border">Confirmação</h2>
+
+                  {customer ? (
+                    <div className="flex flex-col gap-5">
+                      {/* Customer card */}
+                      <div className="bg-background-secondary border border-border px-5 py-4 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="text-gold">
+                              <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" />
+                            </svg>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-text-primary text-sm font-medium truncate">{customer.name}</p>
+                            <p className="text-text-secondary text-xs mt-0.5">{customer.phone}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => logout()}
+                          className="text-text-secondary text-xs hover:text-gold transition-colors shrink-0"
+                        >
+                          Sair
+                        </button>
                       </div>
-                      <p className="text-text-primary text-sm font-medium shrink-0">
-                        R$ {fmt(item.price * item.quantity)}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
 
-                <div className="flex justify-between items-center py-4 border-t border-border">
-                  <span className="text-text-secondary">Total</span>
-                  <span className="text-gold font-semibold text-xl">R$ {fmt(totalPrice)}</span>
-                </div>
-              </section>
+                      {error && (
+                        <p className="text-red-500 text-sm bg-red-500/10 border border-red-500/20 px-4 py-3">{error}</p>
+                      )}
 
-              {/* Customer data + confirm */}
-              <section>
-                <h2 className="font-heading text-text-primary text-xl mb-6 pb-3 border-b border-border">Seus Dados</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label className="block text-text-secondary text-sm mb-1.5" htmlFor="customerName">
-                      Nome completo
-                    </label>
-                    <input
-                      id="customerName"
-                      type="text"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      required
-                      minLength={2}
-                      maxLength={100}
-                      className="w-full bg-background-secondary border border-border text-text-primary px-4 py-3 focus:outline-none focus:border-gold transition-colors"
-                      placeholder="Seu nome"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-text-secondary text-sm mb-1.5" htmlFor="customerPhone">
-                      Telefone / WhatsApp
-                    </label>
-                    <input
-                      id="customerPhone"
-                      type="tel"
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(maskPhone(e.target.value))}
-                      required
-                      minLength={14}
-                      maxLength={15}
-                      inputMode="numeric"
-                      autoComplete="tel"
-                      className="w-full bg-background-secondary border border-border text-text-primary px-4 py-3 focus:outline-none focus:border-gold transition-colors"
-                      placeholder="(81) 99999-0000"
-                    />
-                  </div>
-                  {error && (
-                    <p className="text-red-500 text-sm bg-red-500/10 border border-red-500/20 px-4 py-3">{error}</p>
+                      <button
+                        onClick={handleConfirm}
+                        disabled={loading}
+                        className="w-full bg-gold text-background-primary px-6 py-4 text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        {loading ? "Processando..." : `Confirmar e Pagar R$ ${fmt(totalPrice)} via PIX`}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-text-secondary text-sm py-4">
+                      Aguardando autenticação...
+                    </div>
                   )}
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-gold text-background-primary px-6 py-4 text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {loading ? "Processando..." : `Confirmar e Pagar R$ ${fmt(totalPrice)} via PIX`}
-                  </button>
-                </form>
-              </section>
+                </section>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </main>
       <Footer />

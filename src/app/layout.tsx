@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-context";
+import { CustomerAuthProvider } from "@/contexts/customer-auth-context";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${playfair.variable} ${inter.variable}`}>
-        <ThemeProvider><CartProvider>{children}</CartProvider></ThemeProvider>
+        <ThemeProvider><CustomerAuthProvider><CartProvider>{children}</CartProvider></CustomerAuthProvider></ThemeProvider>
       </body>
     </html>
   );
