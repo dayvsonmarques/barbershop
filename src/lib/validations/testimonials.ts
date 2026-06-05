@@ -19,3 +19,4 @@ export const reorderSchema = z
   .min(1);
 
 export type TestimonialInput = z.infer<typeof testimonialSchema>;
+export type ReorderInput = z.infer<typeof reorderSchema>;
