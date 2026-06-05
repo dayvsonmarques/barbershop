@@ -416,6 +416,24 @@ model PhoneOtp {
 }
 
 // ============================================
+// TESTIMONIALS
+// ============================================
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  author    String
+  quote     String   @db.Text
+  avatarUrl String?
+  rating    Int      @default(5)
+  position  Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+// ============================================
 // SETTINGS
 // ============================================
 
