@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 type TestimonialData = {
   id: number;
@@ -11,9 +10,9 @@ type TestimonialData = {
   rating: number;
 };
 
-const INTERVAL = 5000;
+const AUTO_MS = 5000;
+const TRANSITION_MS = 450;
 const DRAG_THRESHOLD = 50;
-const FADE_MS = 280;
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -29,26 +28,27 @@ function Stars({ rating }: { rating: number }) {
 
 function TestimonialCard({ quote, author, avatarUrl, rating }: TestimonialData) {
   return (
-    <div className="bg-background-secondary p-6 md:p-8 relative flex flex-col justify-between min-h-55 select-none">
+    <div className="bg-background-secondary p-6 md:p-8 relative flex flex-col justify-between min-h-55 select-none h-full">
       <span className="absolute top-4 left-6 text-gold opacity-20 font-heading text-7xl leading-none select-none" aria-hidden="true">
         &#8220;
       </span>
-      <blockquote className="font-heading italic text-base md:text-lg text-text-primary pt-8 leading-snug">
+      <blockquote className="text-base md:text-lg text-text-primary pt-8 leading-snug">
         {quote}
       </blockquote>
       <footer className="mt-6 flex items-center gap-3">
-        <div className="relative w-11 h-11 rounded-full overflow-hidden shrink-0 border border-gold/30 bg-background-primary">
+        <div className={`w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden shrink-0 border border-gold/30 flex items-center justify-center ${avatarUrl ? "" : "bg-background-primary"}`}>
           {avatarUrl ? (
-            <Image src={avatarUrl} alt={author} fill sizes="44px" className="object-cover" />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={avatarUrl} alt={author} className="w-full h-full object-cover object-center" />
           ) : (
-            <div className="flex h-full items-center justify-center text-text-secondary text-sm font-semibold">
+            <span className="text-text-secondary text-sm font-semibold">
               {author.charAt(0).toUpperCase()}
-            </div>
+            </span>
           )}
         </div>
         <div>
           <Stars rating={rating} />
-          <p className="text-text-secondary text-sm font-medium">{author}</p>
+          <p className="text-text-secondary text-sm">{author}</p>
         </div>
       </footer>
     </div>
@@ -87,81 +87,123 @@ function useVisibleCount() {
 }
 
 export function TestimonialsCarousel({ testimonials }: { testimonials: TestimonialData[] }) {
-  const [current, setCurrent] = useState(0);
-  const [fading, setFading] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const count = testimonials.length;
+  const [pos, setPos] = useState(count);
+  const [animated, setAnimated] = useState(true);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dragStartX = useRef<number | null>(null);
   const visibleCount = useVisibleCount();
 
-  const goTo = (index: number) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-    setFading(true);
-    fadeTimerRef.current = setTimeout(() => {
-      setCurrent(index);
-      setFading(false);
-    }, FADE_MS);
-  };
+  // Wrap detection: after animation ends, silently jump to equivalent position in middle copy
+  useEffect(() => {
+    if (count === 0) return;
+    if (pos >= count * 2) {
+      const t = setTimeout(() => {
+        setAnimated(false);
+        setPos((p) => p - count);
+      }, TRANSITION_MS + 20);
+      return () => clearTimeout(t);
+    }
+    if (pos < count) {
+      const t = setTimeout(() => {
+        setAnimated(false);
+        setPos((p) => p + count);
+      }, TRANSITION_MS + 20);
+      return () => clearTimeout(t);
+    }
+  }, [pos, count]);
 
-  const prev = () => goTo((current - 1 + testimonials.length) % testimonials.length);
-  const next = () => goTo((current + 1) % testimonials.length);
+  // Re-enable animation right after a non-animated jump
+  useEffect(() => {
+    if (!animated) {
+      const t = setTimeout(() => setAnimated(true), 30);
+      return () => clearTimeout(t);
+    }
+  }, [animated]);
+
+  const advance = useCallback(() => {
+    setAnimated(true);
+    setPos((p) => p + 1);
+  }, []);
+
+  const retreat = useCallback(() => {
+    setAnimated(true);
+    setPos((p) => p - 1);
+  }, []);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(advance, AUTO_MS);
+  }, [advance]);
 
   useEffect(() => {
-    timerRef.current = setTimeout(next, INTERVAL);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
+    if (count === 0) return;
+    timerRef.current = setInterval(advance, AUTO_MS);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [count, advance]);
 
   const onDragStart = (clientX: number) => { dragStartX.current = clientX; };
   const onDragEnd = (clientX: number) => {
     if (dragStartX.current === null) return;
     const diff = dragStartX.current - clientX;
-    if (Math.abs(diff) > DRAG_THRESHOLD) diff > 0 ? next() : prev();
+    if (Math.abs(diff) > DRAG_THRESHOLD) {
+      diff > 0 ? advance() : retreat();
+      resetTimer();
+    }
     dragStartX.current = null;
   };
 
-  const visibleCards = Array.from(
-    { length: visibleCount },
-    (_, i) => testimonials[(current + i) % testimonials.length]
-  );
+  const goTo = (index: number) => {
+    setAnimated(false);
+    setPos(count + index);
+    resetTimer();
+  };
 
-  const gridCols =
-    visibleCount === 3 ? "grid-cols-3" :
-    visibleCount === 2 ? "grid-cols-2" :
-    "grid-cols-1";
+  if (count === 0) return null;
 
-  if (testimonials.length === 0) return null;
+  const allItems = [...testimonials, ...testimonials, ...testimonials];
+  const trackPct = (allItems.length / visibleCount) * 100;
+  const itemPct = 100 / allItems.length;
+  const translatePct = -(pos / allItems.length) * 100;
+  const currentDot = ((pos % count) + count) % count;
 
   return (
     <>
-      <div className="relative">
+      <div className="relative px-10">
         <button
-          onClick={prev}
+          onClick={() => { retreat(); resetTimer(); }}
           aria-label="Anterior"
-          className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
         >
           <ChevronLeft />
         </button>
 
-        <div
-          className={`grid gap-4 md:gap-6 ${gridCols} cursor-grab active:cursor-grabbing transition-opacity ease-in-out ${fading ? "opacity-0" : "opacity-100"}`}
-          style={{ transitionDuration: `${FADE_MS}ms` }}
-          onMouseDown={(e) => onDragStart(e.clientX)}
-          onMouseUp={(e) => onDragEnd(e.clientX)}
-          onMouseLeave={() => { dragStartX.current = null; }}
-          onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
-          onTouchEnd={(e) => onDragEnd(e.changedTouches[0].clientX)}
-        >
-          {visibleCards.map((t, i) => (
-            <TestimonialCard key={`${current}-${i}`} {...t} />
-          ))}
+        <div className="overflow-hidden">
+          <div
+            className="flex cursor-grab active:cursor-grabbing"
+            style={{
+              width: `${trackPct}%`,
+              transform: `translateX(${translatePct}%)`,
+              transition: animated ? `transform ${TRANSITION_MS}ms ease-in-out` : "none",
+            }}
+            onMouseDown={(e) => onDragStart(e.clientX)}
+            onMouseUp={(e) => onDragEnd(e.clientX)}
+            onMouseLeave={() => { dragStartX.current = null; }}
+            onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
+            onTouchEnd={(e) => onDragEnd(e.changedTouches[0].clientX)}
+          >
+            {allItems.map((t, i) => (
+              <div key={i} style={{ width: `${itemPct}%` }} className="px-2 md:px-3">
+                <TestimonialCard {...t} />
+              </div>
+            ))}
+          </div>
         </div>
 
         <button
-          onClick={next}
+          onClick={() => { advance(); resetTimer(); }}
           aria-label="Próximo"
-          className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background-secondary text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
         >
           <ChevronRight />
         </button>
@@ -174,7 +216,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
             onClick={() => goTo(i)}
             aria-label={`Depoimento ${i + 1}`}
             className={`transition-all duration-300 rounded-full ${
-              i === current ? "w-6 h-2 bg-gold" : "w-2 h-2 bg-text-secondary/30 hover:bg-text-secondary/60"
+              i === currentDot ? "w-6 h-2 bg-gold" : "w-2 h-2 bg-text-secondary/30 hover:bg-text-secondary/60"
             }`}
           />
         ))}

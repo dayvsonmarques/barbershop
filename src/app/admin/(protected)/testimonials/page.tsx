@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
@@ -187,9 +186,10 @@ export default function TestimonialsPage() {
                             </svg>
                           </td>
                           <td className="px-4 py-3">
-                            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100">
+                            <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center shrink-0">
                               {t.avatarUrl ? (
-                                <Image src={t.avatarUrl} alt={t.author} fill sizes="40px" className="object-cover" />
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={t.avatarUrl} alt={t.author} className="w-full h-full object-cover object-center" />
                               ) : (
                                 <div className="flex h-full items-center justify-center text-gray-400 text-xs font-semibold">
                                   {t.author.charAt(0).toUpperCase()}
@@ -252,9 +252,10 @@ export default function TestimonialsPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
                 <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-100 shrink-0">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center justify-center shrink-0">
                     {avatarPreview ? (
-                      <Image src={avatarPreview} alt="Preview" fill sizes="64px" className="object-cover" />
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover object-center" />
                     ) : (
                       <div className="flex h-full items-center justify-center text-gray-400 text-xl font-semibold">
                         {form.author.charAt(0).toUpperCase() || "?"}
