@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev --webpack",
     "dev:full": "npm run db:setup && npm run dev",
-    "build": "prisma migrate deploy && prisma generate && next build",
-    "start": "next start",
+    "build": "prisma generate && next build",
+    "start": "prisma migrate deploy && next start",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
     "infra:nuke": "docker compose down -v --remove-orphans",
