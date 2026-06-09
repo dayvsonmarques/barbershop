@@ -3,6 +3,45 @@
 
 import { useEffect, useState } from "react";
 
+const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
+const DAY_LABEL: Record<string, string> = {
+  monday: "Seg", tuesday: "Ter", wednesday: "Qua", thursday: "Qui",
+  friday: "Sex", saturday: "Sáb", sunday: "Dom",
+};
+
+function formatHourRange(range: string): string {
+  const [start, end] = range.split("-");
+  const fmt = (t: string) => t.replace(/^0/, "").replace(":00", "h").replace(/:(\d+)/, "h$1");
+  return end ? `${fmt(start)} às ${fmt(end)}` : range;
+}
+
+function formatOpeningHours(raw?: string): string {
+  if (!raw) return "Horário não informado";
+  let parsed: Record<string, string>;
+  try { parsed = JSON.parse(raw); } catch { return raw; }
+
+  const days = DAY_KEYS.filter((d) => parsed[d]);
+  const groups: { days: string[]; hours: string }[] = [];
+
+  for (const day of days) {
+    const hours = parsed[day];
+    const last = groups[groups.length - 1];
+    if (last && last.hours === hours) {
+      last.days.push(DAY_LABEL[day]);
+    } else {
+      groups.push({ days: [DAY_LABEL[day]], hours });
+    }
+  }
+
+  return groups
+    .filter(({ hours }) => hours.toLowerCase() !== "fechado")
+    .map(({ days: ds, hours }) => {
+      const label = ds.length > 2 ? `${ds[0]} a ${ds[ds.length - 1]}` : ds.join(", ");
+      return `${label}: ${formatHourRange(hours)}`;
+    })
+    .join(" | ");
+}
+
 type PublicSettings = {
   name?: string;
   address?: string;
@@ -32,9 +71,43 @@ export function Footer() {
   const phoneDigits = (settings?.phone ?? "").replace(/\D/g, "");
   const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
-  const hoursSummary = settings?.openingHours ?? "Horário não informado";
+  const hoursSummary = formatOpeningHours(settings?.openingHours);
 
   return (
+    <>
+    <div className="group fixed bottom-8 right-8 z-50 opacity-40 hover:opacity-100 transition-opacity duration-200">
+      <span className="pointer-events-none absolute bottom-full right-0 mb-4 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        desenvolvido por patomarques
+      </span>
+      <a
+        href="https://patomarques.com.br/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Desenvolvido por Pato Marques"
+        className="flex items-center justify-center w-12 h-12 rotate-45 border transition-colors duration-200
+          border-black/20 hover:border-[#C9A84C]
+          dark:border-white dark:hover:bg-white dark:hover:border-white"
+      >
+        {/* light mode: preto por padrão, dourado no hover */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/patomarques-logo.png"
+          alt=""
+          aria-hidden="true"
+          className="block dark:hidden w-7 h-7 -rotate-45 transition-[filter] duration-200
+            group-hover:[filter:brightness(0)_invert(1)_sepia(1)_saturate(400%)_hue-rotate(5deg)_brightness(0.8)]"
+        />
+        {/* dark mode: dourado por padrão, preto no hover */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/patomarques-logo.png"
+          alt="Pato Marques"
+          className="hidden dark:block w-7 h-7 -rotate-45 transition-[filter] duration-200
+            filter-[brightness(0)_invert(1)]
+            group-hover:[filter:none]"
+        />
+      </a>
+    </div>
     <footer className="bg-background-primary border-t border-gold/30 py-16">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
@@ -55,7 +128,7 @@ export function Footer() {
             <p className="text-text-primary font-semibold uppercase text-base tracking-widest mb-4">
               Redes Sociais
             </p>
-            <div className="flex gap-5">
+            <div className="flex gap-5 items-center">
               <a
                 href={instagramUrl}
                 target="_blank"
@@ -92,5 +165,6 @@ export function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
