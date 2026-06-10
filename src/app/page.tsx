@@ -1,4 +1,6 @@
 // src/app/page.tsx
+export const dynamic = "force-dynamic";
+
 import { Navbar } from "@/components/navbar";
 import { HeroSection } from "@/components/hero-section";
 import { ServicesSection } from "@/components/services-section";
