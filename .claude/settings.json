@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /home/m4rqu3s/Workspace/barbearia/docs/superpowers/plans)",
+      "Bash(npm test *)",
+      "Bash(git -C /home/m4rqu3s/Workspace/barbearia add src/components/ui/section-label.tsx src/__tests__/components/ui/section-label.test.tsx)",
+      "Bash(git -C /home/m4rqu3s/Workspace/barbearia commit -m \"fix: use clsx in SectionLabel, fix test titles, add className passthrough test\")"
+    ],
+    "additionalDirectories": [
+      "/home/m4rqu3s/Workspace/barbearia/docs/superpowers"
+    ]
+  }
+}

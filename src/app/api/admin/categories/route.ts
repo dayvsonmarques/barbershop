@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const categories = await prisma.serviceCategory.findMany({
+      where: { isActive: true },
       orderBy: { name: "asc" },
       include: {
         _count: {

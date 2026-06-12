@@ -34,21 +34,27 @@ function weightedHour(): number {
   return pick(slots);
 }
 
-function weightedDayOffset(maxDaysBack: number): number {
-  // Fridays (4) and Saturdays (5) appear more often
-  let offset = Math.floor(Math.random() * maxDaysBack);
-  // bias toward fri/sat 30% of the time
-  if (Math.random() < 0.3) {
-    const base = new Date();
-    base.setDate(base.getDate() - offset);
-    const dow = base.getDay(); // 0=sun, 6=sat
-    const daysToFri = (dow >= 5) ? 0 : (5 - dow);
-    const candidate = new Date(base);
-    candidate.setDate(candidate.getDate() - (dow === 5 ? 0 : daysToFri < maxDaysBack ? daysToFri : 0));
-    const days = Math.floor((Date.now() - candidate.getTime()) / 86400000);
-    if (days >= 0 && days < maxDaysBack) return days;
+function randomWorkdayOffset(maxDaysBack: number): number {
+  // Pick a random offset, but re-roll until it's a workday (Mon-Sat)
+  // Weight: Fri=3x, Sat=3x, Mon-Thu=1x each
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const offset = Math.floor(Math.random() * maxDaysBack);
+    const d = new Date();
+    d.setDate(d.getDate() - offset);
+    const dow = d.getDay(); // 0=sun
+    if (dow === 0) continue; // skip sunday
+    // extra weight for fri (5) and sat (6)
+    if (dow === 5 || dow === 6) return offset;
+    if (dow === 5 || dow === 6) return offset;
+    if (dow === 5 || dow === 6) return offset;
+    return offset;
   }
-  return offset;
+  // fallback: find nearest monday from a random offset
+  const offset = Math.floor(Math.random() * maxDaysBack);
+  const d = new Date();
+  d.setDate(d.getDate() - offset);
+  while (d.getDay() === 0) d.setDate(d.getDate() - 1);
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
 }
 
 const CUSTOMER_NAMES = [
@@ -322,7 +328,7 @@ async function main() {
   // ============================================
   console.log("📆 Creating test bookings (~350)...");
 
-  const MAX_DAYS_BACK = 365;
+  const MAX_DAYS_BACK = 90;
   const usedSlots = new Set<string>(); // "barberId:timestamp" to avoid unique constraint
   let created = 0;
 
@@ -335,7 +341,7 @@ async function main() {
 
   const attempts = 600; // try more than needed to hit ~350 despite slot collisions
   for (let i = 0; i < attempts; i++) {
-    const offsetDays = weightedDayOffset(MAX_DAYS_BACK);
+    const offsetDays = randomWorkdayOffset(MAX_DAYS_BACK);
     const hour = weightedHour();
     const minute = pick([0, 30]);
 

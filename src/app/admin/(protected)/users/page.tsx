@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Group = { id: number; name: string };
 
@@ -32,6 +33,7 @@ export default function UsersPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => { load(); }, []);
 
@@ -96,14 +98,20 @@ export default function UsersPage() {
     }
   }
 
-  async function handleDelete(id: string, name: string) {
-    if (!confirm(`Excluir usuário "${name}"?`)) return;
-    const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
+  function handleDelete(id: string, name: string) {
+    setConfirmDelete({ id, name });
+  }
+
+  async function doDelete() {
+    if (!confirmDelete) return;
+    const res = await fetch(`/api/admin/users/${confirmDelete.id}`, { method: "DELETE" });
     if (res.ok) {
-      setUsers((prev) => prev.filter((u) => u.id !== id));
+      setUsers((prev) => prev.filter((u) => u.id !== confirmDelete.id));
+      setConfirmDelete(null);
     } else {
       const data = await res.json();
       alert(data.error ?? "Erro ao excluir");
+      setConfirmDelete(null);
     }
   }
 
@@ -168,6 +176,14 @@ export default function UsersPage() {
           <div className="py-12 text-center text-gray-500">Nenhum usuário cadastrado</div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        title="Excluir usuário"
+        message={`Tem certeza que deseja excluir "${confirmDelete?.name}"? O registro será ocultado mas não apagado permanentemente.`}
+        onConfirm={doDelete}
+        onCancel={() => setConfirmDelete(null)}
+      />
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">

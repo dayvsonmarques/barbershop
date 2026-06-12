@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Booking = {
   id: string;
@@ -31,6 +32,7 @@ export default function QueuePage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [confirmCancel, setConfirmCancel] = useState<{ id: string; name: string } | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/bookings?status=PENDING");
@@ -145,7 +147,7 @@ export default function QueuePage() {
                         Confirmar
                       </button>
                       <button
-                        onClick={() => updateStatus(b.id, "CANCELLED")}
+                        onClick={() => setConfirmCancel({ id: b.id, name: b.customerName })}
                         disabled={isUpdating}
                         className="text-red-500 hover:text-red-700 disabled:opacity-40"
                       >
@@ -161,6 +163,19 @@ export default function QueuePage() {
       </div>
 
       <p className="text-xs text-gray-400 text-center">Atualização automática a cada 30 segundos</p>
+
+      <ConfirmDialog
+        open={confirmCancel !== null}
+        title="Cancelar agendamento"
+        message={`Tem certeza que deseja cancelar o agendamento de "${confirmCancel?.name}"?`}
+        confirmLabel="Cancelar agendamento"
+        onConfirm={async () => {
+          if (!confirmCancel) return;
+          await updateStatus(confirmCancel.id, "CANCELLED");
+          setConfirmCancel(null);
+        }}
+        onCancel={() => setConfirmCancel(null)}
+      />
     </div>
   );
 }

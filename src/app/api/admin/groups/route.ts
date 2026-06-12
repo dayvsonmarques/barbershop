@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   const groups = await prisma.group.findMany({
+    where: { isActive: true },
     include: {
       _count: { select: { users: true, permissions: true } },
     },

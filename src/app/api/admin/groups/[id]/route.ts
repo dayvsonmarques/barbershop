@@ -73,14 +73,7 @@ export async function DELETE(
 
   if (!group) return NextResponse.json({ error: "Grupo não encontrado" }, { status: 404 });
 
-  if (group._count.users > 0) {
-    return NextResponse.json(
-      { error: "Não é possível excluir um grupo com usuários vinculados" },
-      { status: 400 }
-    );
-  }
-
-  await prisma.group.delete({ where: { id: groupId } });
+  await prisma.group.update({ where: { id: groupId }, data: { isActive: false } });
 
   return NextResponse.json({ message: "Grupo excluído" });
 }

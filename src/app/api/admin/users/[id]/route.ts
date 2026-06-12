@@ -50,7 +50,7 @@ export async function DELETE(
 
   const { id } = await params;
 
-  await prisma.user.delete({ where: { id } });
+  await prisma.user.update({ where: { id }, data: { isActive: false } });
 
   return NextResponse.json({ message: "Usuário excluído" });
 }

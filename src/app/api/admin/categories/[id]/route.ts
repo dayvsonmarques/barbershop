@@ -127,15 +127,9 @@ export async function DELETE(
       );
     }
 
-    if (category._count.services > 0) {
-      return NextResponse.json(
-        { error: "Cannot delete category with services" },
-        { status: 400 }
-      );
-    }
-
-    await prisma.serviceCategory.delete({
+    await prisma.serviceCategory.update({
       where: { id: categoryId },
+      data: { isActive: false },
     });
 
     return NextResponse.json({ message: "Category deleted successfully" });

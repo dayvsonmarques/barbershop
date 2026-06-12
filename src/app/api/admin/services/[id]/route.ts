@@ -120,8 +120,9 @@ export async function DELETE(
   }
 
   try {
-    await prisma.service.delete({
+    await prisma.service.update({
       where: { id: serviceId },
+      data: { isActive: false },
     });
 
     return NextResponse.json({ message: "Service deleted successfully" });

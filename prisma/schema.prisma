@@ -34,13 +34,14 @@ model Group {
   id          Int              @id @default(autoincrement())
   name        String           @unique
   description String?
+  isActive    Boolean          @default(true)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  
+
   // Relations
   users       UserGroup[]
   permissions GroupPermission[]
-  
+
   @@map("groups")
 }
 

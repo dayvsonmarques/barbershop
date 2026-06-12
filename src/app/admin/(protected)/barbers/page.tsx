@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Professional = {
   id: number;
@@ -31,6 +32,7 @@ export default function ProfessionalsPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: number; name: string } | null>(null);
 
   useEffect(() => { load(); }, []);
 
@@ -88,14 +90,20 @@ export default function ProfessionalsPage() {
     }
   }
 
-  async function handleDelete(id: number, name: string) {
-    if (!confirm(`Excluir profissional "${name}"?`)) return;
-    const res = await fetch(`/api/admin/barbers/${id}`, { method: "DELETE" });
+  function handleDelete(id: number, name: string) {
+    setConfirmDelete({ id, name });
+  }
+
+  async function doDelete() {
+    if (!confirmDelete) return;
+    const res = await fetch(`/api/admin/barbers/${confirmDelete.id}`, { method: "DELETE" });
     if (res.ok) {
-      setProfessionals((prev) => prev.filter((p) => p.id !== id));
+      setProfessionals((prev) => prev.filter((p) => p.id !== confirmDelete.id));
+      setConfirmDelete(null);
     } else {
       const data = await res.json();
       alert(data.error ?? "Erro ao excluir");
+      setConfirmDelete(null);
     }
   }
 
@@ -166,6 +174,14 @@ export default function ProfessionalsPage() {
           <div className="py-12 text-center text-gray-500">Nenhum profissional cadastrado</div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        title="Excluir profissional"
+        message={`Tem certeza que deseja excluir "${confirmDelete?.name}"? O registro será ocultado mas não apagado permanentemente.`}
+        onConfirm={doDelete}
+        onCancel={() => setConfirmDelete(null)}
+      />
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">

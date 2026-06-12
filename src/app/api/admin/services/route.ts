@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     const categoryIdParam = searchParams.get("categoryId");
 
     const where = categoryIdParam
-      ? { categoryId: parseInt(categoryIdParam, 10) }
-      : {};
+      ? { categoryId: parseInt(categoryIdParam, 10), isActive: true }
+      : { isActive: true };
 
     const services = await prisma.service.findMany({
       where,

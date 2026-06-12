@@ -52,7 +52,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
   if (id === null) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
   try {
-    await prisma.testimonial.delete({ where: { id } });
+    await prisma.testimonial.update({ where: { id }, data: { isActive: false } });
     return NextResponse.json({ ok: true });
   } catch (error: any) {
     if (error.code === "P2025") return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const barbers = await prisma.barber.findMany({
+      where: { isActive: true },
       orderBy: { name: "asc" },
       include: {
         _count: {

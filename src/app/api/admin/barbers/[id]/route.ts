@@ -130,15 +130,9 @@ export async function DELETE(
       );
     }
 
-    if (barber._count.bookings > 0) {
-      return NextResponse.json(
-        { error: "Cannot delete barber with bookings" },
-        { status: 400 }
-      );
-    }
-
-    await prisma.barber.delete({
+    await prisma.barber.update({
       where: { id: barberId },
+      data: { isActive: false },
     });
 
     return NextResponse.json({ message: "Barber deleted successfully" });

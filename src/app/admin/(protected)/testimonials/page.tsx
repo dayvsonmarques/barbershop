@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Testimonial = {
   id: number;
@@ -51,6 +52,7 @@ export default function TestimonialsPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
+  const [confirmDelete, setConfirmDelete] = useState<{ id: number; name: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { load(); }, []);
@@ -111,10 +113,19 @@ export default function TestimonialsPage() {
     }
   }
 
-  async function handleDelete(id: number, author: string) {
-    if (!confirm(`Excluir depoimento de "${author}"?`)) return;
-    const res = await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" });
-    if (res.ok) setTestimonials((prev) => prev.filter((t) => t.id !== id));
+  function handleDelete(id: number, author: string) {
+    setConfirmDelete({ id, name: author });
+  }
+
+  async function doDelete() {
+    if (!confirmDelete) return;
+    const res = await fetch(`/api/admin/testimonials/${confirmDelete.id}`, { method: "DELETE" });
+    if (res.ok) {
+      setTestimonials((prev) => prev.filter((t) => t.id !== confirmDelete.id));
+      setConfirmDelete(null);
+    } else {
+      setConfirmDelete(null);
+    }
   }
 
   async function handleDragEnd(result: DropResult) {
@@ -233,6 +244,14 @@ export default function TestimonialsPage() {
       </div>
 
       {/* Modal */}
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        title="Excluir depoimento"
+        message={`Tem certeza que deseja excluir o depoimento de "${confirmDelete?.name}"? O registro será ocultado mas não apagado permanentemente.`}
+        onConfirm={doDelete}
+        onCancel={() => setConfirmDelete(null)}
+      />
+
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-lg rounded-xl bg-white shadow-xl">
