@@ -46,6 +46,15 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
+        href: "/admin/atendimentos",
+        label: "Atendimentos",
+        icon: (
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+            <path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+        ),
+      },
+      {
         href: "/admin/revenue",
         label: "Faturamento",
         icon: (
@@ -68,6 +77,16 @@ const navGroups: { label: string; items: NavItem[] }[] = [
   {
     label: "Gestão",
     items: [
+      {
+        href: "/admin/customers",
+        label: "Clientes",
+        icon: (
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+            <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+            <path d="M16 3.13a4 4 0 010 7.75" strokeDasharray="2 2"/>
+          </svg>
+        ),
+      },
       {
         href: "/admin/barbers",
         label: "Profissionais",
@@ -208,7 +227,7 @@ export function Sidebar() {
         className={cn(
           "shrink-0 overflow-hidden bg-white border-r border-[#E5E5E5] transition-[width] duration-200 ease-in-out",
           isMobile ? "fixed inset-y-0 left-0 z-50" : "sticky top-0 h-screen",
-          isOpen ? "w-[240px]" : "w-0",
+          isOpen ? "w-60" : "w-0",
         )}
         aria-label="Navegação principal"
       >

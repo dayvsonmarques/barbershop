@@ -6,7 +6,9 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const pageTitles: Record<string, string> = {
   "/admin": "Painel Geral",
-  "/admin/bookings": "Agendamentos",
+  "/admin/bookings":     "Agendamentos",
+  "/admin/atendimentos": "Atendimentos",
+  "/admin/customers":    "Clientes",
   "/admin/queue":    "Fila de Espera",
   "/admin/revenue":  "Faturamento",
   "/admin/reports":  "Relatórios",
