@@ -44,7 +44,6 @@ export default function ReportsPage() {
   }, [period]);
 
   const s = data?.stats;
-  const maxHour = data ? Math.max(...data.byHour.map((h) => h.count), 1) : 1;
   const maxDay  = data ? Math.max(...data.byDayOfWeek.map((d) => d.count), 1) : 1;
   const maxSvc  = data ? Math.max(...data.topServices.map((s) => s.count), 1) : 1;
 
@@ -169,50 +168,23 @@ export default function ReportsPage() {
             </svg>
             <p className="text-sm font-semibold text-gray-900">Horários de pico</p>
           </div>
-          {!loading && data ? (
-            <>
-              <div className="grid grid-cols-7 gap-1">
-                {data.byHour.slice(0, 7).map((h) => {
-                  const intensity = maxHour > 0 ? h.count / maxHour : 0;
-                  return (
-                    <div key={h.hour} className="flex flex-col items-center gap-1">
-                      <div
-                        className="w-full rounded text-center py-2 text-xs font-medium"
-                        style={{
-                          background: intensity > 0 ? `rgba(201,168,76,${0.15 + intensity * 0.85})` : "#F4F4F5",
-                          color: intensity > 0.5 ? "#fff" : "#71717A",
-                        }}
-                      >
-                        {h.hour}h
-                        <br />
-                        <span className="text-[10px]">{h.count}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="grid grid-cols-7 gap-1 mt-1">
-                {data.byHour.slice(7).map((h) => {
-                  const intensity = maxHour > 0 ? h.count / maxHour : 0;
-                  return (
-                    <div key={h.hour} className="flex flex-col items-center gap-1">
-                      <div
-                        className="w-full rounded text-center py-2 text-xs font-medium"
-                        style={{
-                          background: intensity > 0 ? `rgba(201,168,76,${0.15 + intensity * 0.85})` : "#F4F4F5",
-                          color: intensity > 0.5 ? "#fff" : "#71717A",
-                        }}
-                      >
-                        {h.hour}h
-                        <br />
-                        <span className="text-[10px]">{h.count}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-xs text-gray-400 text-center">Quanto mais escuro, mais agendamentos naquele horário.</p>
-            </>
+          {!loading && data && data.byHour.length > 0 ? (
+            <ResponsiveContainer width="100%" height={160}>
+              <BarChart
+                data={data.byHour.map((h) => ({ label: `${h.hour}h`, count: h.count }))}
+                margin={{ top: 4, right: 4, left: -28, bottom: 0 }}
+                barCategoryGap="20%"
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" vertical={false} />
+                <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#A1A1AA" }} tickLine={false} axisLine={false} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 10, fill: "#A1A1AA" }} tickLine={false} axisLine={false} />
+                <Tooltip
+                  contentStyle={{ background: "#fff", border: "1px solid #E5E5E5", borderRadius: 0, fontSize: 12 }}
+                  formatter={(v: number) => [v, "Agendamentos"]}
+                />
+                <Bar dataKey="count" name="Agendamentos" fill="#C9A84C" radius={[2, 2, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           ) : <Empty loading={loading} height={160} />}
         </div>
       </div>
