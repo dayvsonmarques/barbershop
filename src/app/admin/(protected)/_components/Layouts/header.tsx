@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { useSidebarContext } from "./sidebar/sidebar-context";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const pageTitles: Record<string, string> = {
   "/admin": "Painel Geral",
@@ -43,8 +42,6 @@ export function Header() {
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </button>
-
-      <ThemeToggle className="text-[#71717A] [&>svg]:w-4.5 [&>svg]:h-4.5" />
 
       <h1 className="text-sm font-semibold text-[#18181B]">{title}</h1>
 
