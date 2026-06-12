@@ -16,8 +16,8 @@ const navLinks = [
   { href: "/", label: "Início" },
   { href: "#sobre", label: "Sobre Nós" },
   { href: "#servicos", label: "Serviços" },
-  { href: "#equipe", label: "Equipe" },
   { href: "#loja", label: "Loja" },
+  { href: "#equipe", label: "Equipe" },
   { href: "#local", label: "Localização" },
   { href: "#depoimentos", label: "Depoimentos" },
 ];
@@ -95,19 +95,22 @@ export function Navbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center relative">
-        {/* Esquerda: hamburger (todos os breakpoints) */}
-        <button
-          className={`p-2 -ml-2 hover:text-gold transition-colors duration-200 ${isCompact ? "text-text-primary" : "text-white"}`}
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={open}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
+        {/* Esquerda: hamburger + theme toggle */}
+        <div className="flex items-center gap-1">
+          <button
+            className={`p-2 -ml-2 hover:text-gold transition-colors duration-200 ${isCompact ? "text-text-primary" : "text-white"}`}
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <ThemeToggle className={isCompact ? "text-text-secondary" : "text-white"} />
+        </div>
 
         {/* Logo centrada */}
         <Link
@@ -161,8 +164,6 @@ export function Navbar() {
               </svg>
             </button>
           )}
-
-          <ThemeToggle className={isCompact ? "text-text-secondary" : "text-white"} />
 
           <Link href="/carrinho" className={`relative flex items-center hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`} aria-label="Carrinho">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
