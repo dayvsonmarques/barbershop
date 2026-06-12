@@ -75,37 +75,29 @@ export function Footer() {
 
   return (
     <>
-    <div className="group fixed bottom-8 right-8 z-50 opacity-40 hover:opacity-100 transition-opacity duration-200">
+    <div className="group fixed bottom-4 right-4 z-50">
       <span className="pointer-events-none absolute bottom-full right-0 mb-4 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        desenvolvido por patomarques
+        Desenvolvido por Web Dev Studio
       </span>
       <a
-        href="https://patomarques.com.br/"
+        href="https://webdev.recife.br/"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Desenvolvido por Pato Marques"
-        className="flex items-center justify-center w-12 h-12 rotate-45 border transition-colors duration-200
-          border-black/20 hover:border-[#C9A84C]
-          dark:border-white dark:hover:bg-white dark:hover:border-white"
+        aria-label="Desenvolvido por webdev.recife.br"
+        className="flex items-center justify-center w-8 h-8 rotate-45 border transition-colors duration-200
+          border-[#C9A84C] hover:bg-[#C9A84C]/10
+          dark:border-white dark:hover:border-[#C9A84C]"
       >
-        {/* light mode: preto por padrão, dourado no hover */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/patomarques-logo.png"
-          alt=""
-          aria-hidden="true"
-          className="block dark:hidden w-7 h-7 -rotate-45 transition-[filter] duration-200
-            group-hover:[filter:brightness(0)_invert(1)_sepia(1)_saturate(400%)_hue-rotate(5deg)_brightness(0.8)]"
-        />
-        {/* dark mode: dourado por padrão, preto no hover */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/patomarques-logo.png"
-          alt="Pato Marques"
-          className="hidden dark:block w-7 h-7 -rotate-45 transition-[filter] duration-200
-            filter-[brightness(0)_invert(1)]
-            group-hover:[filter:none]"
-        />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="-rotate-45 w-4 h-4 text-[#C9A84C] dark:text-white dark:group-hover:text-[#C9A84C] transition-colors duration-200"
+        >
+          <path d="M8 6L3 12L8 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M14.5 4.5L9.5 19.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 6L21 12L16 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </a>
     </div>
     <footer className="bg-background-primary border-t border-gold/30 py-16">

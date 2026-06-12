@@ -21,7 +21,7 @@ function usePerPage() {
   const [perPage, setPerPage] = useState(4);
   useEffect(() => {
     const update = () =>
-      setPerPage(window.innerWidth >= 1024 ? 4 : window.innerWidth >= 640 ? 3 : 2);
+      setPerPage(window.innerWidth >= 1024 ? 4 : window.innerWidth >= 640 ? 3 : 1);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -160,7 +160,24 @@ export function ProductsCarousel() {
         </button>
       </div>
 
-      <div className="mt-12 text-center">
+      {/* Dots */}
+      <div className="flex justify-center gap-2 mt-8">
+        {products.map((_, i) => {
+          const isActive = ((pos - count) % count + count) % count === i;
+          return (
+            <button
+              key={i}
+              onClick={() => { setAnimated(true); setPos(count + i); resetTimer(); }}
+              aria-label={`Produto ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                isActive ? "w-6 bg-gold" : "w-1.5 bg-border hover:bg-gold/50"
+              }`}
+            />
+          );
+        })}
+      </div>
+
+      <div className="mt-8 text-center">
         <Link
           href="/produtos"
           className="inline-block border border-gold text-gold px-8 py-3 text-sm tracking-widest uppercase hover:bg-gold hover:text-background-primary transition-colors"

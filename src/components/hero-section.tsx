@@ -43,13 +43,9 @@ export function HeroSection() {
               letterSpacing: "-0.02em",
             }}
           >
-            A Arte{" "}
-            <span className="text-gold">do Corte</span>
+            Barbearia em Recife{" "}
+            <span className="block">{new Date().getFullYear() - 2010} anos de tradição e estilo</span>
           </h1>
-          <p className="text-white/80 text-base md:text-2xl mb-6 md:mb-10 max-w-xl leading-relaxed">
-            Tradição, estilo e precisão. Em Recife, a barbearia que transforma
-            cada visita em experiência.
-          </p>
           <div className="flex flex-wrap gap-4">
             <Link href="/agendar">
               <Button variant="primary" size="lg">
@@ -57,11 +53,11 @@ export function HeroSection() {
                 Agendar Horário
               </Button>
             </Link>
-            <a href="#servicos">
+            <Link href="/servicos">
               <Button variant="outline" size="lg">
                 Ver Serviços
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

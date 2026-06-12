@@ -12,8 +12,15 @@ async function getBarbers() {
   });
 }
 
+const colsClass: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
+
 export async function TeamSection() {
   const barbers = await getBarbers();
+  const gridCols = colsClass[barbers.length] ?? "grid-cols-4";
 
   return (
     <section id="equipe" className="bg-background-primary py-24">
@@ -32,7 +39,7 @@ export async function TeamSection() {
         </div>
 
         {/* Desktop — grid */}
-        <div className="hidden md:grid grid-cols-4 gap-8">
+        <div className={`hidden md:grid ${gridCols} gap-8`}>
           {barbers.map((barber) => (
             <TeamCard key={barber.id} {...barber} />
           ))}

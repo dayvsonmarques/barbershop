@@ -4,13 +4,19 @@ import { usePathname } from "next/navigation";
 import { useSidebarContext } from "./sidebar/sidebar-context";
 
 const pageTitles: Record<string, string> = {
-  "/admin": "Dashboard",
+  "/admin": "Painel Geral",
   "/admin/bookings": "Agendamentos",
-  "/admin/barbers": "Barbeiros",
+  "/admin/queue":    "Fila de Espera",
+  "/admin/revenue":  "Faturamento",
+  "/admin/reports":  "Relatórios",
+  "/admin/barbers": "Profissionais",
   "/admin/services": "Serviços",
   "/admin/availability": "Disponibilidade",
   "/admin/products": "Produtos",
+  "/admin/orders": "Pedidos",
   "/admin/courses": "Cursos",
+  "/admin/testimonials": "Depoimentos",
+  "/admin/groups": "Grupos",
   "/admin/users": "Usuários",
   "/admin/settings": "Configurações",
 };

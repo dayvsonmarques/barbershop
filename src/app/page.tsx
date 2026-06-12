@@ -11,6 +11,7 @@ import { InstagramFeed } from "@/components/instagram-feed";
 import { ProductsCarousel } from "@/components/products-carousel";
 import { MapSection } from "@/components/map-section";
 import { BookingCTA } from "@/components/booking-cta";
+import { CoursesSection } from "@/components/courses-section";
 import { Footer } from "@/components/footer";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -25,16 +26,19 @@ export default function Home() {
       <ScrollReveal>
         <ServicesSection />
       </ScrollReveal>
-      <ScrollReveal>
-        <TeamSection />
-      </ScrollReveal>
+      <ScrollReveal><ProductsCarousel /></ScrollReveal>
       <ScrollReveal>
         <BookingCTA />
       </ScrollReveal>
       {/* <ScrollReveal>
         <InstagramFeed />
       </ScrollReveal> */}
-      <ScrollReveal><ProductsCarousel /></ScrollReveal>
+      <ScrollReveal>
+        <TeamSection />
+      </ScrollReveal>
+      <ScrollReveal>
+        <CoursesSection />
+      </ScrollReveal>
       <MapSection />
       <ScrollReveal>
         <TestimonialsSection />

@@ -199,16 +199,6 @@ async function main() {
     },
   });
 
-  const barber2 = await prisma.barber.create({
-    data: {
-      name: "Daniel",
-      email: "daniel@edbarbearia.com",
-      phone: "",
-      bio: null,
-      photoUrl: "/images/barbers/daniel.png",
-    },
-  });
-
   const barber3 = await prisma.barber.create({
     data: {
       name: "Erywerton (Vevel)",
@@ -235,7 +225,7 @@ async function main() {
 
   const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
 
-  for (const barber of [barber1, barber2, barber3, barber4]) {
+  for (const barber of [barber1, barber3, barber4]) {
     for (const day of weekdays) {
       await prisma.barberAvailability.create({
         data: {
