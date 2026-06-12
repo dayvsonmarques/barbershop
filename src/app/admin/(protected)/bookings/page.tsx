@@ -550,13 +550,16 @@ export default function BookingsPage() {
             </div>
 
             <div className="flex items-center justify-between px-6 py-4 border-t border-[#E5E5E5]">
-              <button
-                onClick={handleCancelBooking}
-                disabled={saving || editing.status === "CANCELLED"}
-                className="text-xs font-medium text-red-600 hover:text-red-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                Cancelar agendamento
-              </button>
+              {editing.status !== "CANCELLED" && (
+                <button
+                  onClick={handleCancelBooking}
+                  disabled={saving}
+                  className="text-xs font-medium text-red-600 hover:text-red-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Cancelar agendamento
+                </button>
+              )}
+              {editing.status === "CANCELLED" && <span />}
               <div className="flex items-center gap-3">
                 <button
                   onClick={closeModal}

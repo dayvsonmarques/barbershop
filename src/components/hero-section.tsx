@@ -44,7 +44,7 @@ export function HeroSection() {
             }}
           >
             Barbearia em Recife{" "}
-            <span className="block">{new Date().getFullYear() - 2010} anos de tradição e estilo</span>
+            <span className="block" style={{ fontSize: "0.65em" }}>{new Date().getFullYear() - 2010} anos de tradição e estilo</span>
           </h1>
           <div className="flex flex-wrap gap-4">
             <Link href="/agendar">
