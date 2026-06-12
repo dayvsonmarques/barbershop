@@ -389,7 +389,62 @@ async function main() {
     if (created >= 350) break;
   }
 
-  console.log(`✅ Created ${created} test bookings.`);
+  console.log(`✅ Created ${created} past/present bookings.`);
+
+  // ============================================
+  // 13. FUTURE BOOKINGS — próximos 30 dias
+  // ============================================
+  console.log("📅 Creating future bookings (next 30 days)...");
+
+  const futureHours = [9, 9, 10, 10, 11, 14, 14, 15, 15, 16, 16, 17];
+  let futureCreated = 0;
+
+  for (let dayOffset = 1; dayOffset <= 30; dayOffset++) {
+    const date = new Date();
+    date.setDate(date.getDate() + dayOffset);
+    date.setHours(0, 0, 0, 0);
+    const dow = date.getDay();
+    if (dow === 0) continue; // skip sunday
+
+    // 2-5 bookings per day
+    const slotsPerDay = Math.floor(Math.random() * 4) + 2;
+    const usedHours = new Set<string>();
+
+    for (let s = 0; s < slotsPerDay; s++) {
+      let hour = pick(futureHours);
+      const minute = pick([0, 30]);
+      if (dow === 6 && hour >= 14) hour = pick([9, 10, 11]);
+
+      const barber = pick(barbers);
+      const slotKey = `${barber.id}:${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${hour}-${minute}`;
+      if (usedHours.has(slotKey)) continue;
+      usedHours.add(slotKey);
+
+      const fullDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute, 0, 0);
+      const globalKey = `${barber.id}:${fullDate.getTime()}`;
+      if (usedSlots.has(globalKey)) continue;
+      usedSlots.add(globalKey);
+
+      const customerIdx = Math.floor(Math.random() * CUSTOMER_NAMES.length);
+      const service = pick(serviceWeights);
+
+      await prisma.booking.create({
+        data: {
+          barberId: barber.id,
+          serviceId: service.id,
+          customerName: CUSTOMER_NAMES[customerIdx],
+          customerPhone: CUSTOMER_PHONES[customerIdx],
+          customerEmail: null,
+          scheduledAt: fullDate,
+          status: pick(["PENDING", "PENDING", "CONFIRMED"]) as any,
+          notes: null,
+        },
+      });
+      futureCreated++;
+    }
+  }
+
+  console.log(`✅ Created ${futureCreated} future bookings.`);
   console.log("✅ Seed completed successfully!");
 }
 
