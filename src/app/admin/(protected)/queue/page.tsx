@@ -134,79 +134,99 @@ export default function QueuePage() {
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2 px-4 py-3 border-b border-gray-100">
+      {/* Filter block */}
+      <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
+        <div className="flex flex-wrap gap-3 items-end">
 
-          {/* Period */}
-          <div className="relative">
-            <select
-              value={period}
-              onChange={e => setPeriod(e.target.value as Period)}
-              className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-            >
-              <option value="next7">Próximos 7 dias</option>
-              <option value="specific">Data específica</option>
-            </select>
-            <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+          {/* Período */}
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Período</label>
+            <div className="relative">
+              <select
+                value={period}
+                onChange={e => setPeriod(e.target.value as Period)}
+                className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+              >
+                <option value="next7">Próximos 7 dias</option>
+                <option value="specific">Data específica</option>
+              </select>
+              <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
           </div>
 
           {period === "specific" && (
-            <input
-              type="date"
-              value={specificDate}
-              onChange={e => setSpecificDate(e.target.value)}
-              className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 focus:border-[#C9A84C] focus:outline-none transition-colors"
-            />
-          )}
-
-          {/* Barber */}
-          {barbers.length > 0 && (
-            <div className="relative">
-              <select
-                value={barberId}
-                onChange={e => setBarberId(e.target.value)}
-                className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-              >
-                <option value="">Todos os profissionais</option>
-                {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
-              </select>
-              <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Data</label>
+              <input
+                type="date"
+                value={specificDate}
+                onChange={e => setSpecificDate(e.target.value)}
+                className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+              />
             </div>
           )}
 
-          {/* Service */}
+          {/* Profissional */}
+          {barbers.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Profissional</label>
+              <div className="relative">
+                <select
+                  value={barberId}
+                  onChange={e => setBarberId(e.target.value)}
+                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                >
+                  <option value="">Todos</option>
+                  {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
+                </select>
+                <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+          )}
+
+          {/* Serviço */}
           {services.length > 0 && (
-            <div className="relative">
-              <select
-                value={serviceId}
-                onChange={e => setServiceId(e.target.value)}
-                className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-              >
-                <option value="">Todos os serviços</option>
-                {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
-              </select>
-              <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Serviço</label>
+              <div className="relative">
+                <select
+                  value={serviceId}
+                  onChange={e => setServiceId(e.target.value)}
+                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                >
+                  <option value="">Todos</option>
+                  {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
+                </select>
+                <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
             </div>
           )}
 
           {/* Status */}
-          <div className="relative">
-            <select
-              value={status}
-              onChange={e => setStatus(e.target.value)}
-              className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-            >
-              <option value="">Todos os status</option>
-              <option value="PENDING">Aguardando</option>
-              <option value="CONFIRMED">Confirmado</option>
-              <option value="CANCELLED">Cancelado</option>
-              <option value="COMPLETED">Concluído</option>
-            </select>
-            <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Status</label>
+            <div className="relative">
+              <select
+                value={status}
+                onChange={e => setStatus(e.target.value)}
+                className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+              >
+                <option value="">Todos</option>
+                <option value="PENDING">Aguardando</option>
+                <option value="CONFIRMED">Confirmado</option>
+                <option value="CANCELLED">Cancelado</option>
+                <option value="COMPLETED">Concluído</option>
+              </select>
+              <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
           </div>
-        </div>
 
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-48 text-sm text-gray-400">Carregando...</div>
         ) : bookings.length === 0 ? (
@@ -336,7 +356,7 @@ export default function QueuePage() {
             </div>
           </>
         )}
-      </div>
+      </div> {/* end Results */}
 
       <ConfirmDialog
         open={confirmCancel !== null}
