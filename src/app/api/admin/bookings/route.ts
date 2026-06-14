@@ -9,29 +9,37 @@ export async function GET(request: NextRequest) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const barberIdParam = searchParams.get("barberId");
-    const date = searchParams.get("date");
-    const status = searchParams.get("status");
+    const barberIdParam  = searchParams.get("barberId");
+    const serviceIdParam = searchParams.get("serviceId");
+    const date           = searchParams.get("date");
+    const startDate      = searchParams.get("startDate");
+    const endDate        = searchParams.get("endDate");
+    const status         = searchParams.get("status");
+    const search         = searchParams.get("search");
 
     const where: any = {};
 
-    if (barberIdParam) {
-      where.barberId = parseInt(barberIdParam, 10);
-    }
+    if (barberIdParam)  where.barberId  = parseInt(barberIdParam, 10);
+    if (serviceIdParam) where.serviceId = parseInt(serviceIdParam, 10);
+    if (status)         where.status    = status;
+    if (search)         where.customerName = { contains: search, mode: "insensitive" };
 
-    if (date) {
+    if (startDate || endDate) {
+      where.scheduledAt = {};
+      if (startDate) {
+        const [y, m, d] = startDate.split("-").map(Number);
+        where.scheduledAt.gte = new Date(y, m - 1, d, 0, 0, 0, 0);
+      }
+      if (endDate) {
+        const [y, m, d] = endDate.split("-").map(Number);
+        where.scheduledAt.lte = new Date(y, m - 1, d, 23, 59, 59, 999);
+      }
+    } else if (date) {
       const [y, m, d] = date.split("-").map(Number);
-      const startOfDay = new Date(y, m - 1, d, 0, 0, 0, 0);
-      const endOfDay = new Date(y, m - 1, d, 23, 59, 59, 999);
-
       where.scheduledAt = {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: new Date(y, m - 1, d, 0, 0, 0, 0),
+        lte: new Date(y, m - 1, d, 23, 59, 59, 999),
       };
-    }
-
-    if (status) {
-      where.status = status;
     }
 
     const bookings = await prisma.booking.findMany({

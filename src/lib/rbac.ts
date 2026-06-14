@@ -112,6 +112,19 @@ export async function hasAllPermissions(
 }
 
 /**
+ * Check if user belongs to the Administrador group
+ */
+export async function isUserAdmin(userId: string): Promise<boolean> {
+  const adminGroup = await prisma.group.findFirst({
+    where: {
+      name: "Administrador",
+      users: { some: { userId } },
+    },
+  });
+  return !!adminGroup;
+}
+
+/**
  * Helper function to check permissions from user groups structure
  */
 export function checkPermission(

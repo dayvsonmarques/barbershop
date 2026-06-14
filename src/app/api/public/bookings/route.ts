@@ -30,6 +30,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if datetime is more than 7 days in the future
+    const maxAllowed = new Date();
+    maxAllowed.setDate(maxAllowed.getDate() + 6);
+    maxAllowed.setHours(23, 59, 59, 999);
+    if (scheduledAt > maxAllowed) {
+      return NextResponse.json(
+        { error: "Agendamentos só podem ser feitos com até 7 dias de antecedência" },
+        { status: 400 }
+      );
+    }
+
     // Get service duration
     const service = await prisma.service.findUnique({
       where: { id: parseInt(validated.serviceId) },

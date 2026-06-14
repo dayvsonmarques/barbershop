@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requirePermission } from "@/lib/auth-guards";
+import { isUserAdmin } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   const auth = await requirePermission(request, "bookings", "view");
   if (auth instanceof NextResponse) return auth;
+
+  const canViewRevenue = await isUserAdmin(auth.userId);
 
   try {
     const { searchParams } = new URL(request.url);
@@ -47,13 +50,13 @@ export async function GET(request: NextRequest) {
         skip: page * limit,
         take: limit,
         include: {
-          service: { select: { id: true, name: true, duration: true, price: true } },
+          service: { select: { id: true, name: true, duration: true, ...(canViewRevenue && { price: true }) } },
           barber:  { select: { id: true, name: true } },
         },
       }),
     ]);
 
-    return NextResponse.json({ total, page, limit, items });
+    return NextResponse.json({ total, page, limit, canViewRevenue, items });
   } catch (error) {
     console.error("Error fetching atendimentos:", error);
     return NextResponse.json({ error: "Failed to fetch atendimentos" }, { status: 500 });

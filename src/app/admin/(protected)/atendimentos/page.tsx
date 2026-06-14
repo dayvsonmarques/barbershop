@@ -8,7 +8,7 @@ type Atendimento = {
   scheduledAt: string;
   customerName: string;
   customerPhone: string | null;
-  service: { id: number; name: string; duration: number; price: number };
+  service: { id: number; name: string; duration: number; price?: number };
   barber:  { id: number; name: string };
 };
 
@@ -30,11 +30,12 @@ function fmtTime(iso: string) {
 const PAGE_SIZE = 50;
 
 export default function AtendimentosPage() {
-  const [items,    setItems]    = useState<Atendimento[]>([]);
-  const [total,    setTotal]    = useState(0);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState<string | null>(null);
-  const [page,     setPage]     = useState(0);
+  const [items,          setItems]          = useState<Atendimento[]>([]);
+  const [total,          setTotal]          = useState(0);
+  const [loading,        setLoading]        = useState(true);
+  const [error,          setError]          = useState<string | null>(null);
+  const [page,           setPage]           = useState(0);
+  const [canViewRevenue, setCanViewRevenue] = useState(false);
 
   const today = localDateStr();
   const monthStart = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}-01`;
@@ -72,6 +73,7 @@ export default function AtendimentosPage() {
       setItems(data.items ?? []);
       setTotal(data.total ?? 0);
       setPage(p);
+      setCanViewRevenue(data.canViewRevenue ?? false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erro ao carregar");
       setItems([]);
@@ -83,21 +85,27 @@ export default function AtendimentosPage() {
   useEffect(() => { load(0); }, [load]);
 
   const totalRevenue = useMemo(
-    () => items.reduce((sum, a) => sum + Number(a.service.price), 0),
-    [items]
+    () => canViewRevenue ? items.reduce((sum, a) => sum + Number(a.service.price ?? 0), 0) : 0,
+    [items, canViewRevenue]
   );
 
   const avgTicket = items.length > 0 ? totalRevenue / items.length : 0;
 
   function exportCSV() {
+    const headers = ["Data", "Horário", "Cliente", "Telefone", "Serviço", "Profissional", "Duração"];
+    if (canViewRevenue) headers.push("Valor");
     const rows = [
-      ["Data", "Horário", "Cliente", "Telefone", "Serviço", "Profissional", "Duração", "Valor"],
-      ...items.map(a => [
-        fmtDate(a.scheduledAt), fmtTime(a.scheduledAt),
-        a.customerName, a.customerPhone ?? "",
-        a.service.name, a.barber.name,
-        `${a.service.duration} min`, Number(a.service.price).toFixed(2),
-      ]),
+      headers,
+      ...items.map(a => {
+        const row = [
+          fmtDate(a.scheduledAt), fmtTime(a.scheduledAt),
+          a.customerName, a.customerPhone ?? "",
+          a.service.name, a.barber.name,
+          `${a.service.duration} min`,
+        ];
+        if (canViewRevenue) row.push(Number(a.service.price ?? 0).toFixed(2));
+        return row;
+      }),
     ];
     const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
     const a = Object.assign(document.createElement("a"), {
@@ -135,23 +143,27 @@ export default function AtendimentosPage() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className={`grid gap-3 ${canViewRevenue ? "grid-cols-3" : "grid-cols-1 max-w-xs"}`}>
         <div className="rounded-xl border border-green-100 bg-green-50 p-4 text-center">
           <p className="text-3xl font-bold text-green-600 leading-none">{total}</p>
           <p className="text-xs font-semibold text-green-700 mt-1.5">Atendimentos</p>
         </div>
-        <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-center">
-          <p className="text-3xl font-bold text-blue-600 leading-none">
-            R$ {totalRevenue.toLocaleString("pt-BR", { minimumFractionDigits: 0 })}
-          </p>
-          <p className="text-xs font-semibold text-blue-700 mt-1.5">Faturamento</p>
-        </div>
-        <div className="rounded-xl border border-yellow-100 bg-yellow-50 p-4 text-center">
-          <p className="text-3xl font-bold text-yellow-600 leading-none">
-            R$ {avgTicket.toFixed(0)}
-          </p>
-          <p className="text-xs font-semibold text-yellow-700 mt-1.5">Ticket Médio</p>
-        </div>
+        {canViewRevenue && (
+          <>
+            <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-center">
+              <p className="text-3xl font-bold text-blue-600 leading-none">
+                R$ {totalRevenue.toLocaleString("pt-BR", { minimumFractionDigits: 0 })}
+              </p>
+              <p className="text-xs font-semibold text-blue-700 mt-1.5">Faturamento</p>
+            </div>
+            <div className="rounded-xl border border-yellow-100 bg-yellow-50 p-4 text-center">
+              <p className="text-3xl font-bold text-yellow-600 leading-none">
+                R$ {avgTicket.toFixed(0)}
+              </p>
+              <p className="text-xs font-semibold text-yellow-700 mt-1.5">Ticket Médio</p>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Filters */}
@@ -234,7 +246,7 @@ export default function AtendimentosPage() {
               <table className="min-w-full divide-y divide-gray-100">
                 <thead className="bg-gray-50/60">
                   <tr>
-                    {["Data", "Horário", "Cliente", "Serviço", "Profissional", "Duração", "Valor"].map(h => (
+                    {["Data", "Horário", "Cliente", "Serviço", "Profissional", "Duração", ...(canViewRevenue ? ["Valor"] : [])].map(h => (
                       <th key={h} className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">{h}</th>
                     ))}
                   </tr>
@@ -253,9 +265,11 @@ export default function AtendimentosPage() {
                       <td className="px-5 py-3.5 text-sm text-gray-700 whitespace-nowrap">{a.service.name}</td>
                       <td className="px-5 py-3.5 text-sm text-gray-500 whitespace-nowrap">{a.barber.name}</td>
                       <td className="px-5 py-3.5 text-sm text-gray-400 whitespace-nowrap">{a.service.duration} min</td>
-                      <td className="px-5 py-3.5 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        R$ {Number(a.service.price).toFixed(2)}
-                      </td>
+                      {canViewRevenue && (
+                        <td className="px-5 py-3.5 text-sm font-medium text-gray-700 whitespace-nowrap">
+                          R$ {Number(a.service.price ?? 0).toFixed(2)}
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -275,7 +289,7 @@ export default function AtendimentosPage() {
                   <div className="flex gap-2 mt-2 text-xs text-gray-500 flex-wrap">
                     <span className="bg-gray-100 rounded px-2 py-0.5">{a.service.name}</span>
                     <span>· {a.barber.name}</span>
-                    <span>· R$ {Number(a.service.price).toFixed(2)}</span>
+                    {canViewRevenue && <span>· R$ {Number(a.service.price ?? 0).toFixed(2)}</span>}
                   </div>
                 </div>
               ))}

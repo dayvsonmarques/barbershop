@@ -65,7 +65,7 @@ export default function AgendarPage() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const maxDate = new Date(today);
-  maxDate.setDate(today.getDate() + 13);
+  maxDate.setDate(today.getDate() + 6);
 
   function dateToStr(d: Date) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -107,7 +107,7 @@ export default function AgendarPage() {
     }
 
     const dates: string[] = [];
-    for (let i = 0; i <= 13; i++) {
+    for (let i = 0; i <= 6; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       dates.push(dateToStr(d));
