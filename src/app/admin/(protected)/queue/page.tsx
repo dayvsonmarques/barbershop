@@ -135,7 +135,7 @@ export default function QueuePage() {
       </div>
 
       {/* Filter block */}
-      <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4">
+      <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4 mb-6">
         <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
         <div className="flex flex-wrap gap-3 items-end">
 
