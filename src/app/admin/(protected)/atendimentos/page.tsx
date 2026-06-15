@@ -202,9 +202,9 @@ export default function AtendimentosPage() {
         <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
 
         {/* Linha 1 — Cliente, Profissional, Serviço */}
-        <div className="flex flex-wrap items-end gap-3">
+        <div className="flex items-end gap-3">
           {/* Search */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 flex-1 min-w-0">
             <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Cliente</label>
             <div className="relative">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -215,20 +215,20 @@ export default function AtendimentosPage() {
                 placeholder="Buscar..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="h-9 pl-8 pr-3 w-44 border border-gray-200 rounded-lg text-sm bg-white placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+                className="h-9 w-full pl-8 pr-3 border border-gray-200 rounded-lg text-sm bg-white placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
               />
             </div>
           </div>
 
           {/* Barber */}
           {barbers.length > 0 && (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
               <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Profissional</label>
               <div className="relative">
                 <select
                   value={barberId}
                   onChange={e => setBarberId(e.target.value)}
-                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                  className="h-9 w-full pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
                 >
                   <option value="">Todos</option>
                   {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
@@ -240,13 +240,13 @@ export default function AtendimentosPage() {
 
           {/* Service */}
           {services.length > 0 && (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
               <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Serviço</label>
               <div className="relative">
                 <select
                   value={serviceId}
                   onChange={e => setServiceId(e.target.value)}
-                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                  className="h-9 w-full pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
                 >
                   <option value="">Todos</option>
                   {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
@@ -259,16 +259,16 @@ export default function AtendimentosPage() {
 
         {/* Linha 2 — Período */}
         <div className="mt-3 pt-3 border-t border-gray-200/70">
-          <div className="flex flex-wrap items-end gap-3">
-            <div className="flex flex-col gap-1">
+          <div className="flex items-end gap-3">
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
               <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Período</label>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex gap-1">
                 {PRESETS.map(p => (
                   <button
                     key={p.key}
                     type="button"
                     onClick={() => setPreset(p.key)}
-                    className={`h-9 px-3.5 text-sm rounded-lg border font-medium transition-colors ${
+                    className={`h-9 flex-1 px-3 text-sm rounded-lg border font-medium transition-colors ${
                       preset === p.key
                         ? "bg-[#C9A84C] text-white border-[#C9A84C] shadow-sm"
                         : "bg-white text-gray-600 border-gray-200 hover:border-[#C9A84C] hover:text-gray-900 shadow-sm"
@@ -280,10 +280,10 @@ export default function AtendimentosPage() {
               </div>
             </div>
 
-            {/* Custom date inputs — inline na mesma linha */}
+            {/* Custom date inputs */}
             {preset === "custom" && (
-              <div className="flex items-end gap-2">
-                <div className="flex flex-col gap-1">
+              <>
+                <div className="flex flex-col gap-1 shrink-0">
                   <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">De</label>
                   <input
                     type="date"
@@ -292,7 +292,7 @@ export default function AtendimentosPage() {
                     className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 shrink-0">
                   <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Até</label>
                   <input
                     type="date"
@@ -301,7 +301,7 @@ export default function AtendimentosPage() {
                     className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
-              </div>
+              </>
             )}
           </div>
         </div>
