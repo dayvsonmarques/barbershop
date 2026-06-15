@@ -22,7 +22,7 @@ export default async function AdminProtectedLayout({
         <Sidebar />
         <div className="flex flex-col flex-1 min-w-0">
           <Header />
-          <main className="flex-1 p-6 max-w-screen-2xl w-full mx-auto">
+          <main className="flex-1 p-3 sm:p-6 max-w-screen-2xl w-full mx-auto">
             {children}
           </main>
         </div>

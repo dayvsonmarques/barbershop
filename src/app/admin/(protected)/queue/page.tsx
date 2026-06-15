@@ -137,7 +137,7 @@ export default function QueuePage() {
       {/* Filter block */}
       <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4 mb-6">
         <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
-        <div className="flex flex-wrap gap-3 items-end">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end">
 
           {/* Período */}
           <div className="flex flex-col gap-1">
@@ -146,7 +146,7 @@ export default function QueuePage() {
               <select
                 value={period}
                 onChange={e => setPeriod(e.target.value as Period)}
-                className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                className="h-9 w-full sm:w-auto pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
               >
                 <option value="next7">Próximos 7 dias</option>
                 <option value="specific">Data específica</option>
@@ -163,7 +163,7 @@ export default function QueuePage() {
                 value={specificDate}
                 onChange={e => setSpecificDate(e.target.value)}
                 onClick={e => (e.target as HTMLInputElement).showPicker?.()}
-                className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+                className="h-9 w-full sm:w-auto border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
               />
             </div>
           )}
@@ -176,7 +176,7 @@ export default function QueuePage() {
                 <select
                   value={barberId}
                   onChange={e => setBarberId(e.target.value)}
-                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                  className="h-9 w-full sm:w-auto pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
                 >
                   <option value="">Todos</option>
                   {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
@@ -194,7 +194,7 @@ export default function QueuePage() {
                 <select
                   value={serviceId}
                   onChange={e => setServiceId(e.target.value)}
-                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                  className="h-9 w-full sm:w-auto pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
                 >
                   <option value="">Todos</option>
                   {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
@@ -211,7 +211,7 @@ export default function QueuePage() {
               <select
                 value={status}
                 onChange={e => setStatus(e.target.value)}
-                className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                className="h-9 w-full sm:w-auto pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
               >
                 <option value="">Todos</option>
                 <option value="PENDING">Aguardando</option>

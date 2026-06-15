@@ -260,7 +260,7 @@ export default function BookingsPage() {
         <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
 
         {/* Linha 1 — Data, Cliente, Serviço */}
-        <div className="flex items-end gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <div className="flex flex-col gap-1 shrink-0">
             <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Data</label>
             <input
@@ -268,7 +268,7 @@ export default function BookingsPage() {
               value={selectedDate}
               onChange={e => setSelectedDate(e.target.value)}
               onClick={e => (e.target as HTMLInputElement).showPicker?.()}
-              className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+              className="h-9 w-full sm:w-auto border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
             />
           </div>
           <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -308,13 +308,13 @@ export default function BookingsPage() {
         <div className="mt-3 pt-3 border-t border-gray-200/70">
           <div className="flex flex-col gap-1">
             <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Status</label>
-            <div className="flex gap-1">
+            <div className="grid grid-cols-3 gap-1 sm:flex">
               {STATUS_TABS.map(t => (
                 <button
                   key={t.key}
                   type="button"
                   onClick={() => setFilterStatus(t.key)}
-                  className={`h-9 flex-1 flex items-center justify-center gap-1.5 px-3 text-sm rounded-lg border font-medium transition-colors ${
+                  className={`h-9 sm:flex-1 flex items-center justify-center gap-1 px-2 sm:px-3 text-xs sm:text-sm rounded-lg border font-medium transition-colors ${
                     filterStatus === t.key
                       ? "bg-[#C9A84C] text-white border-[#C9A84C] shadow-sm"
                       : "bg-white text-gray-600 border-gray-200 hover:border-[#C9A84C] hover:text-gray-900 shadow-sm"
