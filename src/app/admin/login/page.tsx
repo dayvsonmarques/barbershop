@@ -54,13 +54,10 @@ export default function AdminLoginPage() {
           <Image
             src="/barbershop-logo.png"
             alt="ED Barbearia"
-            width={56}
-            height={56}
-            className="object-contain mb-3 rounded-full"
+            width={96}
+            height={96}
+            className="object-contain rounded-full"
           />
-          <p className="text-xs tracking-widest uppercase text-[#A1A1AA] font-medium">
-            Painel Administrativo
-          </p>
         </div>
 
         {/* Card */}
@@ -111,9 +108,6 @@ export default function AdminLoginPage() {
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-[#A1A1AA]">
-          edmilson.barbearia7@gmail.com · password123
-        </p>
       </div>
     </main>
   );
