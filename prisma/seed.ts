@@ -392,14 +392,14 @@ async function main() {
   console.log(`✅ Created ${created} past/present bookings.`);
 
   // ============================================
-  // 13. FUTURE BOOKINGS — próximos 30 dias
+  // 13. FUTURE BOOKINGS — próximas 2 semanas
   // ============================================
-  console.log("📅 Creating future bookings (next 30 days)...");
+  console.log("📅 Creating future bookings (next 14 days)...");
 
   const futureHours = [9, 9, 10, 10, 11, 14, 14, 15, 15, 16, 16, 17];
   let futureCreated = 0;
 
-  for (let dayOffset = 1; dayOffset <= 30; dayOffset++) {
+  for (let dayOffset = 1; dayOffset <= 14; dayOffset++) {
     const date = new Date();
     date.setDate(date.getDate() + dayOffset);
     date.setHours(0, 0, 0, 0);

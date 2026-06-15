@@ -14,9 +14,37 @@ type Atendimento = {
 
 type ServiceOption = { id: number; name: string };
 type BarberOption  = { id: number; name: string };
+type Preset = "today" | "3days" | "7days" | "15days" | "30days" | "custom";
+
+const PRESETS: { key: Preset; label: string }[] = [
+  { key: "today",  label: "Hoje" },
+  { key: "3days",  label: "3 dias" },
+  { key: "7days",  label: "7 dias" },
+  { key: "15days", label: "Quinzena" },
+  { key: "30days", label: "Mês" },
+  { key: "custom", label: "Personalizado" },
+];
 
 function localDateStr(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function daysAgo(n: number) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return localDateStr(d);
+}
+
+function presetDates(preset: Preset, customStart: string, customEnd: string) {
+  const today = localDateStr();
+  switch (preset) {
+    case "today":  return { startDate: today,      endDate: today };
+    case "3days":  return { startDate: daysAgo(2), endDate: today };
+    case "7days":  return { startDate: daysAgo(6), endDate: today };
+    case "15days": return { startDate: daysAgo(14), endDate: today };
+    case "30days": return { startDate: daysAgo(29), endDate: today };
+    case "custom": return { startDate: customStart, endDate: customEnd };
+  }
 }
 
 function fmtDate(iso: string) {
@@ -37,14 +65,17 @@ export default function AtendimentosPage() {
   const [page,           setPage]           = useState(0);
   const [canViewRevenue, setCanViewRevenue] = useState(false);
 
-  const today = localDateStr();
-  const monthStart = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}-01`;
+  const [search,      setSearch]      = useState("");
+  const [barberId,    setBarberId]    = useState("");
+  const [serviceId,   setServiceId]   = useState("");
+  const [preset,      setPreset]      = useState<Preset>("today");
+  const [customStart, setCustomStart] = useState(localDateStr());
+  const [customEnd,   setCustomEnd]   = useState(localDateStr());
 
-  const [search,     setSearch]     = useState("");
-  const [barberId,   setBarberId]   = useState("");
-  const [serviceId,  setServiceId]  = useState("");
-  const [startDate,  setStartDate]  = useState(monthStart);
-  const [endDate,    setEndDate]    = useState(today);
+  const { startDate, endDate } = useMemo(
+    () => presetDates(preset, customStart, customEnd),
+    [preset, customStart, customEnd]
+  );
 
   const [services, setServices] = useState<ServiceOption[]>([]);
   const [barbers,  setBarbers]  = useState<BarberOption[]>([]);
@@ -166,69 +197,109 @@ export default function AtendimentosPage() {
         )}
       </div>
 
-      {/* Filters */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2 px-4 py-3 border-b border-gray-100">
-          {/* Search */}
-          <div className="relative">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input
-              type="text"
-              placeholder="Buscar cliente..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="h-9 pl-8 pr-3 border border-gray-200 rounded-lg text-sm placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none w-44 transition-colors"
-            />
+      {/* Filter block */}
+      <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4 mb-6">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
+        <div className="flex flex-wrap items-end gap-3">
+
+          {/* Period pills */}
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Período</label>
+            <div className="flex flex-wrap gap-1">
+              {PRESETS.map(p => (
+                <button
+                  key={p.key}
+                  type="button"
+                  onClick={() => setPreset(p.key)}
+                  className={`h-9 px-3.5 text-sm rounded-lg border font-medium transition-colors ${
+                    preset === p.key
+                      ? "bg-[#C9A84C] text-white border-[#C9A84C] shadow-sm"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-[#C9A84C] hover:text-gray-900 shadow-sm"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Date range */}
-          <input
-            type="date"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
-            className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 focus:border-[#C9A84C] focus:outline-none transition-colors"
-          />
-          <span className="text-xs text-gray-400">até</span>
-          <input
-            type="date"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
-            className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 focus:border-[#C9A84C] focus:outline-none transition-colors"
-          />
+          {/* Search */}
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Cliente</label>
+            <div className="relative">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="h-9 pl-8 pr-3 w-40 border border-gray-200 rounded-lg text-sm bg-white placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+              />
+            </div>
+          </div>
 
           {/* Barber */}
           {barbers.length > 0 && (
-            <div className="relative">
-              <select
-                value={barberId}
-                onChange={e => setBarberId(e.target.value)}
-                className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-              >
-                <option value="">Todos os profissionais</option>
-                {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
-              </select>
-              <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Profissional</label>
+              <div className="relative">
+                <select
+                  value={barberId}
+                  onChange={e => setBarberId(e.target.value)}
+                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                >
+                  <option value="">Todos</option>
+                  {barbers.map(b => <option key={b.id} value={String(b.id)}>{b.name}</option>)}
+                </select>
+                <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
             </div>
           )}
 
           {/* Service */}
           {services.length > 0 && (
-            <div className="relative">
-              <select
-                value={serviceId}
-                onChange={e => setServiceId(e.target.value)}
-                className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
-              >
-                <option value="">Todos os serviços</option>
-                {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
-              </select>
-              <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Serviço</label>
+              <div className="relative">
+                <select
+                  value={serviceId}
+                  onChange={e => setServiceId(e.target.value)}
+                  className="h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
+                >
+                  <option value="">Todos</option>
+                  {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
+                </select>
+                <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
             </div>
           )}
         </div>
 
+        {/* Custom date range */}
+        {preset === "custom" && (
+          <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-200/70">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">De</span>
+            <input
+              type="date"
+              value={customStart}
+              onChange={e => setCustomStart(e.target.value)}
+              className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+            />
+            <span className="text-xs text-gray-400">até</span>
+            <input
+              type="date"
+              value={customEnd}
+              onChange={e => setCustomEnd(e.target.value)}
+              className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Results */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {/* Table */}
         {loading ? (
           <div className="flex items-center justify-center h-40 text-sm text-gray-400">Carregando...</div>
@@ -320,7 +391,7 @@ export default function AtendimentosPage() {
             </div>
           </>
         )}
-      </div>
+      </div> {/* end Results */}
     </div>
   );
 }
