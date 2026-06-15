@@ -162,6 +162,7 @@ export default function QueuePage() {
                 type="date"
                 value={specificDate}
                 onChange={e => setSpecificDate(e.target.value)}
+                onClick={e => (e.target as HTMLInputElement).showPicker?.()}
                 className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
               />
             </div>

@@ -115,6 +115,7 @@ export default function BlockedSlotsPage() {
               min={minDate}
               max={maxDateStr}
               onChange={(e) => setDate(e.target.value)}
+              onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
             />
           </div>

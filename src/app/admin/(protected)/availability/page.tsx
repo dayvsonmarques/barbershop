@@ -421,6 +421,7 @@ export default function AdminAvailabilityPage() {
                 type="date"
                 value={exDate}
                 onChange={(e) => setExDate(e.target.value)}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
               />
 
               <select

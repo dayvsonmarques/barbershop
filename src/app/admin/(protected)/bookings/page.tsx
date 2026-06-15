@@ -216,6 +216,7 @@ export default function BookingsPage() {
             type="date"
             value={selectedDate}
             onChange={e => setSelectedDate(e.target.value)}
+            onClick={e => (e.target as HTMLInputElement).showPicker?.()}
             className="h-9 border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:border-[#C9A84C] focus:outline-none transition-colors rounded-lg"
           />
           <button
