@@ -212,13 +212,6 @@ export default function BookingsPage() {
           <p className="mt-1 text-sm text-gray-500">Gerencie e confirme os agendamentos dos seus clientes.</p>
         </div>
         <div className="flex items-center gap-3">
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={e => setSelectedDate(e.target.value)}
-            onClick={e => (e.target as HTMLInputElement).showPicker?.()}
-            className="h-9 border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:border-[#C9A84C] focus:outline-none transition-colors rounded-lg"
-          />
           <button
             onClick={exportCSV}
             className="flex items-center gap-2 h-9 px-4 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -262,65 +255,88 @@ export default function BookingsPage() {
         <StatCard label="Cancelados"  value={stats.cancelled} color="red"    />
       </div>
 
-      {/* ── Filters row ── */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gray-100 flex-wrap">
-          {/* Status tabs */}
-          <div className="flex items-center gap-1">
-            {STATUS_TABS.map(t => (
-              <button
-                key={t.key}
-                onClick={() => setFilterStatus(t.key)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  filterStatus === t.key
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"
-                }`}
-              >
-                {t.label}
-                {t.count > 0 && (
-                  <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
-                    filterStatus === t.key ? "bg-white/20 text-white" : "bg-gray-200 text-gray-600"
-                  }`}>
-                    {t.count}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
+      {/* Filter block */}
+      <div className="bg-[#F4F4F5] border border-gray-200 rounded-xl p-4 mb-6">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtros</p>
 
-          {/* Search + service */}
-          <div className="flex items-center gap-2">
+        {/* Linha 1 — Data, Cliente, Serviço */}
+        <div className="flex items-end gap-3">
+          <div className="flex flex-col gap-1 shrink-0">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Data</label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={e => setSelectedDate(e.target.value)}
+              onClick={e => (e.target as HTMLInputElement).showPicker?.()}
+              className="h-9 border border-gray-200 rounded-lg px-3 text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
+            />
+          </div>
+          <div className="flex flex-col gap-1 flex-1 min-w-0">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Cliente</label>
             <div className="relative">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
               <input
                 type="text"
-                placeholder="Buscar por cliente, serviço..."
+                placeholder="Buscar..."
                 value={filterSearch}
                 onChange={e => setFilterSearch(e.target.value)}
-                className="h-9 pl-8 pr-3 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none w-56 transition-colors"
+                className="h-9 w-full pl-8 pr-3 border border-gray-200 rounded-lg text-sm bg-white placeholder-gray-400 focus:border-[#C9A84C] focus:outline-none transition-colors shadow-sm"
               />
             </div>
-            {services.length > 0 && (
+          </div>
+          {services.length > 0 && (
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Serviço</label>
               <div className="relative">
                 <select
                   value={filterService}
                   onChange={e => setFilterService(e.target.value)}
-                  className="h-9 pl-3 pr-7 border border-gray-200 rounded-lg text-sm text-gray-700 bg-white focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors"
+                  className="h-9 w-full pl-3 pr-8 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:border-[#C9A84C] focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm"
                 >
-                  <option value="">Todos os serviços</option>
+                  <option value="">Todos</option>
                   {services.map(s => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
                 </select>
-                <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="6 9 12 15 18 9"/>
-                </svg>
+                <svg className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
+        {/* Linha 2 — Status */}
+        <div className="mt-3 pt-3 border-t border-gray-200/70">
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Status</label>
+            <div className="flex gap-1">
+              {STATUS_TABS.map(t => (
+                <button
+                  key={t.key}
+                  type="button"
+                  onClick={() => setFilterStatus(t.key)}
+                  className={`h-9 flex-1 flex items-center justify-center gap-1.5 px-3 text-sm rounded-lg border font-medium transition-colors ${
+                    filterStatus === t.key
+                      ? "bg-[#C9A84C] text-white border-[#C9A84C] shadow-sm"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-[#C9A84C] hover:text-gray-900 shadow-sm"
+                  }`}
+                >
+                  {t.label}
+                  {t.count > 0 && (
+                    <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
+                      filterStatus === t.key ? "bg-white/20 text-white" : "bg-gray-200 text-gray-600"
+                    }`}>
+                      {t.count}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {/* ── Table / cards ── */}
         {loading ? (
           <div className="flex items-center justify-center h-40 text-sm text-gray-400">Carregando...</div>
