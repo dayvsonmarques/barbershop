@@ -54,7 +54,7 @@ export default function ProductsPage() {
           <p className="mt-1 text-sm text-gray-600">{products.length} produtos cadastrados</p>
         </div>
         <Link
-          href="/admin/products/new"
+          href="/painel-gerenciar/products/new"
           className="rounded-lg bg-[#C9A84C] px-4 py-2 text-sm font-medium text-white hover:bg-[#A07830]"
         >
           + Novo Produto
@@ -112,7 +112,7 @@ export default function ProductsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right text-sm">
-                    <Link href={`/admin/products/${p.id}/edit`} className="text-[#C9A84C] hover:text-[#A07830] mr-4">
+                    <Link href={`/painel-gerenciar/products/${p.id}/edit`} className="text-[#C9A84C] hover:text-[#A07830] mr-4">
                       Editar
                     </Link>
                     <button onClick={() => handleDelete(p.id, p.name)} className="text-red-600 hover:text-red-900">

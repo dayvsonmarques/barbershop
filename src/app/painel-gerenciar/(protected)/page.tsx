@@ -45,7 +45,7 @@ export default function AdminDashboard() {
     fetch("/api/admin/dashboard")
       .then((r) => {
         if (r.status === 401 || r.status === 403) {
-          window.location.href = "/admin/login";
+          window.location.href = "/painel-gerenciar/login";
           return;
         }
         if (!r.ok) throw new Error("Falha ao carregar dados");

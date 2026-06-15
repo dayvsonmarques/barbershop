@@ -13,7 +13,7 @@ export default function AdminLoginPage() {
 
   useEffect(() => {
     fetch("/api/auth/me").then((res) => {
-      if (res.ok) router.replace("/admin");
+      if (res.ok) router.replace("/painel-gerenciar");
     });
   }, [router]);
 
@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.replace("/admin");
+      router.replace("/painel-gerenciar");
     } catch {
       setError("Erro ao conectar. Tente novamente.");
     } finally {

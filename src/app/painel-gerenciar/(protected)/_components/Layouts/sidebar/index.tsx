@@ -14,7 +14,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Principal",
     items: [
       {
-        href: "/admin",
+        href: "/painel-gerenciar",
         label: "Painel Geral",
         exact: true,
         icon: (
@@ -26,7 +26,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/bookings",
+        href: "/painel-gerenciar/bookings",
         label: "Agendamentos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -35,7 +35,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/queue",
+        href: "/painel-gerenciar/queue",
         label: "Fila de Espera",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -46,7 +46,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/atendimentos",
+        href: "/painel-gerenciar/atendimentos",
         label: "Atendimentos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -55,7 +55,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/revenue",
+        href: "/painel-gerenciar/revenue",
         label: "Faturamento",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -64,7 +64,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/reports",
+        href: "/painel-gerenciar/reports",
         label: "Relatórios",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -78,7 +78,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Gestão",
     items: [
       {
-        href: "/admin/customers",
+        href: "/painel-gerenciar/customers",
         label: "Clientes",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -88,7 +88,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/barbers",
+        href: "/painel-gerenciar/barbers",
         label: "Profissionais",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -97,7 +97,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/services",
+        href: "/painel-gerenciar/services",
         label: "Serviços",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -106,7 +106,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/availability",
+        href: "/painel-gerenciar/availability",
         label: "Disponibilidade",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -115,7 +115,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/products",
+        href: "/painel-gerenciar/products",
         label: "Produtos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -124,7 +124,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/orders",
+        href: "/painel-gerenciar/orders",
         label: "Pedidos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -135,7 +135,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/courses",
+        href: "/painel-gerenciar/courses",
         label: "Cursos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -144,7 +144,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/testimonials",
+        href: "/painel-gerenciar/testimonials",
         label: "Depoimentos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -159,7 +159,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Acesso",
     items: [
       {
-        href: "/admin/groups",
+        href: "/painel-gerenciar/groups",
         label: "Grupos",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -169,7 +169,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/admin/users",
+        href: "/painel-gerenciar/users",
         label: "Usuários",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -184,7 +184,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Sistema",
     items: [
       {
-        href: "/admin/settings",
+        href: "/painel-gerenciar/settings",
         label: "Configurações",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -284,7 +284,7 @@ export function Sidebar() {
                           {item.icon}
                         </span>
                         <span className="flex-1">{item.label}</span>
-                        {item.href === "/admin/queue" && pendingCount > 0 && (
+                        {item.href === "/painel-gerenciar/queue" && pendingCount > 0 && (
                           <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
                             {pendingCount > 99 ? "99+" : pendingCount}
                           </span>

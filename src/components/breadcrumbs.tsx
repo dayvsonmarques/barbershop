@@ -31,7 +31,7 @@ export function Breadcrumbs() {
       <ol className="inline-flex items-center space-x-1 text-sm text-gray-500">
         <li className="inline-flex items-center">
           <Link
-            href="/admin"
+            href="/painel-gerenciar"
             className="hover:text-gray-900"
           >
             Home

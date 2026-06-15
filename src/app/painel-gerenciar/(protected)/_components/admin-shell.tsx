@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { AdminHeader } from "./admin-header";
-import { AdminSidebar, type AdminNavSection } from "./admin-sidebar";
+import { AdminHeader } from "./painel-gerenciar-header";
+import { AdminSidebar, type AdminNavSection } from "./painel-gerenciar-sidebar";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,30 +13,30 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     () => [
       {
         label: "Principal",
-        items: [{ href: "/admin", label: "Dashboard", icon: "📊" }],
+        items: [{ href: "/painel-gerenciar", label: "Dashboard", icon: "📊" }],
       },
       {
         label: "Agendamentos",
         items: [
-          { href: "/admin/bookings", label: "Agendamentos", icon: "📅" },
-          { href: "/admin/barbers", label: "Barbeiros", icon: "💈" },
-          { href: "/admin/availability", label: "Disponibilidade", icon: "⏰" },
+          { href: "/painel-gerenciar/bookings", label: "Agendamentos", icon: "📅" },
+          { href: "/painel-gerenciar/barbers", label: "Barbeiros", icon: "💈" },
+          { href: "/painel-gerenciar/availability", label: "Disponibilidade", icon: "⏰" },
         ],
       },
       {
         label: "Cadastros",
         items: [
-          { href: "/admin/services", label: "Serviços", icon: "✂️" },
-          { href: "/admin/products", label: "Produtos", icon: "🛍️" },
-          { href: "/admin/orders", label: "Pedidos", icon: "📦" },
-          { href: "/admin/courses", label: "Cursos", icon: "🎓" },
+          { href: "/painel-gerenciar/services", label: "Serviços", icon: "✂️" },
+          { href: "/painel-gerenciar/products", label: "Produtos", icon: "🛍️" },
+          { href: "/painel-gerenciar/orders", label: "Pedidos", icon: "📦" },
+          { href: "/painel-gerenciar/courses", label: "Cursos", icon: "🎓" },
         ],
       },
       {
         label: "Administração",
         items: [
-          { href: "/admin/users", label: "Usuários", icon: "👥" },
-          { href: "/admin/settings", label: "Configurações", icon: "⚙️" },
+          { href: "/painel-gerenciar/users", label: "Usuários", icon: "👥" },
+          { href: "/painel-gerenciar/settings", label: "Configurações", icon: "⚙️" },
         ],
       },
     ],
@@ -73,18 +73,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
 function getAdminTitleFromPath(pathname: string): string {
   const normalized = pathname.replace(/\/$/, "");
-  if (normalized === "/admin") return "Dashboard";
+  if (normalized === "/painel-gerenciar") return "Dashboard";
 
   const titles: Record<string, string> = {
-    "/admin/bookings": "Agendamentos",
-    "/admin/barbers": "Barbeiros",
-    "/admin/availability": "Disponibilidade",
-    "/admin/services": "Serviços",
-    "/admin/products": "Produtos",
-    "/admin/orders": "Pedidos",
-    "/admin/courses": "Cursos",
-    "/admin/users": "Usuários",
-    "/admin/settings": "Configurações",
+    "/painel-gerenciar/bookings": "Agendamentos",
+    "/painel-gerenciar/barbers": "Barbeiros",
+    "/painel-gerenciar/availability": "Disponibilidade",
+    "/painel-gerenciar/services": "Serviços",
+    "/painel-gerenciar/products": "Produtos",
+    "/painel-gerenciar/orders": "Pedidos",
+    "/painel-gerenciar/courses": "Cursos",
+    "/painel-gerenciar/users": "Usuários",
+    "/painel-gerenciar/settings": "Configurações",
   };
 
   return titles[normalized] ?? "Painel Administrativo";

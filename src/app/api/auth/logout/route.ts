@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const redirectTo = url.searchParams.get("redirect") ?? "/admin/login";
+  const redirectTo = url.searchParams.get("redirect") ?? "/painel-gerenciar/login";
 
   const response = NextResponse.redirect(new URL(redirectTo, url.origin));
   response.cookies.set({

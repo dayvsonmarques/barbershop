@@ -13,7 +13,7 @@ export default async function AdminProtectedLayout({
   const token = cookieStore.get("auth_token")?.value;
 
   if (!token) {
-    redirect("/admin/login");
+    redirect("/painel-gerenciar/login");
   }
 
   return (

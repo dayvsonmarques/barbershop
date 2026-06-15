@@ -166,7 +166,7 @@ export function ProductForm({ productId, initialData }: Props) {
         return;
       }
 
-      router.push("/admin/products");
+      router.push("/painel-gerenciar/products");
     } finally {
       setSaving(false);
     }
@@ -378,7 +378,7 @@ export function ProductForm({ productId, initialData }: Props) {
         </button>
         <button
           type="button"
-          onClick={() => router.push("/admin/products")}
+          onClick={() => router.push("/painel-gerenciar/products")}
           className="rounded-lg border border-gray-300 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Cancelar

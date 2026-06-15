@@ -46,7 +46,7 @@ export function AdminSidebar({
       >
         <div className="flex h-full flex-col py-8 pl-6 pr-3">
           <div className="flex items-center justify-between pr-2">
-            <Link href="/admin" className="text-lg font-bold text-dark">
+            <Link href="/painel-gerenciar" className="text-lg font-bold text-dark">
               ED Barbearia
             </Link>
 
@@ -70,7 +70,7 @@ export function AdminSidebar({
                   {section.items.map((item) => {
                     const isActive =
                       pathname === item.href ||
-                      (item.href !== "/admin" && pathname.startsWith(item.href));
+                      (item.href !== "/painel-gerenciar" && pathname.startsWith(item.href));
 
                     return (
                       <li key={item.href}>
