@@ -1,19 +1,18 @@
 FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat openssl
 
-# Instala dependências
+# Instala dependências e gera o cliente Prisma
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
-RUN npm ci
+RUN npm ci && npx prisma generate
 
 # Build da aplicação
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npx prisma generate
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
@@ -34,7 +33,7 @@ COPY --from=builder /app/prisma ./prisma
 # CLI do Prisma (para migrate deploy no startup)
 COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
 COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 3000
 ENV PORT=3000
