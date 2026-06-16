@@ -34,7 +34,7 @@ COPY --from=builder /app/prisma ./prisma
 # CLI do Prisma (para migrate deploy no startup)
 COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
 COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 3000
 ENV PORT=3000
