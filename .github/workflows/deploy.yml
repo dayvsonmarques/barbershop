@@ -35,4 +35,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Disparar deploy no Coolify
-        run: curl -fsSL "${{ secrets.COOLIFY_WEBHOOK_URL }}"
+        run: |
+          curl -fsSL \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
+            "${{ secrets.COOLIFY_WEBHOOK_URL }}"
