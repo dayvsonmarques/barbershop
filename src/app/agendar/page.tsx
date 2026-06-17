@@ -242,6 +242,15 @@ export default function AgendarPage() {
           <div className={`relative flex flex-col items-center gap-6 mx-4 w-full max-w-sm bg-background-secondary border border-gold px-8 sm:px-14 py-12 shadow-[0_20px_80px_rgba(0,0,0,0.7),0_0_0_1px_rgba(201,168,76,0.2)] transition-all duration-300 ${
             toastVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           }`}>
+            <button
+              onClick={() => router.push("/")}
+              className="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors"
+              aria-label="Fechar"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
             <div className="flex items-center justify-center w-20 h-20 rounded-full border-2 border-green-500">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
                 <polyline points="20 6 9 17 4 12" />
@@ -251,6 +260,12 @@ export default function AgendarPage() {
               <p className="font-heading text-text-primary text-3xl font-bold tracking-wide">Agendamento confirmado!</p>
               <p className="text-text-secondary mt-2 text-base">Entraremos em contato para confirmar seu horário.</p>
             </div>
+            <button
+              onClick={() => router.push("/")}
+              className="w-full bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-3 transition-colors"
+            >
+              OK
+            </button>
           </div>
         </div>
 
