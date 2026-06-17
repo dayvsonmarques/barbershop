@@ -35,6 +35,13 @@ COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
 COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
 
+# Pacotes necessários para o seed (tsx, bcryptjs, pg, adapter, dotenv)
+COPY --from=deps /app/node_modules/tsx ./node_modules/tsx
+COPY --from=deps /app/node_modules/bcryptjs ./node_modules/bcryptjs
+COPY --from=deps /app/node_modules/pg ./node_modules/pg
+COPY --from=deps /app/node_modules/dotenv ./node_modules/dotenv
+COPY --from=deps /app/node_modules/@prisma/adapter-pg ./node_modules/@prisma/adapter-pg
+
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
