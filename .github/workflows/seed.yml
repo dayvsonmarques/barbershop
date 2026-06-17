@@ -22,4 +22,5 @@ jobs:
           script: |
             CONTAINER=$(docker ps --filter "name=rzmxpm" --format "{{.Names}}" | head -1)
             echo "Container: $CONTAINER"
-            docker exec $CONTAINER node_modules/.bin/tsx prisma/seed.ts
+            docker exec $CONTAINER sh -c "cd /app && npm install tsx bcryptjs pg @prisma/adapter-pg dotenv --no-save --silent 2>&1 | tail -3"
+            docker exec $CONTAINER sh -c "cd /app && node_modules/.bin/tsx prisma/seed.ts"
