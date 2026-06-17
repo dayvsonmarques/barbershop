@@ -60,6 +60,9 @@ export default function AgendarPage() {
   const [success, setSuccess] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [error, setError] = useState("");
+  const [confirmedName, setConfirmedName] = useState("");
+  const [confirmedPhone, setConfirmedPhone] = useState("");
+  const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [disabledDates, setDisabledDates] = useState<Date[]>([]);
 
   const today = new Date();
@@ -195,9 +198,11 @@ export default function AgendarPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Erro ao criar agendamento");
 
+      setConfirmedName(clientName);
+      setConfirmedPhone(clientPhone);
       setSuccess(true);
       setToastVisible(true);
-      setTimeout(() => router.push("/"), 5000);
+      redirectTimeoutRef.current = setTimeout(() => router.push("/"), 5000);
       setSelectedService("");
       setSelectedBarber("");
       setSelectedDate("");
@@ -258,14 +263,30 @@ export default function AgendarPage() {
             </div>
             <div className="text-center">
               <p className="font-heading text-text-primary text-3xl font-bold tracking-wide">Agendamento confirmado!</p>
-              <p className="text-text-secondary mt-2 text-base">Entraremos em contato para confirmar seu horário.</p>
+              <div className="mt-4 space-y-1">
+                <p className="text-text-primary text-sm font-medium">{confirmedName}</p>
+                <p className="text-text-secondary text-sm">{confirmedPhone}</p>
+              </div>
+              <p className="text-text-secondary mt-4 text-sm">Entraremos em contato para confirmar seu horário.</p>
             </div>
-            <button
-              onClick={() => router.push("/")}
-              className="w-full bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-3 transition-colors"
-            >
-              OK
-            </button>
+            <div className="w-full flex flex-col gap-2">
+              <button
+                onClick={() => router.push("/")}
+                className="w-full bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-3 transition-colors"
+              >
+                OK
+              </button>
+              <button
+                onClick={() => {
+                  if (redirectTimeoutRef.current) clearTimeout(redirectTimeoutRef.current);
+                  setToastVisible(false);
+                  setSuccess(false);
+                }}
+                className="w-full border border-border text-text-secondary hover:text-text-primary hover:border-gold text-sm font-medium py-3 transition-colors"
+              >
+                Fazer outro agendamento
+              </button>
+            </div>
           </div>
         </div>
 
