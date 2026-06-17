@@ -1,6 +1,6 @@
 import twilio from "twilio";
 
-const client =
+const twilioClient =
   process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
     ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     : null;
@@ -13,12 +13,12 @@ function formatPhone(phone: string): string {
 }
 
 export async function sendSMS(to: string, message: string): Promise<void> {
-  if (!client) {
+  if (!twilioClient) {
     console.warn("Twilio not configured — skipping SMS");
     return;
   }
 
-  await client.messages.create({
+  await twilioClient.messages.create({
     body: message,
     from: process.env.TWILIO_PHONE_NUMBER!,
     to: formatPhone(to),
@@ -26,16 +26,30 @@ export async function sendSMS(to: string, message: string): Promise<void> {
 }
 
 export async function sendWhatsApp(to: string, message: string): Promise<void> {
-  const whatsappFrom = process.env.TWILIO_WHATSAPP_NUMBER;
-  if (!client || !whatsappFrom) {
-    console.warn("Twilio WhatsApp not configured — message:", message);
+  const url = process.env.EVOLUTION_API_URL;
+  const apiKey = process.env.EVOLUTION_API_KEY;
+  const instance = process.env.EVOLUTION_INSTANCE;
+
+  if (!url || !apiKey || !instance) {
+    console.warn("Evolution API not configured — skipping WhatsApp");
     return;
   }
-  await client.messages.create({
-    body: message,
-    from: `whatsapp:${whatsappFrom}`,
-    to: `whatsapp:${formatPhone(to)}`,
+
+  const number = formatPhone(to).replace("+", "");
+
+  const response = await fetch(`${url}/message/sendText/${instance}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: apiKey,
+    },
+    body: JSON.stringify({ number, text: message }),
   });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Evolution API error ${response.status}: ${body}`);
+  }
 }
 
 export function otpMessage(code: string): string {
