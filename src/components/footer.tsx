@@ -75,7 +75,7 @@ export function Footer() {
 
   return (
     <>
-    <div className="group fixed bottom-4 right-4 z-50">
+    <div className="group fixed bottom-4 right-4 z-50 m-2.5">
       <span className="pointer-events-none absolute bottom-full right-0 mb-4 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         Desenvolvido por Web Dev Studio
       </span>
