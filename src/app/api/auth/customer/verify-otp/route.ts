@@ -32,15 +32,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Código inválido ou expirado" }, { status: 401 });
   }
 
-  await prisma.phoneOtp.update({ where: { id: otp.id }, data: { usedAt: new Date() } });
-
   let customer = await prisma.customer.findUnique({ where: { phone } });
 
   if (!customer) {
     if (!name) {
       return NextResponse.json({ needsName: true }, { status: 200 });
     }
+    await prisma.phoneOtp.update({ where: { id: otp.id }, data: { usedAt: new Date() } });
     customer = await prisma.customer.create({ data: { phone, name } });
+  } else {
+    await prisma.phoneOtp.update({ where: { id: otp.id }, data: { usedAt: new Date() } });
   }
 
   const token = await signCustomerToken({ id: customer.id, phone: customer.phone, name: customer.name });
