@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
   const end = new Date();
 
   const bookings = await prisma.booking.findMany({
-    where: { scheduledAt: { gte: start, lte: end } },
+    where: { scheduledAt: { gte: start, lte: end }, isActive: true },
     select: {
       scheduledAt: true,
       status: true,
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 
   // New vs returning: clients who had bookings BEFORE this period
   const allPreviousIds = await prisma.booking.findMany({
-    where: { scheduledAt: { lt: start } },
+    where: { scheduledAt: { lt: start }, isActive: true },
     select: { customerPhone: true, customerEmail: true },
   });
   const previousSet = new Set(allPreviousIds.map((b) => b.customerPhone ?? b.customerEmail ?? "anon"));

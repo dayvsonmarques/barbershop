@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
+import { IconButton } from "@/components/admin/icon-button";
+import { SortHeader, useSort, sortData } from "@/components/admin/sort-header";
+
+const PAGE_SIZE = 15;
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
 type Group = { id: number; name: string };
@@ -27,6 +32,10 @@ const emptyForm: FormState = { name: "", email: "", password: "", groupId: "", i
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
+  const [page, setPage] = useState(1);
+  const { sort, toggle } = useSort("name");
+  const sorted = useMemo(() => sortData(users.map(u => ({ ...u, "group.name": u.groups[0]?.group.name ?? "" })), sort), [users, sort]);
+  const paginated = useMemo(() => sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [sorted, page]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<User | null>(null);
@@ -140,15 +149,15 @@ export default function UsersPage() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {["Nome", "E-mail", "Grupo", "Status", "Ações"].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  {h}
-                </th>
-              ))}
+              <SortHeader label="Nome"   field="name"       sort={sort} onSort={toggle} />
+              <SortHeader label="E-mail" field="email"      sort={sort} onSort={toggle} />
+              <SortHeader label="Grupo"  field="group.name" sort={sort} onSort={toggle} />
+              <SortHeader label="Status" field="isActive"   sort={sort} onSort={toggle} />
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {users.map((u) => (
+            {paginated.map((u) => (
               <tr key={u.id}>
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">{u.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-500">{u.email}</td>
@@ -160,13 +169,15 @@ export default function UsersPage() {
                     {u.isActive ? "Ativo" : "Inativo"}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right text-sm whitespace-nowrap">
-                  <button onClick={() => openEdit(u)} className="text-[#C9A84C] hover:text-[#A07830] mr-4">
-                    Editar
-                  </button>
-                  <button onClick={() => handleDelete(u.id, u.name)} className="text-red-600 hover:text-red-900">
-                    Excluir
-                  </button>
+                <td className="px-4 py-3 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <IconButton tooltip="Editar" onClick={() => openEdit(u)}>
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </IconButton>
+                    <IconButton tooltip="Excluir" variant="danger" onClick={() => handleDelete(u.id, u.name)}>
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                    </IconButton>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -175,6 +186,7 @@ export default function UsersPage() {
         {users.length === 0 && (
           <div className="py-12 text-center text-gray-500">Nenhum usuário cadastrado</div>
         )}
+        <Pagination page={page} totalPages={Math.ceil(users.length / PAGE_SIZE)} total={users.length} pageSize={PAGE_SIZE} onPage={setPage} />
       </div>
 
       <ConfirmDialog

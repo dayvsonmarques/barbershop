@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const status         = searchParams.get("status");
     const search         = searchParams.get("search");
 
-    const where: any = {};
+    const where: any = { isActive: true };
 
     if (barberIdParam)  where.barberId  = parseInt(barberIdParam, 10);
     if (serviceIdParam) where.serviceId = parseInt(serviceIdParam, 10);
@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
     const conflictingBooking = await prisma.booking.findFirst({
       where: {
         barberId,
+        isActive: true,
         status: {
           notIn: ["CANCELLED"],
         },

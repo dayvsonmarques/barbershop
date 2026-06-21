@@ -246,6 +246,7 @@ model Booking {
   scheduledAt     DateTime
   status          BookingStatus  @default(PENDING)
   notes           String?        @db.Text
+  isActive        Boolean        @default(true)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
   

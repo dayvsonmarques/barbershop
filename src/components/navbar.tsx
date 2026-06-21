@@ -29,6 +29,7 @@ export function Navbar() {
   const { customer, logout } = useCustomerAuth();
   const [open, setOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -146,13 +147,54 @@ export function Navbar() {
           </Link>
 
           {customer ? (
-            <button
-              onClick={() => logout()}
-              title={`Sair (${customer.name})`}
-              className={`flex items-center justify-center w-8 h-8 rounded-full bg-gold text-background-primary text-xs font-bold hover:opacity-80 transition-opacity`}
-            >
-              {customer.name.charAt(0).toUpperCase()}
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen((v) => !v)}
+                title={customer.name}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-gold text-background-primary text-xs font-bold hover:opacity-80 transition-opacity"
+              >
+                {customer.name.charAt(0).toUpperCase()}
+              </button>
+              {userMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                  <div className="absolute right-0 top-10 z-50 w-44 bg-background-primary border border-border shadow-lg py-1">
+                    <p className="px-4 py-2 text-xs text-text-secondary truncate border-b border-border">{customer.name}</p>
+                    <Link
+                      href="/minha-conta"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-primary hover:text-gold hover:bg-background-secondary transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                        <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" />
+                      </svg>
+                      Painel
+                    </Link>
+                    <Link
+                      href="/meus-pedidos"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-primary hover:text-gold hover:bg-background-secondary transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                        <rect x="9" y="3" width="6" height="4" rx="1" /><path d="M9 12h6M9 16h4" />
+                      </svg>
+                      Pedidos
+                    </Link>
+                    <div className="border-t border-border mt-1" />
+                    <button
+                      onClick={() => { logout(); setUserMenuOpen(false); }}
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-text-secondary hover:text-red-500 hover:bg-background-secondary transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                      </svg>
+                      Sair
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           ) : (
             <button
               onClick={() => setShowLogin(true)}

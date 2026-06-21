@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
     where: {
       scheduledAt: { gte: start, lte: end },
       status: { notIn: ["CANCELLED", "PENDING"] },
+      isActive: true,
     },
     select: {
       service: { select: { id: true, name: true, price: true } },

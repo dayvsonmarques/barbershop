@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
+import { IconButton } from "@/components/admin/icon-button";
+
+const PAGE_SIZE = 12;
 
 type Course = {
   id: number;
@@ -16,6 +20,8 @@ type Course = {
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const paginated = useMemo(() => courses.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [courses, page]);
 
   useEffect(() => {
     loadCourses();
@@ -70,7 +76,7 @@ export default function CoursesPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
+          {paginated.map((course) => (
             <div
               key={course.id}
               className="rounded-lg border border-gray-200 p-6 hover:border-gray-300 transition-colors"
@@ -108,16 +114,22 @@ export default function CoursesPage() {
                 </span>
               </div>
 
-              <div className="flex space-x-2">
-                <button className="flex-1 rounded-lg border border-blue-600 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50">
-                  Editar
-                </button>
-                <button className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  {course.isActive ? "Desativar" : "Ativar"}
-                </button>
+              <div className="flex justify-end gap-1 pt-1">
+                <IconButton tooltip="Editar">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </IconButton>
+                <IconButton tooltip={course.isActive ? "Desativar" : "Ativar"} variant={course.isActive ? "warning" : "success"}>
+                  {course.isActive
+                    ? <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+                    : <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><path d="M20 6L9 17l-5-5"/></svg>
+                  }
+                </IconButton>
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-4">
+          <Pagination page={page} totalPages={Math.ceil(courses.length / PAGE_SIZE)} total={courses.length} pageSize={PAGE_SIZE} onPage={setPage} />
         </div>
       </div>
     </div>

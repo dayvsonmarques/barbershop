@@ -1,7 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
+import { IconButton } from "@/components/admin/icon-button";
+import { SortHeader, useSort, sortData } from "@/components/admin/sort-header";
+
+const PAGE_SIZE = 15;
 
 type Category = {
   id: number;
@@ -57,6 +62,10 @@ export default function ServicesPage() {
   const filteredServices = selectedCategory
     ? services.filter((s) => s.categoryId === selectedCategory)
     : services;
+  const [page, setPage] = useState(1);
+  const { sort, toggle } = useSort("name");
+  const sortedServices = useMemo(() => sortData(filteredServices.map(s => ({ ...s, "category.name": s.category.name })), sort), [filteredServices, sort]);
+  const paginatedServices = useMemo(() => sortedServices.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [sortedServices, page]);
 
   if (loading) {
     return (
@@ -137,28 +146,16 @@ export default function ServicesPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Serviço
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Categoria
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Duração
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Preço
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Ações
-                </th>
+                <SortHeader label="Serviço"   field="name"          sort={sort} onSort={toggle} className="px-6" />
+                <SortHeader label="Categoria" field="category.name" sort={sort} onSort={toggle} className="px-6" />
+                <SortHeader label="Duração"   field="duration"      sort={sort} onSort={toggle} className="px-6" />
+                <SortHeader label="Preço"     field="price"         sort={sort} onSort={toggle} className="px-6" />
+                <SortHeader label="Status"    field="isActive"      sort={sort} onSort={toggle} className="px-6" />
+                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {filteredServices.map((service) => (
+              {paginatedServices.map((service) => (
                 <tr key={service.id}>
                   <td className="whitespace-nowrap px-6 py-4">
                     <div className="text-sm font-medium text-gray-900">
@@ -191,18 +188,21 @@ export default function ServicesPage() {
                       {service.isActive ? "Ativo" : "Inativo"}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 mr-4">
-                      Editar
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
-                      Excluir
-                    </button>
+                  <td className="whitespace-nowrap px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <IconButton tooltip="Editar">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </IconButton>
+                      <IconButton tooltip="Excluir" variant="danger">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                      </IconButton>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={Math.ceil(filteredServices.length / PAGE_SIZE)} total={filteredServices.length} pageSize={PAGE_SIZE} onPage={setPage} />
         </div>
       </div>
     </div>

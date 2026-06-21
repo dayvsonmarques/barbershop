@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const page      = Math.max(0, parseInt(searchParams.get("page") ?? "0", 10));
     const limit     = Math.min(100, parseInt(searchParams.get("limit") ?? "50", 10));
 
-    const where: any = { status: "COMPLETED" };
+    const where: any = { status: "COMPLETED", isActive: true };
 
     if (search) {
       where.customerName = { contains: search, mode: "insensitive" };

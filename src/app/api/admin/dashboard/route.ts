@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
         where: {
           scheduledAt: { gte: startOfToday, lte: endOfToday },
           status: { not: "CANCELLED" },
+          isActive: true,
         },
       }),
 
@@ -39,6 +40,7 @@ export async function GET(request: NextRequest) {
         where: {
           scheduledAt: { gte: startOfMonth, lte: endOfMonth },
           status: { not: "CANCELLED" },
+          isActive: true,
         },
         select: {
           scheduledAt: true,
@@ -54,6 +56,7 @@ export async function GET(request: NextRequest) {
         where: {
           scheduledAt: { gte: startOfMonth, lte: endOfMonth },
           status: { not: "CANCELLED" },
+          isActive: true,
         },
         select: { scheduledAt: true },
         orderBy: { scheduledAt: "asc" },
@@ -64,6 +67,7 @@ export async function GET(request: NextRequest) {
         where: {
           scheduledAt: { gte: startOfMonth, lte: endOfMonth },
           status: { not: "CANCELLED" },
+          isActive: true,
         },
         select: {
           barber: { select: { id: true, name: true } },
@@ -75,6 +79,7 @@ export async function GET(request: NextRequest) {
         where: {
           scheduledAt: { gte: now },
           status: { not: "CANCELLED" },
+          isActive: true,
         },
         orderBy: { scheduledAt: "asc" },
         take: 5,

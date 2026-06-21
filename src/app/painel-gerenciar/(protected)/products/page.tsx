@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
+import { IconButton } from "@/components/admin/icon-button";
+import { SortHeader, useSort, sortData } from "@/components/admin/sort-header";
+
+const PAGE_SIZE = 15;
 
 type ProductImage = { url: string; isPrimary: boolean };
 
@@ -22,6 +27,10 @@ type Product = {
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const { sort, toggle } = useSort("name");
+  const sorted = useMemo(() => sortData(products.map(p => ({ ...p, "category.name": p.category.name, effectivePrice: p.discountPrice ?? p.price })), sort), [products, sort]);
+  const paginated = useMemo(() => sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [sorted, page]);
 
   useEffect(() => { load(); }, []);
 
@@ -65,15 +74,16 @@ export default function ProductsPage() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {["Produto", "Categoria", "Preço", "Estoque", "Status", "Ações"].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  {h}
-                </th>
-              ))}
+              <SortHeader label="Produto"   field="name"           sort={sort} onSort={toggle} />
+              <SortHeader label="Categoria" field="category.name"  sort={sort} onSort={toggle} />
+              <SortHeader label="Preço"     field="effectivePrice" sort={sort} onSort={toggle} />
+              <SortHeader label="Estoque"   field="stock"          sort={sort} onSort={toggle} />
+              <SortHeader label="Status"    field="isActive"       sort={sort} onSort={toggle} />
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {products.map((p) => {
+            {paginated.map((p) => {
               const primary = p.images.find((i) => i.isPrimary) ?? p.images[0];
               const discount = p.discountPrice
                 ? Math.round((1 - p.discountPrice / p.price) * 100)
@@ -111,13 +121,15 @@ export default function ProductsPage() {
                       {p.isActive ? "Ativo" : "Inativo"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right text-sm">
-                    <Link href={`/painel-gerenciar/products/${p.id}/edit`} className="text-[#C9A84C] hover:text-[#A07830] mr-4">
-                      Editar
-                    </Link>
-                    <button onClick={() => handleDelete(p.id, p.name)} className="text-red-600 hover:text-red-900">
-                      Desativar
-                    </button>
+                  <td className="px-4 py-3 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <IconButton tooltip="Editar" href={`/painel-gerenciar/products/${p.id}/edit`}>
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                      </IconButton>
+                      <IconButton tooltip="Desativar" variant="danger" onClick={() => handleDelete(p.id, p.name)}>
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+                      </IconButton>
+                    </div>
                   </td>
                 </tr>
               );
@@ -127,6 +139,7 @@ export default function ProductsPage() {
         {products.length === 0 && (
           <div className="py-12 text-center text-gray-500">Nenhum produto cadastrado</div>
         )}
+        <Pagination page={page} totalPages={Math.ceil(products.length / PAGE_SIZE)} total={products.length} pageSize={PAGE_SIZE} onPage={setPage} />
       </div>
     </div>
   );

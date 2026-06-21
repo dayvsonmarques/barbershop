@@ -101,6 +101,7 @@ export async function GET(request: Request) {
     const existingBookings = await prisma.booking.findMany({
       where: {
         barberId: parseInt(barberId),
+        isActive: true,
         scheduledAt: {
           gte: startOfDay,
           lte: endOfDay,

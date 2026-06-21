@@ -118,8 +118,9 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    await prisma.booking.delete({
+    await prisma.booking.update({
       where: { id },
+      data: { isActive: false },
     });
 
     return NextResponse.json({ message: "Booking deleted successfully" });

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
 
 type Customer = {
   customerPhone:   string;
@@ -212,29 +213,13 @@ export default function CustomersPage() {
               ))}
             </div>
 
-            {/* Pagination */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-3 border-t border-gray-100 bg-gray-50/50">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">{total}</span> cliente{total !== 1 ? "s" : ""} encontrado{total !== 1 ? "s" : ""}
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => load(page - 1)}
-                  disabled={page === 0 || loading}
-                  className="px-3 py-1 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  ← Anterior
-                </button>
-                <span className="text-xs text-gray-400 min-w-28 text-center">Página {page + 1} de {totalPages}</span>
-                <button
-                  onClick={() => load(page + 1)}
-                  disabled={page >= totalPages - 1 || loading}
-                  className="px-3 py-1 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  Próximo →
-                </button>
-              </div>
-            </div>
+            <Pagination
+              page={page + 1}
+              totalPages={totalPages}
+              total={total}
+              pageSize={PAGE_SIZE}
+              onPage={(p) => load(p - 1)}
+            />
           </>
         )}
       </div>

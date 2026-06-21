@@ -234,6 +234,7 @@ export function ProductDetail({ product, related }: Props) {
             {related.map((p) => (
               <ProductCard
                 key={p.id}
+                id={p.id}
                 name={p.name}
                 slug={p.slug}
                 price={Number(p.price)}

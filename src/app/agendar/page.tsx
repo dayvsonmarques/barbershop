@@ -54,6 +54,7 @@ export default function AgendarPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [clientName, setClientName] = useState("");
+  const [clientNameLocked, setClientNameLocked] = useState(false);
   const [clientPhone, setClientPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -62,7 +63,10 @@ export default function AgendarPage() {
   const [error, setError] = useState("");
   const [confirmedName, setConfirmedName] = useState("");
   const [confirmedPhone, setConfirmedPhone] = useState("");
-  const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [confirmedServiceName, setConfirmedServiceName] = useState("");
+  const [confirmedServiceDuration, setConfirmedServiceDuration] = useState(0);
+  const [confirmedBarberName, setConfirmedBarberName] = useState("");
+  const [confirmedDateTimeStr, setConfirmedDateTimeStr] = useState("");
   const [disabledDates, setDisabledDates] = useState<Date[]>([]);
 
   const today = new Date();
@@ -92,6 +96,23 @@ export default function AgendarPage() {
       setSelectedBarber("");
     }
   }, [selectedService]);
+
+  useEffect(() => {
+    const digits = clientPhone.replace(/\D/g, "");
+    if (digits.length < 10) {
+      if (clientNameLocked) { setClientName(""); setClientNameLocked(false); }
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/public/customer-lookup?phone=${digits}`)
+      .then((r) => r.json())
+      .then((data: { name: string | null }) => {
+        if (cancelled) return;
+        if (data.name) { setClientName(data.name); setClientNameLocked(true); }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [clientPhone]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -198,11 +219,16 @@ export default function AgendarPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Erro ao criar agendamento");
 
+      const svc = services.find((s) => s.id === selectedService);
+      const brb = barbers.find((b) => b.id === selectedBarber);
       setConfirmedName(clientName);
       setConfirmedPhone(clientPhone);
+      setConfirmedServiceName(svc?.name ?? "");
+      setConfirmedServiceDuration(svc?.duration ?? 30);
+      setConfirmedBarberName(brb?.name ?? "");
+      setConfirmedDateTimeStr(`${selectedDate} ${selectedTime}`);
       setSuccess(true);
       setToastVisible(true);
-      redirectTimeoutRef.current = setTimeout(() => router.push("/"), 5000);
       setSelectedService("");
       setSelectedBarber("");
       setSelectedDate("");
@@ -217,6 +243,23 @@ export default function AgendarPage() {
       setLoading(false);
     }
   };
+
+  function buildGoogleCalendarUrl() {
+    const [datePart, timePart] = confirmedDateTimeStr.split(" ");
+    const [year, month, day] = datePart.split("-").map(Number);
+    const [hour, minute] = timePart.split(":").map(Number);
+    const start = new Date(year, month - 1, day, hour, minute);
+    const end = new Date(start.getTime() + confirmedServiceDuration * 60000);
+    const fmt = (d: Date) =>
+      `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}${String(d.getMinutes()).padStart(2, "0")}00`;
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: `${confirmedServiceName} — Barbearia`,
+      dates: `${fmt(start)}/${fmt(end)}`,
+      details: `Serviço: ${confirmedServiceName}\nBarbeiro: ${confirmedBarberName}\nCliente: ${confirmedName}`,
+    });
+    return `https://calendar.google.com/calendar/render?${params}`;
+  }
 
   const selectedServiceData = services.find((s) => s.id === selectedService);
   const selectedDateObj = selectedDate ? new Date(selectedDate + "T00:00:00") : undefined;
@@ -270,21 +313,36 @@ export default function AgendarPage() {
               <p className="text-text-secondary mt-4 text-sm">Entraremos em contato para confirmar seu horário.</p>
             </div>
             <div className="w-full flex flex-col gap-2">
-              <button
-                onClick={() => router.push("/")}
-                className="w-full bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-3 transition-colors"
-              >
-                OK
-              </button>
+              {confirmedDateTimeStr && (
+                <a
+                  href={buildGoogleCalendarUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-[#C9A84C] hover:bg-[#B8963C] text-white text-sm font-medium py-3 transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="white" fillOpacity=".9" d="M22 12.5A10 10 0 0 0 2.08 11H4a8 8 0 1 1 .7 3.26L3.1 15.5A10 10 0 0 0 22 12.5z"/>
+                    <path fill="white" fillOpacity=".7" d="M3.1 15.5l1.6-1.24A8 8 0 0 0 12 20a8 8 0 0 0 7.67-5.69l1.72 1.33A10 10 0 0 1 3.1 15.5z"/>
+                    <path fill="white" fillOpacity=".6" d="M4 11H2.08A10 10 0 0 1 12 2a9.93 9.93 0 0 1 6.32 2.26L16.9 5.7A8 8 0 0 0 4 11z"/>
+                    <path fill="white" fillOpacity=".5" d="M16.9 5.7L18.32 4.26A10 10 0 0 0 12 2 9.94 9.94 0 0 0 4 7l2.07 1.6A8 8 0 0 1 12 4a8 8 0 0 1 4.9 1.7z"/>
+                  </svg>
+                  Adicionar ao Google Agenda
+                </a>
+              )}
               <button
                 onClick={() => {
-                  if (redirectTimeoutRef.current) clearTimeout(redirectTimeoutRef.current);
                   setToastVisible(false);
                   setSuccess(false);
                 }}
                 className="w-full border border-border text-text-secondary hover:text-text-primary hover:border-gold text-sm font-medium py-3 transition-colors"
               >
                 Fazer outro agendamento
+              </button>
+              <button
+                onClick={() => router.push("/")}
+                className="w-full border border-border text-text-secondary hover:text-text-primary hover:border-gold text-sm font-medium py-3 transition-colors"
+              >
+                Página inicial
               </button>
             </div>
           </div>
@@ -459,8 +517,9 @@ export default function AgendarPage() {
               type="text"
               id="clientName"
               value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              className={fieldClass}
+              onChange={(e) => { if (!clientNameLocked) setClientName(e.target.value); }}
+              readOnly={clientNameLocked}
+              className={clientNameLocked ? `${fieldClass} bg-opacity-60 cursor-default` : fieldClass}
               placeholder="Insira seu nome e sobrenome"
               required
             />

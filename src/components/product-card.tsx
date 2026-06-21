@@ -63,7 +63,7 @@ export function ProductCard({ id, name, slug, price, discountPrice, primaryImage
         onClick={handleAddToCart}
         className="w-full border border-gold text-gold text-xs uppercase tracking-widest py-2 hover:bg-gold hover:text-background-primary transition-colors mt-auto"
       >
-        Adicionar ao cesto
+        Adicionar
       </button>
     </div>
   );

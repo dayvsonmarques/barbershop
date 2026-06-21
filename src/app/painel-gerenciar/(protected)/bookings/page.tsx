@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Pagination } from "@/components/admin/pagination";
 
 type Booking = {
   id: string;
@@ -61,7 +62,7 @@ export default function BookingsPage() {
   const [filterService, setFilterService] = useState("");
   const [filterBarber,  setFilterBarber]  = useState("");
   const [filterStatus,  setFilterStatus]  = useState("");
-  const [page, setPage]                   = useState(0);
+  const [page, setPage]                   = useState(1);
 
   const [services, setServices] = useState<ServiceOption[]>([]);
   const [barbers,  setBarbers]  = useState<BarberOption[]>([]);
@@ -93,7 +94,7 @@ export default function BookingsPage() {
   }, [selectedDate]);
 
   useEffect(() => { loadBookings(); }, [loadBookings]);
-  useEffect(() => { setPage(0); }, [selectedDate, filterSearch, filterService, filterBarber, filterStatus]);
+  useEffect(() => { setPage(1); }, [selectedDate, filterSearch, filterService, filterBarber, filterStatus]);
 
   useEffect(() => {
     if (!editing) return;
@@ -118,7 +119,7 @@ export default function BookingsPage() {
   }), [barberFiltered, filterSearch, filterService, filterStatus]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated  = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   // Stats (over barber-filtered, ignoring status/search filter so they're always visible)
   const stats = useMemo(() => ({
@@ -417,30 +418,7 @@ export default function BookingsPage() {
               ))}
             </div>
 
-            {/* pagination */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-3 border-t border-gray-100 bg-gray-50/50">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">{filtered.length}</span> agendamento{filtered.length !== 1 ? "s" : ""}
-                {filtered.length !== bookings.length && <span className="text-gray-400"> (de {bookings.length})</span>}
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPage(p => Math.max(0, p - 1))}
-                  disabled={page === 0}
-                  className="px-3 py-1 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  ← Anterior
-                </button>
-                <span className="text-xs text-gray-400 min-w-24 text-center">Página {page + 1} de {totalPages}</span>
-                <button
-                  onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-                  disabled={page >= totalPages - 1}
-                  className="px-3 py-1 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  Próximo →
-                </button>
-              </div>
-            </div>
+            <Pagination page={page} totalPages={totalPages} total={filtered.length} pageSize={PAGE_SIZE} onPage={setPage} />
           </>
         )}
       </div>

@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const auth = await requirePermission(request, "bookings", "view");
   if (auth instanceof NextResponse) return auth;
 
-  const count = await prisma.booking.count({ where: { status: "PENDING" } });
+  const count = await prisma.booking.count({ where: { status: "PENDING", isActive: true } });
 
   return NextResponse.json({ count });
 }

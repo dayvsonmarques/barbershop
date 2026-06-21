@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useCustomerAuth } from "@/contexts/customer-auth-context";
 
 type Step = "phone" | "otp" | "name";
-type Channel = "whatsapp" | "sms";
 
 function maskPhone(value: string): string {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -27,7 +26,6 @@ export function CustomerLoginModal({ onClose }: Props) {
   const { refresh } = useCustomerAuth();
 
   const [step, setStep] = useState<Step>("phone");
-  const [channel, setChannel] = useState<Channel>("whatsapp");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [name, setName] = useState("");
@@ -42,7 +40,7 @@ export function CustomerLoginModal({ onClose }: Props) {
       const res = await fetch("/api/auth/customer/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: rawPhone(phone), channel }),
+        body: JSON.stringify({ phone: rawPhone(phone), channel: "whatsapp" }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error ?? "Erro ao enviar código"); return; }
@@ -76,8 +74,6 @@ export function CustomerLoginModal({ onClose }: Props) {
     await handleVerifyOtp(e, name);
   }
 
-  const channelLabel = channel === "whatsapp" ? "WhatsApp" : "SMS";
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
@@ -86,7 +82,7 @@ export function CustomerLoginModal({ onClose }: Props) {
         <h2 className="font-heading text-text-primary text-2xl mb-1">Entrar</h2>
         <p className="text-text-secondary text-sm mb-6">
           {step === "phone" && "Informe seu número para receber o código de verificação."}
-          {step === "otp" && `Código enviado via ${channelLabel} para ${phone}. Digite os 6 dígitos.`}
+          {step === "otp" && `Código enviado via WhatsApp para ${phone}. Digite os 6 dígitos.`}
           {step === "name" && "Primeira vez? Informe seu nome para continuar."}
         </p>
 
@@ -96,32 +92,6 @@ export function CustomerLoginModal({ onClose }: Props) {
 
         {step === "phone" && (
           <form onSubmit={handleSendOtp} className="flex flex-col gap-4">
-            {/* Channel toggle */}
-            <div className="flex border border-border text-sm">
-              <button
-                type="button"
-                onClick={() => setChannel("whatsapp")}
-                className={`flex-1 py-2 transition-colors ${
-                  channel === "whatsapp"
-                    ? "bg-gold text-background-primary font-semibold"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                WhatsApp
-              </button>
-              <button
-                type="button"
-                onClick={() => setChannel("sms")}
-                className={`flex-1 py-2 transition-colors border-l border-border ${
-                  channel === "sms"
-                    ? "bg-gold text-background-primary font-semibold"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                SMS
-              </button>
-            </div>
-
             <input
               type="tel"
               placeholder="(81) 99999-9999"
@@ -135,7 +105,7 @@ export function CustomerLoginModal({ onClose }: Props) {
               disabled={loading || rawPhone(phone).length < 10}
               className="bg-gold text-background-primary font-heading uppercase tracking-widest py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {loading ? "Enviando..." : `Receber código via ${channelLabel}`}
+              {loading ? "Enviando..." : "Receber código via WhatsApp"}
             </button>
           </form>
         )}
