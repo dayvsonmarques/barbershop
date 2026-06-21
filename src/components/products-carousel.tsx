@@ -139,6 +139,7 @@ export function ProductsCarousel() {
             {allItems.map((p, i) => (
               <div key={i} style={{ width: `${itemPct}%` }} className="px-2">
                 <ProductCard
+                  id={p.id}
                   name={p.name}
                   slug={p.slug}
                   price={p.price}

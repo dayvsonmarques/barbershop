@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { Footer } from "@/components/footer";
 export default function CartPage() {
   const { items, totalPrice, totalItems, updateQuantity, removeItem } = useCart();
   const router = useRouter();
+  const [confirmingId, setConfirmingId] = useState<number | null>(null);
 
   const fmt = (n: number) =>
     n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -53,15 +55,33 @@ export default function CartPage() {
                           <p className="text-text-primary text-sm font-medium truncate">{item.name}</p>
                           <p className="text-text-secondary text-xs mt-0.5">R$ {fmt(item.price)} / un.</p>
                         </div>
-                        <button
-                          onClick={() => removeItem(item.productId)}
-                          className="text-text-secondary hover:text-red-500 transition-colors shrink-0 mt-0.5"
-                          aria-label="Remover"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-                          </svg>
-                        </button>
+                        {confirmingId === item.productId ? (
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={() => { removeItem(item.productId); setConfirmingId(null); }}
+                              className="text-xs text-red-500 hover:text-red-400 transition-colors font-medium"
+                            >
+                              Remover
+                            </button>
+                            <span className="text-border">|</span>
+                            <button
+                              onClick={() => setConfirmingId(null)}
+                              className="text-xs text-text-secondary hover:text-text-primary transition-colors"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmingId(item.productId)}
+                            className="text-text-secondary hover:text-red-500 transition-colors shrink-0 mt-0.5"
+                            aria-label="Remover"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+                            </svg>
+                          </button>
+                        )}
                       </div>
 
                       <div className="flex items-center justify-between">
