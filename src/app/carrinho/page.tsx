@@ -13,15 +13,17 @@ export default function CartPage() {
   const router = useRouter();
   const [confirmingId, setConfirmingId] = useState<number | null>(null);
 
+  const confirmingItem = items.find((i) => i.productId === confirmingId);
+
   const fmt = (n: number) =>
     n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
+      <main>
         {totalItems === 0 ? (
-          <div className="max-w-2xl mx-auto px-6 py-24 text-center">
+          <div className="max-w-2xl mx-auto px-6 pt-20 pb-16 text-center">
             <svg className="mx-auto mb-6 text-border" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
               <path d="M3 6h18M16 10a4 4 0 01-8 0" />
@@ -55,33 +57,15 @@ export default function CartPage() {
                           <p className="text-text-primary text-sm font-medium truncate">{item.name}</p>
                           <p className="text-text-secondary text-xs mt-0.5">R$ {fmt(item.price)} / un.</p>
                         </div>
-                        {confirmingId === item.productId ? (
-                          <div className="flex items-center gap-2 shrink-0">
-                            <button
-                              onClick={() => { removeItem(item.productId); setConfirmingId(null); }}
-                              className="text-xs text-red-500 hover:text-red-400 transition-colors font-medium"
-                            >
-                              Remover
-                            </button>
-                            <span className="text-border">|</span>
-                            <button
-                              onClick={() => setConfirmingId(null)}
-                              className="text-xs text-text-secondary hover:text-text-primary transition-colors"
-                            >
-                              Cancelar
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => setConfirmingId(item.productId)}
-                            className="text-text-secondary hover:text-red-500 transition-colors shrink-0 mt-0.5"
-                            aria-label="Remover"
-                          >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-                            </svg>
-                          </button>
-                        )}
+                        <button
+                          onClick={() => setConfirmingId(item.productId)}
+                          className="text-text-secondary hover:text-red-500 transition-colors shrink-0 mt-0.5"
+                          aria-label="Remover"
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                            <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" /><path d="M10 11v6M14 11v6" /><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+                          </svg>
+                        </button>
                       </div>
 
                       <div className="flex items-center justify-between">
@@ -129,6 +113,31 @@ export default function CartPage() {
           </div>
         )}
       </main>
+      {confirmingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setConfirmingId(null)} />
+          <div className="relative bg-background-primary border border-border w-full max-w-xs p-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <p className="text-text-primary font-heading text-lg mb-1">Remover item</p>
+            <p className="text-text-secondary text-sm mb-6">
+              Tem certeza que deseja remover <span className="text-text-primary font-medium">{confirmingItem.name}</span> do carrinho?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmingId(null)}
+                className="flex-1 border border-border text-text-secondary text-sm py-2.5 hover:border-gold hover:text-text-primary transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => { removeItem(confirmingItem.productId); setConfirmingId(null); }}
+                className="flex-1 bg-red-600 text-white text-sm py-2.5 hover:bg-red-700 transition-colors font-medium"
+              >
+                Remover
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </>
   );

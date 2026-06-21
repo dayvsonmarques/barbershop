@@ -37,18 +37,23 @@ export async function sendWhatsApp(to: string, message: string): Promise<void> {
 
   const number = formatPhone(to).replace("+", "");
 
+  const payload = { number, text: message };
+  console.log("[sendWhatsApp] payload:", JSON.stringify(payload));
+
   const response = await fetch(`${url}/message/sendText/${instance}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       apikey: apiKey,
     },
-    body: JSON.stringify({ number, text: message }),
+    body: JSON.stringify(payload),
   });
 
+  const responseBody = await response.text();
+  console.log("[sendWhatsApp] status:", response.status, "body:", responseBody);
+
   if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Evolution API error ${response.status}: ${body}`);
+    throw new Error(`Evolution API error ${response.status}: ${responseBody}`);
   }
 }
 

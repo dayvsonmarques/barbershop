@@ -15,7 +15,7 @@ export function toast(message: string, type: "add" | "remove" = "add") {
   setTimeout(() => {
     toasts = toasts.filter((t) => t.id !== id);
     notify();
-  }, 3000);
+  }, 1000);
 }
 
 export function subscribeToast(listener: Listener) {

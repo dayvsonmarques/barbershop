@@ -161,16 +161,6 @@ export function Navbar() {
                   <div className="absolute right-0 top-10 z-50 w-44 bg-background-primary border border-border shadow-lg py-1">
                     <p className="px-4 py-2 text-xs text-text-secondary truncate border-b border-border">{customer.name}</p>
                     <Link
-                      href="/minha-conta"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-primary hover:text-gold hover:bg-background-secondary transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-                        <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" />
-                      </svg>
-                      Painel
-                    </Link>
-                    <Link
                       href="/meus-pedidos"
                       onClick={() => setUserMenuOpen(false)}
                       className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-primary hover:text-gold hover:bg-background-secondary transition-colors"
