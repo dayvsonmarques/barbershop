@@ -117,7 +117,7 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="text-text-primary font-semibold uppercase text-base tracking-widest mb-4">
+            <p className="text-gold font-semibold uppercase text-base tracking-widest mb-4">
               Redes Sociais
             </p>
             <div className="flex gap-5 items-center">
