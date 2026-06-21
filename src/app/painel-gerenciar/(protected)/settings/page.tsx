@@ -9,13 +9,13 @@ type Settings = {
   address: string;
   latitude: number;
   longitude: number;
-  instagramUrl: string | null;
   instagramUsername: string | null;
   instagramUserId: string | null;
   instagramAccessToken: string | null;
   instagramTokenRefreshedAt: string | null;
   phone: string | null;
   email: string | null;
+  pixKey: string | null;
 };
 
 export default function AdminSettingsPage() {
@@ -30,13 +30,13 @@ export default function AdminSettingsPage() {
     address: "",
     latitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -23.55052),
     longitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -46.633308),
-    instagramUrl: null,
     instagramUsername: null,
     instagramUserId: null,
     instagramAccessToken: null,
     instagramTokenRefreshedAt: null,
     phone: null,
     email: null,
+    pixKey: null,
   });
 
   useEffect(() => {
@@ -51,13 +51,13 @@ export default function AdminSettingsPage() {
           address: data.address ?? "",
           latitude: Number(data.latitude),
           longitude: Number(data.longitude),
-          instagramUrl: data.instagramUrl ?? null,
           instagramUsername: data.instagramUsername ?? null,
           instagramUserId: data.instagramUserId ?? null,
           instagramAccessToken: data.instagramAccessToken ?? null,
           instagramTokenRefreshedAt: data.instagramTokenRefreshedAt ?? null,
           phone: data.phone ?? null,
           email: data.email ?? null,
+          pixKey: data.pixKey ?? null,
         });
       } finally {
         setLoading(false);
@@ -173,21 +173,26 @@ export default function AdminSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Instagram (URL)</label>
-            <input
-              value={form.instagramUrl ?? ""}
-              onChange={(e) => setForm((s) => ({ ...s, instagramUrl: e.target.value || null }))}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="https://www.instagram.com/edbarbearia/"
-            />
+            <label className="block text-sm font-medium text-gray-700">Instagram (usuário)</label>
+            <div className="mt-1 flex rounded-lg border border-gray-300 focus-within:border-blue-500 overflow-hidden">
+              <span className="flex items-center px-3 bg-gray-50 text-gray-500 text-sm border-r border-gray-300 select-none">
+                instagram.com/
+              </span>
+              <input
+                value={form.instagramUsername ?? ""}
+                onChange={(e) => setForm((s) => ({ ...s, instagramUsername: e.target.value || null }))}
+                className="flex-1 px-3 py-2 text-sm focus:outline-none bg-white"
+                placeholder="edbarbearia"
+              />
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Instagram (usuário)</label>
+            <label className="block text-sm font-medium text-gray-700">Chave PIX</label>
             <input
-              value={form.instagramUsername ?? ""}
-              onChange={(e) => setForm((s) => ({ ...s, instagramUsername: e.target.value || null }))}
+              value={form.pixKey ?? ""}
+              onChange={(e) => setForm((s) => ({ ...s, pixKey: e.target.value || null }))}
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="edbarbearia"
+              placeholder="CPF, e-mail, telefone ou chave aleatória"
             />
           </div>
         </div>

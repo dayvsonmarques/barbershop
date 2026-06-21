@@ -6,12 +6,12 @@ export const establishmentSettingsSchema = z.object({
   address: z.string().min(1, "Endereço é obrigatório"),
   latitude: z.number().finite(),
   longitude: z.number().finite(),
-  instagramUrl: z.string().url().optional().nullable(),
   instagramUsername: z.string().optional().nullable(),
   instagramUserId: z.string().optional().nullable(),
   instagramAccessToken: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
   email: z.string().email().optional().nullable(),
+  pixKey: z.string().optional().nullable(),
 });
 
 export type EstablishmentSettingsInput = z.infer<typeof establishmentSettingsSchema>;

@@ -18,9 +18,12 @@ export async function GET() {
         address: settings.address,
         latitude: Number(settings.latitude),
         longitude: Number(settings.longitude),
-        instagramUrl: settings.instagramUrl,
+        instagramUrl: settings.instagramUsername
+          ? `https://www.instagram.com/${settings.instagramUsername}/`
+          : settings.instagramUrl,
         instagramUsername: settings.instagramUsername,
         phone: settings.phone,
+        pixKey: settings.pixKey,
       },
     });
   } catch (error) {
@@ -38,6 +41,7 @@ export async function GET() {
           instagramUrl: "https://www.instagram.com/edbarbearia/",
           instagramUsername: "edbarbearia",
           phone: "(11) 99999-9999",
+          pixKey: null,
         },
         warning: "Banco de dados indisponível ou não configurado",
       },
