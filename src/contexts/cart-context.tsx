@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { toast } from "@/lib/toast";
 
 export type CartItem = {
   productId: number;
@@ -50,10 +51,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...item, quantity: 1 }];
     });
+    toast(`${item.name} adicionado ao carrinho`, "add");
   }
 
   function removeItem(productId: number) {
+    const item = items.find((i) => i.productId === productId);
     setItems((prev) => prev.filter((i) => i.productId !== productId));
+    if (item) toast(`${item.name} removido do carrinho`, "remove");
   }
 
   function updateQuantity(productId: number, qty: number) {
