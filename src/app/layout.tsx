@@ -21,6 +21,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ED Barbearia",
   description: "Barbearia em Recife — agendamentos e serviços",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "ED Barbearia",
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +34,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#111111" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${playfair.variable} ${inter.variable}`}>
         <ThemeProvider><CustomerAuthProvider><CartProvider>{children}<Toaster /></CartProvider></CustomerAuthProvider></ThemeProvider>
       </body>
