@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkoutSchema } from "@/lib/validations/checkout";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -19,6 +20,12 @@ export async function POST(request: NextRequest) {
   }
 
   const { customerName, customerPhone, items } = validation.data;
+
+  // 5 orders per phone per hour
+  const rl = checkRateLimit(`checkout:${customerPhone.replace(/\D/g, "")}`, { maxRequests: 5, windowMs: 60 * 60 * 1000 });
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 });
+  }
 
   // Pre-check: products exist and are active
   const productIds = items.map((i) => i.productId);

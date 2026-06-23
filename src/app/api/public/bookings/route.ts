@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { sendWhatsApp, bookingConfirmationMessage } from "@/lib/sms";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const bookingSchema = z.object({
   serviceId: z.string(),
@@ -12,10 +13,16 @@ const bookingSchema = z.object({
   clientPhone: z.string().min(8).max(20),
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validated = bookingSchema.parse(body);
+
+    // 5 bookings per phone per hour
+    const rl = checkRateLimit(`booking:${validated.clientPhone.replace(/\D/g, "")}`, { maxRequests: 5, windowMs: 60 * 60 * 1000 });
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 });
+    }
 
     // Parse date and time
     const [year, month, day] = validated.date.split("-").map(Number);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { signCustomerToken, COOKIE_NAME } from "@/lib/customer-jwt";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   phone: z.string().min(10).max(20),
@@ -17,6 +18,12 @@ export async function POST(req: NextRequest) {
   }
 
   const { phone, code, name } = parsed.data;
+
+  // 5 attempts per phone per 15 minutes — prevents OTP brute force
+  const rl = checkRateLimit(`verify:${phone.replace(/\D/g, "")}`, { maxRequests: 5, windowMs: 15 * 60 * 1000 });
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Muitas tentativas. Aguarde alguns minutos." }, { status: 429 });
+  }
 
   const otp = await prisma.phoneOtp.findFirst({
     where: {

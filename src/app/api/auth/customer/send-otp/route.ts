@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendWhatsApp, sendSMS, otpMessage } from "@/lib/sms";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   phone: z.string().min(10, "Número inválido").max(20),
@@ -20,6 +21,13 @@ export async function POST(req: NextRequest) {
   }
 
   const { phone, channel } = parsed.data;
+
+  // 3 OTPs per phone per 10 minutes — prevents WhatsApp spam
+  const rl = checkRateLimit(`otp:${phone.replace(/\D/g, "")}`, { maxRequests: 3, windowMs: 10 * 60 * 1000 });
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Muitas tentativas. Aguarde alguns minutos." }, { status: 429 });
+  }
+
   const code = generateOtp();
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
