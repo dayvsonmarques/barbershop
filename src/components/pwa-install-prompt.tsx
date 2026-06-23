@@ -16,7 +16,7 @@ function detect(): { mobile: boolean; platform: Platform; standalone: boolean } 
 }
 
 const IOS_STEPS = [
-  <>Toque no ícone de <strong>Compartilhar</strong> ⬆ na barra do Safari</>,
+  <>Toque no ícone de <strong>Compartilhar</strong> ⬆ na barra do navegador</>,
   <>Role para baixo e toque em <strong>Adicionar à Tela de Início</strong> +</>,
   <>Toque em <strong>Adicionar</strong> para confirmar</>,
   <>Permita as <strong>Notificações</strong> 🔔</>,
@@ -143,8 +143,7 @@ export function PWAInstallPrompt() {
                   <path d="M9 6h6M9 9h6M9 12h3" strokeLinecap="round" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold text-white mb-1">Adicione à tela inicial</h2>
-              <p className="text-sm text-gray-400">
+              <p className="text-xl font-bold text-white">
                 Acesse o Ed Barbearia como um app, direto da sua tela inicial.
               </p>
             </div>
