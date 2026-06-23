@@ -343,7 +343,7 @@ export function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="flex justify-center py-3">
+          <div className="flex justify-center py-3 mb-7.5">
             <a
               href="https://webdev.recife.br/"
               target="_blank"
