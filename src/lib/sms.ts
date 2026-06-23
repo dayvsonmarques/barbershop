@@ -57,6 +57,15 @@ export async function sendWhatsApp(to: string, message: string): Promise<void> {
   }
 }
 
+export function bookingReminderMessage(data: {
+  customerName: string;
+  serviceName: string;
+  barberName: string;
+  time: string;
+}): string {
+  return `Olá, ${data.customerName}! ⏰ Lembrete: seu agendamento é em *1 hora*.\n\nServiço: ${data.serviceName}\nBarbeiro: ${data.barberName}\nHorário: ${data.time}\n\nTe esperamos! ✂️`;
+}
+
 export function otpMessage(code: string): string {
   return `Seu código de verificação ED Barbearia é: *${code}*\nVálido por 10 minutos.`;
 }
