@@ -11,7 +11,7 @@ type OrderItem = {
   id: number;
   quantity: number;
   unitPrice: string;
-  product: { name: string; imageUrl: string | null; slug: string };
+  product: { name: string; slug: string; images: { url: string }[] };
 };
 
 type Order = {
@@ -123,10 +123,10 @@ export default function MeusPedidosPage() {
                     {order.items.map((item) => (
                       <div key={item.id} className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-background-primary overflow-hidden shrink-0 border border-border">
-                          {item.product.imageUrl ? (
+                          {item.product.images[0]?.url ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
-                              src={item.product.imageUrl}
+                              src={item.product.images[0].url}
                               alt={item.product.name}
                               className="w-full h-full object-cover"
                             />

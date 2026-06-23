@@ -14,7 +14,13 @@ export async function GET() {
     include: {
       items: {
         include: {
-          product: { select: { name: true, imageUrl: true, slug: true } },
+          product: {
+              select: {
+                name: true,
+                slug: true,
+                images: { select: { url: true }, where: { isPrimary: true }, take: 1 },
+              },
+            },
         },
       },
     },
