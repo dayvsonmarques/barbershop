@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-context";
 import { CustomerAuthProvider } from "@/contexts/customer-auth-context";
 import { Toaster } from "@/components/toaster";
+import { PWARegister } from "@/components/pwa-register";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -39,7 +40,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${playfair.variable} ${inter.variable}`}>
-        <ThemeProvider><CustomerAuthProvider><CartProvider>{children}<Toaster /></CartProvider></CustomerAuthProvider></ThemeProvider>
+        <ThemeProvider><CustomerAuthProvider><CartProvider>{children}<Toaster /><PWARegister /></CartProvider></CustomerAuthProvider></ThemeProvider>
       </body>
     </html>
   );
