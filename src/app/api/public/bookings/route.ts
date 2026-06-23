@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import { sendSMS, bookingConfirmationMessage } from "@/lib/sms";
+import { sendWhatsApp, bookingConfirmationMessage } from "@/lib/sms";
 
 const bookingSchema = z.object({
   serviceId: z.string(),
@@ -151,7 +151,7 @@ export async function POST(request: Request) {
     if (validated.clientPhone) {
       const dateFormatted = new Date(scheduledAt).toLocaleDateString("pt-BR");
       const timeFormatted = validated.time;
-      sendSMS(
+      sendWhatsApp(
         validated.clientPhone,
         bookingConfirmationMessage({
           customerName: validated.clientName,
@@ -160,7 +160,7 @@ export async function POST(request: Request) {
           date: dateFormatted,
           time: timeFormatted,
         })
-      ).catch((err) => console.error("SMS error:", err));
+      ).catch((err) => console.error("WhatsApp error:", err));
     }
 
     return NextResponse.json(
