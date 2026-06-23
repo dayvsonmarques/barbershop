@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { usePWABanner } from "@/contexts/pwa-banner-context";
 
 type Platform = "ios" | "android" | "other";
@@ -32,6 +33,9 @@ export function PWAInstallPrompt() {
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { setBannerVisible } = usePWABanner();
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/painel-gerenciar")) return null;
   const [platform, setPlatform] = useState<Platform>("ios");
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
 
