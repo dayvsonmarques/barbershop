@@ -30,17 +30,18 @@ const ANDROID_STEPS = [
 ];
 
 export function PWAInstallPrompt() {
+  const pathname = usePathname();
+  const { setBannerVisible } = usePWABanner();
+  const [platform, setPlatform] = useState<Platform>("ios");
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { setBannerVisible } = usePWABanner();
-  const pathname = usePathname();
-
-  if (pathname.startsWith("/painel-gerenciar")) return null;
-  const [platform, setPlatform] = useState<Platform>("ios");
   const [footerVisible, setFooterVisible] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
 
+  const isAdmin = pathname.startsWith("/painel-gerenciar");
+
   useEffect(() => {
+    if (isAdmin) return;
     const { mobile, platform, standalone } = detect();
     if (!mobile || standalone) return;
     if (localStorage.getItem("pwa-dismissed")) return;
@@ -58,7 +59,7 @@ export function PWAInstallPrompt() {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(t);
     };
-  }, []);
+  }, [isAdmin, setBannerVisible]);
 
   useEffect(() => {
     if (!visible) return;
@@ -93,7 +94,7 @@ export function PWAInstallPrompt() {
     }
   }
 
-  if (!visible) return null;
+  if (isAdmin || !visible) return null;
 
   const steps = platform === "ios" ? IOS_STEPS : ANDROID_STEPS;
 

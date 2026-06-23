@@ -343,25 +343,22 @@ export function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="px-3 py-4 border-t border-[#E5E5E5] space-y-2">
-            <div className="flex justify-center">
-              <a
-                href="https://webdev.recife.br/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Desenvolvido por webdev.recife.br"
-                className="group flex items-center gap-2 text-[#A1A1AA] hover:text-[#C9A84C] transition-colors duration-200"
-              >
-                <span className="flex items-center justify-center w-5 h-5 rotate-45 border border-[#A1A1AA] group-hover:border-[#C9A84C] transition-colors duration-200 shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" className="-rotate-45 w-3 h-3" stroke="currentColor" strokeWidth="2">
-                    <path d="M8 6L3 12L8 18" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M14.5 4.5L9.5 19.5" strokeLinecap="round"/>
-                    <path d="M16 6L21 12L16 18" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className="text-xs font-medium">Web Dev Studio</span>
-              </a>
-            </div>
+          <div className="flex justify-center py-3">
+            <a
+              href="https://webdev.recife.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Desenvolvido por webdev.recife.br"
+              className="group flex items-center justify-center w-6 h-6 rotate-45 border border-[#D4D4D8] hover:border-[#C9A84C] transition-colors duration-200"
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="-rotate-45 w-3.5 h-3.5 text-[#D4D4D8] group-hover:text-[#C9A84C] transition-colors duration-200" stroke="currentColor" strokeWidth="2">
+                <path d="M8 6L3 12L8 18" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14.5 4.5L9.5 19.5" strokeLinecap="round"/>
+                <path d="M16 6L21 12L16 18" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
+          <div className="px-3 py-4 border-t border-[#E5E5E5]">
             <a
               href="/api/auth/logout"
               className="group flex items-center gap-3 px-3 py-2 rounded-md text-sm font-semibold text-[#52525B] hover:bg-red-50 hover:text-red-600 transition-all duration-200 border-l-2 border-transparent hover:border-red-400 hover:translate-x-0.5"
