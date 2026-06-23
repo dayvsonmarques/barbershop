@@ -118,9 +118,9 @@ export function Navbar() {
           href="/"
           aria-label="ED Barbearia — Página inicial"
           className={[
-            "absolute left-1/2 -translate-x-1/2 top-0 z-20",
+            "absolute inset-x-0 mx-auto w-fit top-0 z-20",
             "transition-all duration-300 ease-in-out",
-            isCompact ? "translate-y-4 bg-background-primary rounded-full overflow-hidden" : "",
+            isCompact ? "translate-y-2 bg-background-primary rounded-full overflow-hidden" : "",
           ].join(" ")}
         >
           <Image
@@ -131,8 +131,8 @@ export function Navbar() {
             priority
             className={[
               "w-auto object-contain drop-shadow-lg transition-[height] duration-300 ease-in-out",
-              isCompact ? "rounded-full" : "mix-blend-screen p-3.5",
-              isCompact ? "h-24" : "h-44",
+              isCompact ? "rounded-full scale-110" : "mix-blend-screen",
+              isCompact ? "h-20" : "h-40",
             ].join(" ")}
           />
         </Link>
