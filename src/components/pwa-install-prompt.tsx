@@ -37,6 +37,7 @@ export function PWAInstallPrompt() {
 
   if (pathname.startsWith("/painel-gerenciar")) return null;
   const [platform, setPlatform] = useState<Platform>("ios");
+  const [footerVisible, setFooterVisible] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
 
   useEffect(() => {
@@ -58,6 +59,21 @@ export function PWAInstallPrompt() {
       clearTimeout(t);
     };
   }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setFooterVisible(entry.isIntersecting);
+        setBannerVisible(!entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [visible, setBannerVisible]);
 
   function dismiss() {
     localStorage.setItem("pwa-dismissed", "1");
@@ -84,7 +100,7 @@ export function PWAInstallPrompt() {
   return (
     <>
       {/* Bottom banner */}
-      {!showModal && (
+      {!showModal && !footerVisible && (
         <div className="fixed bottom-0 left-0 right-0 z-40 p-3">
           <div className="rounded-2xl bg-white shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-black">
