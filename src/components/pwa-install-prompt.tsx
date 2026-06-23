@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePWABanner } from "@/contexts/pwa-banner-context";
 
 type Platform = "ios" | "android" | "other";
 
@@ -30,6 +31,7 @@ const ANDROID_STEPS = [
 export function PWAInstallPrompt() {
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { setBannerVisible } = usePWABanner();
   const [platform, setPlatform] = useState<Platform>("ios");
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
 
@@ -46,7 +48,7 @@ export function PWAInstallPrompt() {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    const t = setTimeout(() => setVisible(true), 2500);
+    const t = setTimeout(() => { setVisible(true); setBannerVisible(true); }, 2500);
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(t);
@@ -57,6 +59,7 @@ export function PWAInstallPrompt() {
     localStorage.setItem("pwa-dismissed", "1");
     setVisible(false);
     setShowModal(false);
+    setBannerVisible(false);
   }
 
   async function handleInstall() {
@@ -109,34 +112,41 @@ export function PWAInstallPrompt() {
 
       {/* Install instructions modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
-          <div className="w-full max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div className="mb-5 flex justify-center">
-              <span className="text-4xl">📱</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
+          <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden">
+            <div className="bg-gray-900 px-8 pt-8 pb-6 text-center">
+              <div className="mb-3 flex justify-center">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5">
+                  <rect x="5" y="2" width="14" height="20" rx="2" />
+                  <path d="M12 18h.01" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M9 6h6M9 9h6M9 12h3" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-bold text-white mb-1">Adicione à tela inicial</h2>
+              <p className="text-sm text-gray-400">
+                Acesse o Ed Barbearia como um app, direto da sua tela inicial.
+              </p>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Como instalar</h2>
-            <p className="text-sm text-gray-500 mb-6">
-              Siga os passos para ter o Ed Barbearia na sua tela inicial:
-            </p>
+            <div className="px-8 py-6">
+              <ol className="space-y-4">
+                {steps.map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="shrink-0 w-7 h-7 rounded-full bg-[#C9A84C] text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-gray-700 leading-relaxed">{step}</span>
+                  </li>
+                ))}
+              </ol>
 
-            <ol className="space-y-4 text-left mb-8">
-              {steps.map((step, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="shrink-0 w-8 h-8 rounded-full bg-gray-900 text-white text-sm font-bold flex items-center justify-center">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm text-gray-700 pt-1">{step}</span>
-                </li>
-              ))}
-            </ol>
-
-            <button
-              onClick={dismiss}
-              className="w-full rounded-2xl bg-gray-900 py-4 text-base font-semibold text-white"
-            >
-              Entendi, vamos lá!
-            </button>
+              <button
+                onClick={dismiss}
+                className="mt-6 w-full rounded-xl bg-[#C9A84C] py-3.5 text-sm font-semibold text-white hover:bg-[#A07830] transition-colors"
+              >
+                Pronto, já sei como fazer!
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePWABanner } from "@/contexts/pwa-banner-context";
 
 const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 const DAY_LABEL: Record<string, string> = {
@@ -54,6 +55,7 @@ type PublicSettings = {
 
 export function Footer() {
   const [settings, setSettings] = useState<PublicSettings | null>(null);
+  const { bannerVisible } = usePWABanner();
 
   useEffect(() => {
     fetch("/api/public/settings")
@@ -73,9 +75,8 @@ export function Footer() {
 
   const hoursSummary = formatOpeningHours(settings?.openingHours);
 
-  return (
-    <>
-    <div className="group fixed bottom-4 right-4 z-50 m-2.5">
+  const signature = (
+    <div className={`group m-2.5 ${bannerVisible ? "absolute bottom-4 right-4" : "fixed bottom-4 right-4 z-50"}`}>
       <span className="pointer-events-none absolute bottom-full right-0 mb-4 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         Desenvolvido por Web Dev Studio
       </span>
@@ -100,7 +101,12 @@ export function Footer() {
         </svg>
       </a>
     </div>
-    <footer className="bg-background-primary border-t border-gold/30 py-16">
+  );
+
+  return (
+    <>
+    {!bannerVisible && signature}
+    <footer className={`bg-background-primary border-t border-gold/30 py-16 ${bannerVisible ? "relative" : ""}`}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div>
@@ -156,6 +162,7 @@ export function Footer() {
           </p>
         </div>
       </div>
+      {bannerVisible && signature}
     </footer>
     </>
   );
