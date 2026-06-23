@@ -87,7 +87,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         ),
       },
       {
-        href: "/painel-gerenciar/barbers",
+        href: "/painel-gerenciar/professionals",
         label: "Profissionais",
         icon: (
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">

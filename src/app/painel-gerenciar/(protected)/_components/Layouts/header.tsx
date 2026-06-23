@@ -11,7 +11,7 @@ const pageTitles: Record<string, string> = {
   "/painel-gerenciar/queue":    "Fila de Espera",
   "/painel-gerenciar/revenue":  "Faturamento",
   "/painel-gerenciar/reports":  "Relatórios",
-  "/painel-gerenciar/barbers": "Profissionais",
+  "/painel-gerenciar/professionals": "Profissionais",
   "/painel-gerenciar/services": "Serviços",
   "/painel-gerenciar/availability": "Disponibilidade",
   "/painel-gerenciar/products": "Produtos",

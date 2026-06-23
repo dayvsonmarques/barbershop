@@ -19,7 +19,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         label: "Agendamentos",
         items: [
           { href: "/painel-gerenciar/bookings", label: "Agendamentos", icon: "📅" },
-          { href: "/painel-gerenciar/barbers", label: "Barbeiros", icon: "💈" },
+          { href: "/painel-gerenciar/professionals", label: "Barbeiros", icon: "💈" },
           { href: "/painel-gerenciar/availability", label: "Disponibilidade", icon: "⏰" },
         ],
       },
@@ -77,7 +77,7 @@ function getAdminTitleFromPath(pathname: string): string {
 
   const titles: Record<string, string> = {
     "/painel-gerenciar/bookings": "Agendamentos",
-    "/painel-gerenciar/barbers": "Barbeiros",
+    "/painel-gerenciar/professionals": "Barbeiros",
     "/painel-gerenciar/availability": "Disponibilidade",
     "/painel-gerenciar/services": "Serviços",
     "/painel-gerenciar/products": "Produtos",
