@@ -343,24 +343,14 @@ export function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="px-3 py-4 border-t border-[#E5E5E5] space-y-1">
-            <a
-              href="/api/auth/logout"
-              className="group flex items-center gap-3 px-3 py-2 rounded-md text-sm font-semibold text-[#52525B] hover:bg-red-50 hover:text-red-600 transition-all duration-200 border-l-2 border-transparent hover:border-red-400 hover:translate-x-0.5"
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
-                className="text-[#A1A1AA] group-hover:text-red-500 transition-colors duration-200 group-hover:scale-110">
-                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
-              </svg>
-              Sair
-            </a>
-            <div className="group flex items-center gap-3 px-3 py-2">
+          <div className="px-3 py-4 border-t border-[#E5E5E5] space-y-2">
+            <div className="flex justify-center">
               <a
                 href="https://webdev.recife.br/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Desenvolvido por webdev.recife.br"
-                className="flex items-center gap-2 text-[#A1A1AA] hover:text-[#C9A84C] transition-colors duration-200"
+                className="group flex items-center gap-2 text-[#A1A1AA] hover:text-[#C9A84C] transition-colors duration-200"
               >
                 <span className="flex items-center justify-center w-5 h-5 rotate-45 border border-[#A1A1AA] group-hover:border-[#C9A84C] transition-colors duration-200 shrink-0">
                   <svg viewBox="0 0 24 24" fill="none" className="-rotate-45 w-3 h-3" stroke="currentColor" strokeWidth="2">
@@ -372,6 +362,16 @@ export function Sidebar() {
                 <span className="text-xs font-medium">Web Dev Studio</span>
               </a>
             </div>
+            <a
+              href="/api/auth/logout"
+              className="group flex items-center gap-3 px-3 py-2 rounded-md text-sm font-semibold text-[#52525B] hover:bg-red-50 hover:text-red-600 transition-all duration-200 border-l-2 border-transparent hover:border-red-400 hover:translate-x-0.5"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75"
+                className="text-[#A1A1AA] group-hover:text-red-500 transition-colors duration-200 group-hover:scale-110">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+              Sair
+            </a>
           </div>
         </div>
       </aside>
