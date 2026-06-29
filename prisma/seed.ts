@@ -157,10 +157,10 @@ async function main() {
   const hashedPassword = await bcrypt.hash("password123", 10);
 
   const adminUser = await prisma.user.create({
-    data: { email: "edmilson.barbearia7@gmail.com", password: hashedPassword, name: "Edmilson Rodrigues" },
+    data: { email: "admin@webdev.recife.br", password: hashedPassword, name: "Administrador" },
   });
   const receptionistUser = await prisma.user.create({
-    data: { email: "recepcao@edbarbearia.com", password: hashedPassword, name: "Recepcionista" },
+    data: { email: "recepcao@barbearia.com", password: hashedPassword, name: "Recepcionista" },
   });
 
   await prisma.userGroup.createMany({
@@ -216,13 +216,13 @@ async function main() {
   console.log("💈 Creating barbers...");
 
   const barber1 = await prisma.barber.create({
-    data: { name: "ED", email: "edmilson@edbarbearia.com", phone: "(81) 99896-6292", bio: null, photoUrl: "/images/barbers/ed.png" },
+    data: { name: "Alexandre", email: "alexandre@barbearia.com", phone: "", bio: null, photoUrl: null },
   });
   const barber2 = await prisma.barber.create({
-    data: { name: "Erywerton (Vevel)", email: "erywerton@edbarbearia.com", phone: "", bio: null, photoUrl: "/images/barbers/vevel.png" },
+    data: { name: "Rodrigo", email: "rodrigo@barbearia.com", phone: "", bio: null, photoUrl: null },
   });
   const barber3 = await prisma.barber.create({
-    data: { name: "Ronald Vinicius", email: "ronald@edbarbearia.com", phone: "", bio: null },
+    data: { name: "Felipe", email: "felipe@barbearia.com", phone: "", bio: null },
   });
 
   const barbers = [barber1, barber2, barber3];
@@ -295,12 +295,12 @@ async function main() {
 
   await prisma.testimonial.createMany({
     data: [
-      { author: "Ronald Vinicius",  quote: "Muito agradável, um ótimo ambiente com ótimos profissionais.", avatarUrl: "/images/testimonials/avatar-01.png", rating: 5, position: 0 },
-      { author: "Vinícius Lopes",   quote: "Profissionais sensacionais, excelente ambiente climatizado, cortes agendados sem necessidade de espera. Recomendo e sou cliente há anos!", avatarUrl: "/images/testimonials/avatar-02.png", rating: 5, position: 1 },
-      { author: "Marcos Egito",     quote: "Atendimento muito bom, os rapazes são muito educados e prestativos. Fazem aquilo que você pede, nada mais nada menos — eles até sugerem caso você peça.", avatarUrl: "/images/testimonials/avatar-03.png", rating: 5, position: 2 },
-      { author: "Adricia Rodrigues", quote: "Amei demais o meu corte de cabelo, foi realmente como eu esperava. Aconselho demais vocês fazerem nessa barbearia, todos são um amor de pessoa, top!", avatarUrl: "/images/testimonials/avatar-04.png", rating: 5, position: 3 },
-      { author: "Mateus Willis",    quote: "Ambiente profissional, bastante organizado com barbeiros impecáveis. Preço acessível e tem até cafezinho. Nota 1000.", avatarUrl: "/images/testimonials/avatar-05.png", rating: 5, position: 4 },
-      { author: "Pato Marques",     quote: "Ótima barbearia. Atendimento excelente, profissionais muito bons, ambiente aconchegante. Estou frequentando há mais de um ano, só tenho a agradecer.", avatarUrl: "/images/testimonials/avatar-06.png", rating: 5, position: 5 },
+      { author: "Carlos A.",   quote: "Muito agradável, um ótimo ambiente com ótimos profissionais.", avatarUrl: null, rating: 5, position: 0 },
+      { author: "Ricardo M.",  quote: "Profissionais sensacionais, excelente ambiente, cortes agendados sem necessidade de espera. Recomendo!", avatarUrl: null, rating: 5, position: 1 },
+      { author: "João P.",     quote: "Atendimento muito bom, os profissionais são educados e prestativos. Fazem exatamente o que você pede, com técnica.", avatarUrl: null, rating: 5, position: 2 },
+      { author: "Ana L.",      quote: "Amei o meu corte de cabelo, foi exatamente como esperava. Todos são ótimas pessoas. Recomendo muito!", avatarUrl: null, rating: 5, position: 3 },
+      { author: "Mateus S.",   quote: "Ambiente profissional e organizado, barbeiros impecáveis. Preço acessível. Nota 1000.", avatarUrl: null, rating: 5, position: 4 },
+      { author: "Lucas F.",    quote: "Ótima barbearia. Atendimento excelente, profissionais muito bons, ambiente aconchegante. Só tenho a agradecer.", avatarUrl: null, rating: 5, position: 5 },
     ],
   });
 
@@ -311,16 +311,16 @@ async function main() {
 
   await prisma.establishmentSettings.create({
     data: {
-      name: "ED Barbearia",
-      openingHours: JSON.stringify({ monday: "09:00-19:00", tuesday: "09:00-19:00", wednesday: "09:00-19:00", thursday: "09:00-19:00", friday: "09:00-19:00", saturday: "09:00-19:00", sunday: "Fechado" }),
-      address: "Rua Paula Batista, 604, Casa Amarela — Recife, PE, 52070-070",
-      latitude: -8.027572,
-      longitude: -34.916773,
-      instagramUrl: "https://www.instagram.com/edbarbearia/",
-      instagramUsername: "edbarbearia",
-      phone: "(81) 99896-6292",
-      email: "edmilson.barbearia7@gmail.com",
-      pixKey: "edmilson.barbearia7@gmail.com",
+      name: "Barbearia",
+      openingHours: JSON.stringify({ monday: "09:00-19:00", tuesday: "09:00-19:00", wednesday: "09:00-19:00", thursday: "09:00-19:00", friday: "09:00-19:00", saturday: "09:00-14:00", sunday: "Fechado" }),
+      address: "Endereço da Barbearia",
+      latitude: 0,
+      longitude: 0,
+      instagramUrl: null,
+      instagramUsername: null,
+      phone: null,
+      email: "contato@barbearia.com",
+      pixKey: null,
     },
   });
 

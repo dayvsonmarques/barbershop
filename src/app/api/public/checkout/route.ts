@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
     orderId: order.id,
     total,
     pixKey: settings?.pixKey ?? "",
-    storeName: settings?.name ?? "ED Barbearia",
+    storeName: settings?.name ?? "Barbearia",
     merchantCity: settings?.address?.split(",")[1]?.trim().split("—")[0]?.trim() ?? "Recife",
   });
 }

@@ -132,7 +132,7 @@ export default function AdminSettingsPage() {
               value={form.name}
               onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))}
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="ED Barbearia"
+              placeholder="Nome da Barbearia"
               required
             />
           </div>
@@ -182,7 +182,7 @@ export default function AdminSettingsPage() {
                 value={form.instagramUsername ?? ""}
                 onChange={(e) => setForm((s) => ({ ...s, instagramUsername: e.target.value || null }))}
                 className="flex-1 px-3 py-2 text-sm focus:outline-none bg-white"
-                placeholder="edbarbearia"
+                placeholder="usuario"
               />
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function AdminSettingsPage() {
               value={form.email ?? ""}
               onChange={(e) => setForm((s) => ({ ...s, email: e.target.value || null }))}
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="contato@edbarbearia.com"
+              placeholder="contato@exemplo.com"
             />
           </div>
         </div>

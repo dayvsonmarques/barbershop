@@ -22,13 +22,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ED Barbearia",
-  description: "Barbearia em Recife — agendamentos e serviços",
+  title: "Barbearia",
+  description: "Agendamentos e serviços online para barbearias",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ED Barbearia",
+    title: "Barbearia",
   },
 };
 

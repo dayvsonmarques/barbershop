@@ -106,10 +106,10 @@ export function PWAInstallPrompt() {
           <div className="rounded-2xl bg-white shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-black">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon-192.png" alt="ED Barbearia" className="w-full h-full object-cover" />
+              <img src="/icon-192.png" alt="Barbearia" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-900 leading-tight">Instale o Ed Barbearia</p>
+              <p className="text-sm font-semibold text-gray-900 leading-tight">Instale o app</p>
               <p className="text-xs text-gray-500">Acesso rápido + notificações</p>
             </div>
             <button
@@ -144,7 +144,7 @@ export function PWAInstallPrompt() {
                 </svg>
               </div>
               <p className="text-xl font-bold text-white">
-                Acesse o Ed Barbearia como um app, direto da sua tela inicial.
+                Acesse como um app, direto da sua tela inicial.
               </p>
             </div>
 

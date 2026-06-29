@@ -47,7 +47,7 @@ export function AdminSidebar({
         <div className="flex h-full flex-col py-8 pl-6 pr-3">
           <div className="flex items-center justify-between pr-2">
             <Link href="/painel-gerenciar" className="text-lg font-bold text-dark">
-              ED Barbearia
+              Painel Admin
             </Link>
 
             <button

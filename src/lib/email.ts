@@ -14,7 +14,7 @@ async function sendViaResend({ to, subject, html }: SendEmailParams) {
     throw new Error("Resend API key not configured");
   }
 
-  const from = process.env.EMAIL_FROM || "ED Barbearia <no-reply@yourdomain.com>";
+  const from = process.env.EMAIL_FROM || "Barbearia <no-reply@yourdomain.com>";
   
   await resend.emails.send({
     from,
@@ -38,7 +38,7 @@ async function sendViaSMTP({ to, subject, html }: SendEmailParams) {
         : undefined,
   });
 
-  const from = process.env.SMTP_FROM || "ED Barbearia <no-reply@localhost>";
+  const from = process.env.SMTP_FROM || "Barbearia <no-reply@localhost>";
 
   await transporter.sendMail({
     from,
@@ -89,7 +89,7 @@ export function generatePasswordResetEmail(resetUrl: string, userName: string): 
 <body>
   <div class="container">
     <div class="header">
-      <h1>ED Barbearia</h1>
+      <h1>Barbearia</h1>
     </div>
     <div class="content">
       <h2>Recuperação de Senha</h2>
@@ -104,7 +104,7 @@ export function generatePasswordResetEmail(resetUrl: string, userName: string): 
       <p>Se você não solicitou a redefinição de senha, ignore este e-mail.</p>
     </div>
     <div class="footer text-center">
-      <p>&copy; ${new Date().getFullYear()} ED Barbearia. Todos os direitos reservados.</p>
+      <p>&copy; ${new Date().getFullYear()} Barbearia. Todos os direitos reservados.</p>
     </div>
   </div>
 </body>

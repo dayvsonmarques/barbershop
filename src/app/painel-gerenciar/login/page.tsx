@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
         <div className="flex flex-col items-center mb-8">
           <Image
             src="/barbershop-logo.png"
-            alt="ED Barbearia"
+            alt="Logo"
             width={96}
             height={96}
             className="object-contain rounded-full"
@@ -78,7 +78,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputClass}
-                placeholder="email@edbarbearia.com"
+                placeholder="email@exemplo.com"
                 required
                 autoComplete="email"
               />

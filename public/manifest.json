@@ -1,7 +1,7 @@
 {
-  "name": "ED Barbearia",
-  "short_name": "ED Barbearia",
-  "description": "Agende seu horário na ED Barbearia",
+  "name": "Barbearia",
+  "short_name": "Barbearia",
+  "description": "Agende seu horário",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#111111",

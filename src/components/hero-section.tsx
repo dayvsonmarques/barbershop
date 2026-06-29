@@ -43,8 +43,8 @@ export function HeroSection() {
               letterSpacing: "-0.02em",
             }}
           >
-            Barbearia em Recife{" "}
-            <span className="block" style={{ fontSize: "clamp(1.4rem, 4.5vw, 2.8rem)" }}>{new Date().getFullYear() - 2010} anos de tradição e estilo</span>
+            Tradição e Estilo{" "}
+            <span className="block" style={{ fontSize: "clamp(1.4rem, 4.5vw, 2.8rem)" }}>Cortes e barbas com precisão</span>
           </h1>
           <div className="flex flex-wrap gap-4">
             <Link href="/agendar">

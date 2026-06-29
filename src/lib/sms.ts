@@ -67,7 +67,7 @@ export function bookingReminderMessage(data: {
 }
 
 export function otpMessage(code: string): string {
-  return `Seu código de verificação ED Barbearia é: *${code}*\nVálido por 10 minutos.`;
+  return `Seu código de verificação é: *${code}*\nVálido por 10 minutos.`;
 }
 
 export function bookingConfirmationMessage(data: {

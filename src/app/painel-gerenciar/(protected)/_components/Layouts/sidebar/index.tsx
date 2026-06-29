@@ -255,13 +255,13 @@ export function Sidebar() {
             >
               <Image
                 src="/barbershop-logo.png"
-                alt="ED Barbearia"
+                alt="Logo"
                 width={34}
                 height={34}
                 className="object-contain rounded-full"
               />
               <div>
-                <p className="text-sm font-bold text-[#18181B] leading-tight tracking-tight">ED Barbearia</p>
+                <p className="text-sm font-bold text-[#18181B] leading-tight tracking-tight">Barbearia</p>
                 <p className="text-[11px] text-[#A1A1AA] leading-tight font-medium tracking-wide uppercase">Painel Admin</p>
               </div>
             </Link>

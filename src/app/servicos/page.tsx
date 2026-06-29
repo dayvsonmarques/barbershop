@@ -40,7 +40,7 @@ export default async function ServicosPage() {
           Todos os Serviços
         </h1>
         <p className="text-text-secondary text-lg mb-16 leading-relaxed">
-          Conheça tudo o que a ED Barbearia tem a oferecer.
+          Conheça todos os nossos serviços.
         </p>
 
         <div className="space-y-16">

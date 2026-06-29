@@ -15,9 +15,8 @@ export function AboutSection() {
             Tradição desde 2010
           </h2>
           <p className="text-text-secondary text-lg mb-4 leading-relaxed">
-            Fundada por Edmilson Rodrigues, a ED Barbearia nasceu do amor
-            pelo ofício. Anos cuidando do visual de homens que valorizam
-            estilo e precisão em Recife.
+            Nascemos do amor pelo ofício. Anos cuidando do visual de
+            homens que valorizam estilo e precisão.
           </p>
           <p className="text-text-secondary text-lg leading-relaxed">
             Nossos barbeiros são artistas. Cada corte, barba e penteado é
@@ -30,8 +29,8 @@ export function AboutSection() {
       {/* Imagem mobile: abaixo do texto */}
       <div className="relative mt-12 aspect-square lg:hidden">
         <Image
-          src="/images/barbearia-logo_croped.jpeg"
-          alt="ED Barbearia"
+          src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1200&q=80"
+          alt="Sobre nós"
           fill
           sizes="100vw"
           className="object-cover"
@@ -42,8 +41,8 @@ export function AboutSection() {
       {/* Imagem desktop: full-bleed na metade direita */}
       <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2">
         <Image
-          src="/images/barbearia-logo_croped.jpeg"
-          alt="ED Barbearia"
+          src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1200&q=80"
+          alt="Sobre nós"
           fill
           sizes="50vw"
           className="object-cover"

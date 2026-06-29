@@ -73,7 +73,7 @@ export default function CheckoutPage() {
         orderId: data.orderId!,
         total: data.total!,
         pixKey: data.pixKey ?? null,
-        storeName: data.storeName ?? "ED Barbearia",
+        storeName: data.storeName ?? "Barbearia",
         merchantCity: data.merchantCity ?? "Recife",
       });
       clearCart();

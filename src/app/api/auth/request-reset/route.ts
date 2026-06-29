@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     try {
       await sendEmail({
         to: user.email,
-        subject: "Recuperação de Senha - ED Barbearia",
+        subject: "Recuperação de Senha",
         html: generatePasswordResetEmail(resetUrl, user.name),
       });
     } catch (emailError) {

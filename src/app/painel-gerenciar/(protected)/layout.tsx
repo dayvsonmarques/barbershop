@@ -27,7 +27,7 @@ export default async function AdminProtectedLayout({
           </main>
           <footer className="border-t border-[#E5E5E5] py-4 px-6">
             <p className="text-xs text-[#A1A1AA] text-center">
-              {new Date().getFullYear()} ED Barbearia © Todos os direitos reservados.
+              {new Date().getFullYear()} Barbearia © Todos os direitos reservados.
             </p>
           </footer>
         </div>

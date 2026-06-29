@@ -35,7 +35,7 @@ export function InstagramFeed() {
           className="font-heading text-text-primary mb-12"
           style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: "1.1" }}
         >
-          @edbarbearia
+          Siga-nos no Instagram
         </h2>
         <div className="grid grid-cols-3 gap-2">
           {items.map((post) => {

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
   if (!product) return {};
   return {
-    title: `${product.name} | ED Barbearia`,
+    title: `${product.name} | Barbearia`,
     description: product.description?.slice(0, 160) ?? product.name,
     openGraph: {
       title: product.name,

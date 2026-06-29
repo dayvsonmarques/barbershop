@@ -98,7 +98,7 @@ export function MapSection() {
         markerRef.current.setLatLng([mapCenter.lat, mapCenter.lng]);
         markerRef.current.bindPopup(
           `<div style="text-align:center;padding:8px;">
-            <strong style="font-size:16px;display:block;margin-bottom:4px;">${settings?.name ?? "ED Barbearia"}</strong>
+            <strong style="font-size:16px;display:block;margin-bottom:4px;">${settings?.name ?? "Barbearia"}</strong>
             <p style="margin:0;color:#666;">${settings?.address ?? "Rua casa amarela, 73, Recife"}</p>
           </div>`.trim()
         );

@@ -33,14 +33,14 @@ export async function GET() {
     return NextResponse.json(
       {
         data: {
-          name: "ED Barbearia",
+          name: "Barbearia",
           openingHours: "Segunda a Sábado das 9h às 18h",
-          address: "Rua casa amarela,73, Recife, Brasil, CEP: 52070-330",
-          latitude: -8.0260634,
-          longitude: -34.9196525,
-          instagramUrl: "https://www.instagram.com/edbarbearia/",
-          instagramUsername: "edbarbearia",
-          phone: "(11) 99999-9999",
+          address: "",
+          latitude: 0,
+          longitude: 0,
+          instagramUrl: null,
+          instagramUsername: null,
+          phone: null,
           pixKey: null,
         },
         warning: "Banco de dados indisponível ou não configurado",
