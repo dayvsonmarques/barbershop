@@ -3,45 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { usePWABanner } from "@/contexts/pwa-banner-context";
-
-const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
-const DAY_LABEL: Record<string, string> = {
-  monday: "Seg", tuesday: "Ter", wednesday: "Qua", thursday: "Qui",
-  friday: "Sex", saturday: "Sáb", sunday: "Dom",
-};
-
-function formatHourRange(range: string): string {
-  const [start, end] = range.split("-");
-  const fmt = (t: string) => t.replace(/^0/, "").replace(":00", "h").replace(/:(\d+)/, "h$1");
-  return end ? `${fmt(start)} às ${fmt(end)}` : range;
-}
-
-function formatOpeningHours(raw?: string): string {
-  if (!raw) return "Horário não informado";
-  let parsed: Record<string, string>;
-  try { parsed = JSON.parse(raw); } catch { return raw; }
-
-  const days = DAY_KEYS.filter((d) => parsed[d]);
-  const groups: { days: string[]; hours: string }[] = [];
-
-  for (const day of days) {
-    const hours = parsed[day];
-    const last = groups[groups.length - 1];
-    if (last && last.hours === hours) {
-      last.days.push(DAY_LABEL[day]);
-    } else {
-      groups.push({ days: [DAY_LABEL[day]], hours });
-    }
-  }
-
-  return groups
-    .filter(({ hours }) => hours.toLowerCase() !== "fechado")
-    .map(({ days: ds, hours }) => {
-      const label = ds.length > 2 ? `${ds[0]} a ${ds[ds.length - 1]}` : ds.join(", ");
-      return `${label}: ${formatHourRange(hours)}`;
-    })
-    .join(" | ");
-}
+import { formatOpeningHours } from "@/lib/opening-hours";
 
 type PublicSettings = {
   name?: string;

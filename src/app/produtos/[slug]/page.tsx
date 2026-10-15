@@ -17,10 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
   if (!product) return {};
   return {
-    title: `${product.name} | Barbearia`,
+    title: product.name,
     description: product.description?.slice(0, 160) ?? product.name,
+    alternates: { canonical: `/produtos/${product.slug}` },
     openGraph: {
       title: product.name,
+      url: `/produtos/${product.slug}`,
       description: product.description?.slice(0, 160) ?? "",
       images: product.images[0] ? [product.images[0].url] : [],
     },
