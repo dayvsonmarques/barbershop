@@ -106,6 +106,6 @@ export async function POST(request: NextRequest) {
     total,
     pixKey: settings?.pixKey ?? "",
     storeName: settings?.name ?? "Barbearia",
-    merchantCity: settings?.address?.split(",")[1]?.trim().split("—")[0]?.trim() ?? "Recife",
+    merchantCity: settings?.address?.split(",")[1]?.trim().split("—")[0]?.trim() || "BRASIL",
   });
 }

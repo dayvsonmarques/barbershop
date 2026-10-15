@@ -27,7 +27,7 @@ Authenticates user and returns JWT.
 **Request:**
 ```json
 {
-  "email": "admin@edbarbearia.com",
+  "email": "admin@barbearia.com",
   "password": "password123"
 }
 ```
@@ -38,7 +38,7 @@ Authenticates user and returns JWT.
   "token": "eyJhbGc...",
   "user": {
     "id": "cuid123",
-    "email": "admin@edbarbearia.com",
+    "email": "admin@barbearia.com",
     "name": "Administrador"
   }
 }
@@ -52,7 +52,7 @@ Requests password reset email.
 **Request:**
 ```json
 {
-  "email": "admin@edbarbearia.com"
+  "email": "admin@barbearia.com"
 }
 ```
 
@@ -183,7 +183,7 @@ EMAIL_PROVIDER=resend|smtp
 
 # Resend
 RESEND_API_KEY=re_xxx
-EMAIL_FROM="ED Barbearia <no-reply@yourdomain.com>"
+EMAIL_FROM="Barbearia <no-reply@yourdomain.com>"
 
 # SMTP
 SMTP_HOST=localhost
@@ -191,13 +191,13 @@ SMTP_PORT=1025
 SMTP_SECURE=false
 SMTP_USER=
 SMTP_PASS=
-SMTP_FROM="ED Barbearia <no-reply@localhost>"
+SMTP_FROM="Barbearia <no-reply@localhost>"
 ```
 
 ## Testing
 
 ### Test Credentials (from seed)
-- Email: `admin@edbarbearia.com`
+- Email: `admin@barbearia.com`
 - Password: `password123`
 
 ### Local Email Testing

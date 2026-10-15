@@ -1,4 +1,4 @@
-const CACHE = "ed-barbearia-v2";
+const CACHE = "barbearia-v3";
 const STATIC = ["/", "/manifest.json", "/barbershop-logo.png", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {

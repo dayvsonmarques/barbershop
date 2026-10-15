@@ -123,7 +123,7 @@ This document tracks the implementation progress following the gradual commit st
 ### 7.3: Instagram Feed
 - [ ] Install Instagram Graph API client
 - [ ] Create Instagram feed component
-- [ ] Fetch and display feed from @edbarbearia
+- [ ] Fetch and display feed from @suabarbearia
 - [ ] Error handling and fallback
 - [ ] Responsive design
 - **Commit:** `feat(public): add instagram feed integration`
