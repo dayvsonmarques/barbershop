@@ -36,6 +36,7 @@ jobs:
 
       - name: Disparar deploy no Coolify
         run: |
-          curl -fsSL \
+          # Exibe a resposta do Coolify para facilitar o diagnóstico em caso de erro
+          curl -sSL --fail-with-body \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
             "${{ secrets.COOLIFY_WEBHOOK_URL }}"
