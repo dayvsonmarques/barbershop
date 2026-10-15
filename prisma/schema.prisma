@@ -455,6 +455,7 @@ model EstablishmentSettings {
   phone                     String?
   email                     String?
   pixKey                    String?
+  googleReviewUrl           String?
   updatedAt                 DateTime @updatedAt
   
   @@map("establishment_settings")

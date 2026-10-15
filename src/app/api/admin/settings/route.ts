@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
       phone: settings.phone,
       email: settings.email,
       pixKey: settings.pixKey,
+      googleReviewUrl: settings.googleReviewUrl,
       updatedAt: settings.updatedAt,
     });
   } catch (error) {
@@ -75,6 +76,7 @@ export async function PUT(request: NextRequest) {
         phone: validation.data.phone ?? null,
         email: validation.data.email ?? null,
         pixKey: validation.data.pixKey ?? null,
+        googleReviewUrl: validation.data.googleReviewUrl ?? null,
       },
       update: {
         name: validation.data.name,
@@ -90,6 +92,7 @@ export async function PUT(request: NextRequest) {
         phone: validation.data.phone ?? null,
         email: validation.data.email ?? null,
         pixKey: validation.data.pixKey ?? null,
+        googleReviewUrl: validation.data.googleReviewUrl ?? null,
       },
     });
 
@@ -107,6 +110,7 @@ export async function PUT(request: NextRequest) {
       phone: updated.phone,
       email: updated.email,
       pixKey: updated.pixKey,
+      googleReviewUrl: updated.googleReviewUrl,
       updatedAt: updated.updatedAt,
     });
   } catch (error) {

@@ -86,7 +86,13 @@ function useVisibleCount() {
   return count;
 }
 
-export function TestimonialsCarousel({ testimonials }: { testimonials: TestimonialData[] }) {
+export function TestimonialsCarousel({
+  testimonials,
+  googleReviewUrl,
+}: {
+  testimonials: TestimonialData[];
+  googleReviewUrl?: string | null;
+}) {
   const count = testimonials.length;
   const [pos, setPos] = useState(count);
   const [animated, setAnimated] = useState(true);
@@ -222,9 +228,10 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
         ))}
       </div>
 
+      {googleReviewUrl && (
       <div className="flex justify-center mt-8">
         <a
-          href="https://share.google/xdHNXs84SjNMb2jJt"
+          href={googleReviewUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full border border-gold/50 px-6 py-2.5 text-sm font-medium text-text-secondary hover:text-gold hover:border-gold transition-colors duration-200"
@@ -235,6 +242,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
           Deixar uma avaliação no Google
         </a>
       </div>
+      )}
     </>
   );
 }
