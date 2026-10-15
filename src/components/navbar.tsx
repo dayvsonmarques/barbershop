@@ -13,7 +13,6 @@ import { useCustomerAuth } from "@/contexts/customer-auth-context";
 import { CustomerLoginModal } from "@/components/customer-login-modal";
 
 const navLinks = [
-  { href: "/", label: "Início" },
   { href: "#sobre", label: "Sobre Nós" },
   { href: "#servicos", label: "Serviços" },
   { href: "#loja", label: "Loja" },
@@ -104,7 +103,7 @@ export function Navbar() {
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -151,7 +150,7 @@ export function Navbar() {
               <button
                 onClick={() => setUserMenuOpen((v) => !v)}
                 title={customer.name}
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-gold text-background-primary text-xs font-bold hover:opacity-80 transition-opacity"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gold text-background-primary text-sm font-bold hover:opacity-80 transition-opacity"
               >
                 {customer.name.charAt(0).toUpperCase()}
               </button>
@@ -191,14 +190,14 @@ export function Navbar() {
               aria-label="Entrar"
               className={`hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
                 <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" />
               </svg>
             </button>
           )}
 
           <Link href="/carrinho" className={`relative flex items-center hover:text-gold transition-colors ${isCompact ? "text-text-primary" : "text-white"}`} aria-label="Carrinho">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/>
             </svg>
             {totalItems > 0 && (
@@ -246,7 +245,7 @@ export function Navbar() {
               onClick={() => handleNavClick(link.href)}
               className="font-heading uppercase tracking-widest text-text-primary hover:text-gold transition-colors duration-200 animate-fade-in"
               style={{
-                fontSize: "clamp(1.25rem, 4vw, 2rem)",
+                fontSize: "clamp(1.6rem, 5vw, 2.6rem)",
                 animationDelay: `${i * 50}ms`,
                 animationFillMode: "both",
               }}
@@ -276,7 +275,7 @@ export function Navbar() {
           ) : (
             <button
               onClick={() => { closeMenu(() => setShowLogin(true)); }}
-              className="text-text-secondary text-sm hover:text-gold transition-colors"
+              className="text-text-secondary text-lg uppercase tracking-widest hover:text-gold transition-colors"
             >
               Entrar / Cadastrar
             </button>
