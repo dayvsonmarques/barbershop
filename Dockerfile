@@ -21,10 +21,14 @@ RUN npm run build
 RUN mkdir -p /out/.next /out/node_modules \
  && cp -a .next/standalone/. /out/ \
  && cp -a .next/static /out/.next/static \
- && cp -a public prisma /out/ \
- && cp -a node_modules/prisma node_modules/@prisma node_modules/.prisma \
-          node_modules/tsx node_modules/bcryptjs node_modules/pg node_modules/dotenv \
-          /out/node_modules/
+ && cp -a public prisma prisma.config.ts /out/ \
+ && cd /tmp && mkdir cli && cd cli && npm init -y >/dev/null \
+ && v() { node -p "require('/app/node_modules/$1/package.json').version"; } \
+ && npm install --omit=dev --no-audit --no-fund \
+      prisma@$(v prisma) @prisma/adapter-pg@$(v @prisma/adapter-pg) \
+      dotenv@$(v dotenv) tsx@$(v tsx) bcryptjs@$(v bcryptjs) pg@$(v pg) \
+ && cp -a node_modules/. /out/node_modules/ \
+ && cp -a /app/node_modules/.prisma /out/node_modules/
 
 # Imagem final mínima (standalone)
 FROM base AS runner
