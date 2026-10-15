@@ -1,24 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SectionLabel } from "@/components/ui/section-label";
-
-type Course = {
-  id: number;
-  name: string;
-  description: string | null;
-  type: "PRESENCIAL" | "ONLINE";
-  durationHours: number;
-  imageUrl: string | null;
-};
-
-const typeLabel: Record<string, string> = {
-  PRESENCIAL: "Presencial",
-  ONLINE: "Online",
-};
+import { CourseCard, type CourseCardData } from "@/components/course-card";
 
 export function CoursesSection() {
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<CourseCardData[]>([]);
 
   useEffect(() => {
     fetch("/api/public/courses")
@@ -41,49 +29,18 @@ export function CoursesSection() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <div
-              key={course.id}
-              className="border border-border bg-background-secondary flex flex-col"
-            >
-              {course.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={course.imageUrl}
-                  alt={course.name}
-                  className="w-full h-48 object-cover"
-                />
-              ) : (
-                <div className="w-full h-48 bg-background-tertiary flex items-center justify-center">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gold/40">
-                    <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
-                    <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
-                  </svg>
-                </div>
-              )}
-
-              <div className="p-6 flex flex-col flex-1">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-gold border border-gold/40 px-2 py-0.5">
-                    {typeLabel[course.type]}
-                  </span>
-                  <span className="text-xs text-text-secondary">
-                    {course.durationHours}h
-                  </span>
-                </div>
-
-                <h3 className="font-heading text-text-primary text-lg leading-snug mb-2">
-                  {course.name}
-                </h3>
-
-                {course.description && (
-                  <p className="text-text-secondary text-sm leading-relaxed line-clamp-3 flex-1">
-                    {course.description}
-                  </p>
-                )}
-              </div>
-            </div>
+          {courses.slice(0, 6).map((course) => (
+            <CourseCard key={course.id} course={course} />
           ))}
+        </div>
+
+        <div className="flex justify-center mt-10">
+          <Link
+            href="/cursos"
+            className="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 text-sm uppercase tracking-widest font-heading hover:bg-gold hover:text-background-primary transition-colors duration-200"
+          >
+            Ver todos os cursos
+          </Link>
         </div>
       </div>
     </section>

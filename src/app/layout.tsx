@@ -8,6 +8,7 @@ import { Toaster } from "@/components/toaster";
 import { PWARegister } from "@/components/pwa-register";
 import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
 import { PWABannerProvider } from "@/contexts/pwa-banner-context";
+import { DEFAULT_SITE_NAME, getSiteSettings, getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -21,16 +22,45 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  title: "Barbearia",
-  description: "Agendamentos e serviços online para barbearias",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Barbearia",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const name = settings?.name ?? DEFAULT_SITE_NAME;
+  const description = settings?.address
+    ? `${name}: cortes, barba e cuidados masculinos com agendamento online. ${settings.address}.`
+    : `${name}: cortes, barba e cuidados masculinos com agendamento online.`;
+
+  // Meta tags de geolocalização (GEO) quando há coordenadas cadastradas
+  const geo: Record<string, string> = {};
+  if (settings?.hasCoords) {
+    geo["geo.position"] = `${settings.latitude};${settings.longitude}`;
+    geo["ICBM"] = `${settings.latitude}, ${settings.longitude}`;
+  }
+  if (settings?.address) geo["geo.placename"] = settings.address;
+
+  return {
+    metadataBase: new URL(getSiteUrl()),
+    title: { default: `${name} | Agendamento online`, template: `%s | ${name}` },
+    description,
+    applicationName: name,
+    manifest: "/manifest.json",
+    openGraph: {
+      type: "website",
+      locale: "pt_BR",
+      siteName: name,
+      title: name,
+      description,
+      images: [{ url: "/barbershop.png", width: 1672, height: 941, alt: name }],
+    },
+    twitter: { card: "summary_large_image", title: name, description, images: ["/barbershop.png"] },
+    robots: { index: true, follow: true },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: name,
+    },
+    other: geo,
+  };
+}
 
 export default function RootLayout({
   children,

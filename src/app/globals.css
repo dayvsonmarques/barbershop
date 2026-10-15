@@ -56,14 +56,14 @@
 
 /* Override Tailwind text-size vars — only affects utility classes, not inline rem styles */
 :root {
-  --text-xs: 16px;
-  --text-sm: 19px;
-  --text-base: 21px;
-  --text-lg: 24px;
-  --text-xl: 26px;
-  --text-2xl: 29px;
-  --text-3xl: 34px;
-  --text-4xl: 40px;
+  --text-xs: 17px;
+  --text-sm: 20px;
+  --text-base: 22px;
+  --text-lg: 25px;
+  --text-xl: 28px;
+  --text-2xl: 31px;
+  --text-3xl: 36px;
+  --text-4xl: 42px;
 }
 
 body {

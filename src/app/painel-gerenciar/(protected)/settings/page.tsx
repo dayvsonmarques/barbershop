@@ -16,6 +16,7 @@ type Settings = {
   phone: string | null;
   email: string | null;
   pixKey: string | null;
+  googleReviewUrl: string | null;
 };
 
 export default function AdminSettingsPage() {
@@ -28,8 +29,8 @@ export default function AdminSettingsPage() {
     name: "",
     openingHours: "",
     address: "",
-    latitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -23.55052),
-    longitude: Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -46.633308),
+    latitude: 0,
+    longitude: 0,
     instagramUsername: null,
     instagramUserId: null,
     instagramAccessToken: null,
@@ -37,6 +38,7 @@ export default function AdminSettingsPage() {
     phone: null,
     email: null,
     pixKey: null,
+    googleReviewUrl: null,
   });
 
   useEffect(() => {
@@ -58,6 +60,7 @@ export default function AdminSettingsPage() {
           phone: data.phone ?? null,
           email: data.email ?? null,
           pixKey: data.pixKey ?? null,
+          googleReviewUrl: data.googleReviewUrl ?? null,
         });
       } finally {
         setLoading(false);
@@ -145,8 +148,8 @@ export default function AdminSettingsPage() {
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
               rows={3}
               placeholder="Rua Exemplo, 123 - Cidade, UF"
-              required
             />
+            <p className="mt-1 text-xs text-gray-500">Em branco, a seção de localização não aparece no site.</p>
           </div>
 
           <div>
@@ -157,7 +160,6 @@ export default function AdminSettingsPage() {
               value={form.latitude}
               onChange={(e) => setForm((s) => ({ ...s, latitude: Number(e.target.value) }))}
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              required
             />
           </div>
           <div>
@@ -168,7 +170,6 @@ export default function AdminSettingsPage() {
               value={form.longitude}
               onChange={(e) => setForm((s) => ({ ...s, longitude: Number(e.target.value) }))}
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              required
             />
           </div>
 
@@ -217,6 +218,17 @@ export default function AdminSettingsPage() {
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
               placeholder="contato@exemplo.com"
             />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">Link de avaliação no Google</label>
+            <input
+              type="url"
+              value={form.googleReviewUrl ?? ""}
+              onChange={(e) => setForm((s) => ({ ...s, googleReviewUrl: e.target.value || null }))}
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              placeholder="https://g.page/r/..."
+            />
+            <p className="mt-1 text-xs text-gray-500">Em branco, o botão &ldquo;Deixar uma avaliação no Google&rdquo; não aparece.</p>
           </div>
         </div>
 

@@ -1,10 +1,17 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { SectionLabel } from "@/components/ui/section-label";
 import { ProductCard } from "@/components/product-card";
 import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Loja",
+  description: "Produtos para cabelo e barba com entrega e pagamento via PIX.",
+  alternates: { canonical: "/produtos" },
+};
 
 async function getData(categoryId?: string) {
   const [categories, products] = await Promise.all([

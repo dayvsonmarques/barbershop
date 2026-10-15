@@ -24,6 +24,7 @@ export async function GET() {
         instagramUsername: settings.instagramUsername,
         phone: settings.phone,
         pixKey: settings.pixKey,
+        googleReviewUrl: settings.googleReviewUrl,
       },
     });
   } catch (error) {
@@ -42,6 +43,7 @@ export async function GET() {
           instagramUsername: null,
           phone: null,
           pixKey: null,
+          googleReviewUrl: null,
         },
         warning: "Banco de dados indisponível ou não configurado",
       },

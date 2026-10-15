@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -8,6 +9,12 @@ import { CalendarIcon } from "@/components/ui/calendar-icon";
 import { SectionLabel } from "@/components/ui/section-label";
 import { prisma } from "@/lib/prisma";
 import { categoryIcons, fallbackIcon } from "@/lib/category-icons";
+
+export const metadata: Metadata = {
+  title: "Serviços",
+  description: "Cortes, barba e tratamentos masculinos com preços e duração. Agende online.",
+  alternates: { canonical: "/servicos" },
+};
 
 async function getServicesByCategory() {
   const categories = await prisma.serviceCategory.findMany({

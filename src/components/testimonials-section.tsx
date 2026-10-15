@@ -3,11 +3,14 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 
 export async function TestimonialsSection() {
-  const testimonials = await prisma.testimonial.findMany({
-    where: { isActive: true },
-    orderBy: { position: "asc" },
-    select: { id: true, author: true, quote: true, avatarUrl: true, rating: true },
-  });
+  const [testimonials, settings] = await Promise.all([
+    prisma.testimonial.findMany({
+      where: { isActive: true },
+      orderBy: { position: "asc" },
+      select: { id: true, author: true, quote: true, avatarUrl: true, rating: true },
+    }),
+    prisma.establishmentSettings.findUnique({ where: { id: 1 }, select: { googleReviewUrl: true } }),
+  ]);
 
   return (
     <section id="depoimentos" className="bg-background-primary py-24">
@@ -19,7 +22,7 @@ export async function TestimonialsSection() {
         >
           O que dizem nossos clientes
         </h2>
-        <TestimonialsCarousel testimonials={testimonials} />
+        <TestimonialsCarousel testimonials={testimonials} googleReviewUrl={settings?.googleReviewUrl} />
       </div>
     </section>
   );
