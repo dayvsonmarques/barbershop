@@ -35,8 +35,12 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Disparar deploy no Coolify
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
         run: |
+          # Remove espaços/quebras de linha colados junto com os secrets
+          TOKEN=$(printf '%s' "$COOLIFY_TOKEN" | tr -d '[:space:]')
+          URL=$(printf '%s' "$COOLIFY_WEBHOOK_URL" | tr -d '[:space:]')
           # Exibe a resposta do Coolify para facilitar o diagnóstico em caso de erro
-          curl -sSL --fail-with-body \
-            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
-            "${{ secrets.COOLIFY_WEBHOOK_URL }}"
+          curl -sSL --fail-with-body -H "Authorization: Bearer $TOKEN" "$URL"
