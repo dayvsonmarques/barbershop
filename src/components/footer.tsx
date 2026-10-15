@@ -66,7 +66,7 @@ export function Footer() {
   const hoursSummary = formatOpeningHours(settings?.openingHours);
 
   const signature = (
-    <div className={`group m-2.5 ${bannerVisible ? "absolute bottom-4 right-4" : "fixed bottom-4 right-4 z-50"}`}>
+    <div className={`group m-2.5 ${bannerVisible ? "relative" : "fixed bottom-4 right-4 z-50"}`}>
       <span className="pointer-events-none absolute bottom-full right-0 mb-4 whitespace-nowrap rounded bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         Desenvolvido por Web Dev Studio
       </span>
@@ -75,7 +75,7 @@ export function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Desenvolvido por webdev.recife.br"
-        className="flex items-center justify-center w-8 h-8 rotate-45 border transition-colors duration-200
+        className="flex items-center justify-center w-11 h-11 rotate-45 border transition-colors duration-200
           border-[#C9A84C] hover:bg-[#C9A84C]/10
           dark:border-white dark:hover:border-[#C9A84C]"
       >
@@ -83,7 +83,7 @@ export function Footer() {
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="-rotate-45 w-4 h-4 text-[#C9A84C] dark:text-white dark:group-hover:text-[#C9A84C] transition-colors duration-200"
+          className="-rotate-45 w-6 h-6 text-[#C9A84C] dark:text-white dark:group-hover:text-[#C9A84C] transition-colors duration-200"
         >
           <path d="M8 6L3 12L8 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           <path d="M14.5 4.5L9.5 19.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -96,9 +96,9 @@ export function Footer() {
   return (
     <>
     {!bannerVisible && signature}
-    <footer className={`bg-background-primary border-t border-gold/30 py-16 ${bannerVisible ? "relative" : ""}`}>
+    <footer className={`bg-background-primary border-t border-gold/30 py-16`}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-12">
+        <div className="mb-4">
           <div>
             <p className="font-heading text-gold text-2xl font-bold mb-3">
               {storeName}
@@ -114,13 +114,14 @@ export function Footer() {
 
         </div>
 
+        {bannerVisible && <div className="flex justify-end mb-4">{signature}</div>}
+
         <div className="border-t border-border pt-6">
           <p className="text-text-secondary text-sm text-center">
             {new Date().getFullYear()} {storeName} © Todos os direitos reservados.
           </p>
         </div>
       </div>
-      {bannerVisible && signature}
     </footer>
     </>
   );

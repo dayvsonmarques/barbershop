@@ -29,13 +29,24 @@ const ANDROID_STEPS = [
   <>Permita as <strong>Notificações</strong> 🔔</>,
 ];
 
+const DISMISS_KEY = "pwa-dismissed-at";
+const SNOOZE_MS = 24 * 60 * 60 * 1000; // reaparece 24h após fechar
+
+function isSnoozed() {
+  try {
+    const at = Number(localStorage.getItem(DISMISS_KEY));
+    return !!at && Date.now() - at < SNOOZE_MS;
+  } catch {
+    return false;
+  }
+}
+
 export function PWAInstallPrompt() {
   const pathname = usePathname();
   const { setBannerVisible } = usePWABanner();
   const [platform, setPlatform] = useState<Platform>("ios");
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [footerVisible, setFooterVisible] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
 
   const isAdmin = pathname.startsWith("/painel-gerenciar");
@@ -44,7 +55,7 @@ export function PWAInstallPrompt() {
     if (isAdmin) return;
     const { mobile, platform, standalone } = detect();
     if (!mobile || standalone) return;
-    if (localStorage.getItem("pwa-dismissed")) return;
+    if (isSnoozed()) return;
 
     setPlatform(platform);
 
@@ -61,23 +72,16 @@ export function PWAInstallPrompt() {
     };
   }, [isAdmin, setBannerVisible]);
 
+  // Reserva espaço no fim da página para o banner não cobrir o rodapé
+  const bannerShown = visible && !showModal;
   useEffect(() => {
-    if (!visible) return;
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setFooterVisible(entry.isIntersecting);
-        setBannerVisible(!entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(footer);
-    return () => observer.disconnect();
-  }, [visible, setBannerVisible]);
+    if (!bannerShown) return;
+    document.body.style.paddingBottom = "100px";
+    return () => { document.body.style.paddingBottom = ""; };
+  }, [bannerShown]);
 
   function dismiss() {
-    localStorage.setItem("pwa-dismissed", "1");
+    try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch {}
     setVisible(false);
     setShowModal(false);
     setBannerVisible(false);
@@ -101,7 +105,7 @@ export function PWAInstallPrompt() {
   return (
     <>
       {/* Bottom banner */}
-      {!showModal && !footerVisible && (
+      {!showModal && (
         <div className="fixed bottom-0 left-0 right-0 z-40 p-3">
           <div className="rounded-2xl bg-white shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-black">
@@ -114,10 +118,10 @@ export function PWAInstallPrompt() {
             </div>
             <button
               onClick={dismiss}
-              className="text-gray-300 hover:text-gray-500 shrink-0 p-1"
+              className="text-gray-400 hover:text-gray-700 shrink-0 p-2 -m-1"
               aria-label="Fechar"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
