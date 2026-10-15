@@ -16,31 +16,23 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
+# Monta a pasta final em um único diretório para evitar cópias sobrepostas
+# em node_modules (causavam erro de extração de camadas no servidor)
+RUN mkdir -p /out/.next /out/node_modules \
+ && cp -a .next/standalone/. /out/ \
+ && cp -a .next/static /out/.next/static \
+ && cp -a public prisma /out/ \
+ && cp -a node_modules/prisma node_modules/@prisma node_modules/.prisma \
+          node_modules/tsx node_modules/bcryptjs node_modules/pg node_modules/dotenv \
+          /out/node_modules/
+
 # Imagem final mínima (standalone)
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Output standalone do Next.js
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
-# Schema e migrations do Prisma
-COPY --from=builder /app/prisma ./prisma
-
-# CLI do Prisma (para migrate deploy no startup)
-COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
-COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
-
-# Pacotes necessários para o seed (tsx, bcryptjs, pg, adapter, dotenv)
-COPY --from=deps /app/node_modules/tsx ./node_modules/tsx
-COPY --from=deps /app/node_modules/bcryptjs ./node_modules/bcryptjs
-COPY --from=deps /app/node_modules/pg ./node_modules/pg
-COPY --from=deps /app/node_modules/dotenv ./node_modules/dotenv
-COPY --from=deps /app/node_modules/@prisma/adapter-pg ./node_modules/@prisma/adapter-pg
+COPY --from=builder /out ./
 
 EXPOSE 3000
 ENV PORT=3000
