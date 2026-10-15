@@ -63,7 +63,7 @@ Implemente a página inicial com as seções:
    - Agendamentos
    - cada card leva para a respectiva página/fluxo
 4) Seção Instagram:
-   - carregar feed do Instagram do perfil https://www.instagram.com/edbarbearia/
+   - carregar feed do Instagram do perfil https://www.instagram.com/suabarbearia/
    - **use API oficial (Instagram Graph API)**
 5) Seção Mapa (100vw x 70vh):
    - **MVP:** usar **Leaflet + OpenStreetMap (OSM)**.
@@ -133,7 +133,7 @@ EMAIL_PROVIDER=resend
 
 # Resend (primary)
 RESEND_API_KEY=replace-with-resend-api-key
-EMAIL_FROM="ED Barbearia <no-reply@yourdomain.com>"
+EMAIL_FROM="Barbearia <no-reply@yourdomain.com>"
 
 # SMTP (fallback) - e.g. Mailpit local
 SMTP_HOST=localhost
@@ -141,7 +141,7 @@ SMTP_PORT=1025
 SMTP_SECURE=false
 SMTP_USER=
 SMTP_PASS=
-SMTP_FROM="ED Barbearia <no-reply@localhost>"
+SMTP_FROM="Barbearia <no-reply@localhost>"
 
 # Instagram (Graph API)
 INSTAGRAM_ACCESS_TOKEN=replace-with-instagram-access-token

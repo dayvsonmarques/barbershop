@@ -442,7 +442,7 @@ model Testimonial {
 
 model EstablishmentSettings {
   id                  Int      @id @default(1)
-  name                String   @default("ED Barbearia")
+  name                String   @default("Barbearia")
   openingHours        String   @db.Text // JSON format: {"monday": "09:00-18:00", ...}
   address             String   @db.Text
   latitude            Decimal  @db.Decimal(10, 7)

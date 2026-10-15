@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Map as LeafletMap } from "leaflet";
 import { SectionLabel } from "@/components/ui/section-label";
 
 
@@ -11,35 +12,34 @@ type PublicSettings = {
   longitude?: number;
 };
 
+// Quantos tiles podem falhar (sem nenhum carregar) antes de ocultar o mapa
+const MAX_TILE_ERRORS = 3;
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+}
+
 export function MapSection() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markerRef = useRef<any>(null);
 
   const [settings, setSettings] = useState<PublicSettings | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [mapFailed, setMapFailed] = useState(false);
 
   const tileUrl =
     process.env.NEXT_PUBLIC_MAP_TILE_URL ??
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileAttribution =
     process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ??
-    "© OpenStreetMap contributors © CARTO";
+    "© OpenStreetMap contributors";
+  const zoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 17);
 
-  const fallbackLat = Number(
-    process.env.NEXT_PUBLIC_MAP_DEFAULT_LAT ?? -8.0260634
-  );
-  const fallbackLng = Number(
-    process.env.NEXT_PUBLIC_MAP_DEFAULT_LNG ?? -34.9196525
-  );
-  const fallbackZoom = Number(process.env.NEXT_PUBLIC_MAP_DEFAULT_ZOOM ?? 18);
-
-  const mapCenter = useMemo(
-    () => ({
-      lat: settings?.latitude ?? fallbackLat,
-      lng: settings?.longitude ?? fallbackLng,
-    }),
-    [settings?.latitude, settings?.longitude, fallbackLat, fallbackLng]
-  );
+  const address = settings?.address?.trim() ?? "";
+  const lat = settings?.latitude;
+  const lng = settings?.longitude;
+  const hasCoords =
+    Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
+  const showMap = hasCoords && !mapFailed;
 
   useEffect(() => {
     fetch("/api/public/settings")
@@ -47,72 +47,90 @@ export function MapSection() {
       .then((json) => {
         if (json?.data) setSettings(json.data as PublicSettings);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
 
+  // Só carrega o Leaflet e os tiles quando a seção se aproxima da tela
   useEffect(() => {
-    if (typeof window === "undefined" || !mapRef.current) return;
+    const el = mapRef.current;
+    if (!showMap || !el) return;
 
-    if (!document.querySelector('link[data-leaflet="true"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-      link.setAttribute("data-leaflet", "true");
-      document.head.appendChild(link);
-    }
+    let map: LeafletMap | null = null;
+    let cancelled = false;
 
-    import("leaflet").then((leafletModule) => {
-      const L = (leafletModule as any).default ?? leafletModule;
-
-      if (!mapInstanceRef.current) {
-        const map = L.map(mapRef.current!, {
-          scrollWheelZoom: false,
-        }).setView([mapCenter.lat, mapCenter.lng], fallbackZoom);
-
-        map.scrollWheelZoom.disable();
-
-        L.tileLayer(tileUrl, { attribution: tileAttribution }).addTo(map);
-
-        const customIcon = L.divIcon({
-          className: "custom-marker",
-          html: `
-            <div style="background-color:#000;width:40px;height:40px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);width:14px;height:14px;border-radius:9999px;background:white;"></div>
-            </div>`,
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        });
-
-        const marker = L.marker([mapCenter.lat, mapCenter.lng], {
-          icon: customIcon,
-        }).addTo(map);
-        markerRef.current = marker;
-
-        mapInstanceRef.current = map;
+    const init = async () => {
+      if (!document.querySelector('link[data-leaflet="true"]')) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+        link.setAttribute("data-leaflet", "true");
+        document.head.appendChild(link);
       }
 
-      const map = mapInstanceRef.current;
-      if (map) map.setView([mapCenter.lat, mapCenter.lng], map.getZoom());
+      const leafletModule = await import("leaflet");
+      const L = leafletModule.default ?? leafletModule;
+      if (cancelled || lat === undefined || lng === undefined) return;
 
-      if (markerRef.current) {
-        markerRef.current.setLatLng([mapCenter.lat, mapCenter.lng]);
-        markerRef.current.bindPopup(
-          `<div style="text-align:center;padding:8px;">
-            <strong style="font-size:16px;display:block;margin-bottom:4px;">${settings?.name ?? "Barbearia"}</strong>
-            <p style="margin:0;color:#666;">${settings?.address ?? "Rua casa amarela, 73, Recife"}</p>
-          </div>`.trim()
-        );
-      }
-    });
-  }, [
-    mapCenter.lat,
-    mapCenter.lng,
-    fallbackZoom,
-    tileUrl,
-    tileAttribution,
-    settings?.address,
-    settings?.name,
-  ]);
+      const leafletMap = L.map(el, { scrollWheelZoom: false }).setView([lat, lng], zoom);
+      map = leafletMap;
+
+      let tileErrors = 0;
+      let tileLoaded = false;
+      L.tileLayer(tileUrl, { attribution: tileAttribution })
+        .on("tileload", () => { tileLoaded = true; })
+        .on("tileerror", () => {
+          tileErrors += 1;
+          if (!tileLoaded && tileErrors >= MAX_TILE_ERRORS) {
+            map?.remove();
+            map = null;
+            setMapFailed(true);
+          }
+        })
+        .addTo(leafletMap);
+
+      const customIcon = L.divIcon({
+        className: "custom-marker",
+        html: `
+          <div style="background-color:#000;width:40px;height:40px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);width:14px;height:14px;border-radius:9999px;background:white;"></div>
+          </div>`,
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+
+      const marker = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap);
+      marker.bindPopup(
+        `<div style="text-align:center;padding:8px;">
+          <strong style="font-size:16px;display:block;margin-bottom:4px;">${escapeHtml(settings?.name ?? "Barbearia")}</strong>
+          ${address ? `<p style="margin:0;color:#666;">${escapeHtml(address)}</p>` : ""}
+        </div>`.trim()
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        init().catch(() => setMapFailed(true));
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(el);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      map?.remove();
+    };
+  }, [loaded, showMap, lat, lng, zoom, tileUrl, tileAttribution, address, settings?.name]);
+
+  // Sem endereço nem coordenadas cadastrados no admin: não exibe a seção
+  if (!loaded || (!address && !hasCoords)) return null;
+
+  const routeDestination = hasCoords
+    ? `${lat},${lng}`
+    : encodeURIComponent(address);
 
   return (
     <section id="local" className="bg-background-primary py-24">
@@ -124,11 +142,11 @@ export function MapSection() {
         >
           Onde estamos
         </h2>
-        <p className="text-text-secondary text-lg mb-6">
-          {settings?.address ?? "Rua casa amarela, 73 — Recife, PE"}
-        </p>
+        {address && (
+          <p className="text-text-secondary text-lg mb-6">{address}</p>
+        )}
         <a
-          href={`https://www.google.com/maps/dir/?api=1&destination=${mapCenter.lat},${mapCenter.lng}`}
+          href={`https://www.google.com/maps/dir/?api=1&destination=${routeDestination}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 border border-gold text-gold px-5 py-2.5 text-sm uppercase tracking-widest font-heading hover:bg-gold hover:text-background-primary transition-colors duration-200"
@@ -139,11 +157,13 @@ export function MapSection() {
           Simular rota
         </a>
       </div>
-      <div
-        ref={mapRef}
-        className="h-[60vh] md:h-[30vh] lg:h-[60vh] w-full"
-        style={{ filter: "grayscale(1) contrast(1.08)" }}
-      />
+      {showMap && (
+        <div
+          ref={mapRef}
+          className="h-[60vh] md:h-[30vh] lg:h-[60vh] w-full"
+          style={{ filter: "grayscale(1) contrast(1.08)" }}
+        />
+      )}
     </section>
   );
 }

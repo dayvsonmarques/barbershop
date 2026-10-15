@@ -15,7 +15,7 @@ describe("generatePixCode", () => {
   });
 
   it("contains the merchant name in the payload", () => {
-    const merchantName = "ED Barbearia";
+    const merchantName = "Barbearia";
     const code = generatePixCode({ pixKey: "chave@pix.com", amount: 50.0, merchantName, merchantCity: "Recife", txId: "TX003" });
     expect(code).toContain(merchantName);
   });

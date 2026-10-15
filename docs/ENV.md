@@ -19,7 +19,7 @@ This project uses **Resend as the primary provider** and supports **SMTP as a fa
 
 ### Resend (Primary)
 - `RESEND_API_KEY=...` - Get from https://resend.com/api-keys
-- `EMAIL_FROM="ED Barbearia <no-reply@yourdomain.com>"` - Sender email address
+- `EMAIL_FROM="Barbearia <no-reply@yourdomain.com>"` - Sender email address
 
 ### SMTP (Fallback)
 - `SMTP_HOST=localhost`
@@ -27,7 +27,7 @@ This project uses **Resend as the primary provider** and supports **SMTP as a fa
 - `SMTP_SECURE=false` - `true` for port 465; `false` for 587/1025
 - `SMTP_USER=` - SMTP username (if required)
 - `SMTP_PASS=` - SMTP password (if required)
-- `SMTP_FROM="ED Barbearia <no-reply@localhost>"` - Sender email address
+- `SMTP_FROM="Barbearia <no-reply@localhost>"` - Sender email address
 
 #### Local Development Tip
 Use **Mailpit** (SMTP catcher) for testing:

@@ -1,153 +1,40 @@
-# Barbershop Web Application
+# Barbearia SaaS
 
-A complete web application for barbershop management built with Next.js, TypeScript, and PostgreSQL.
+Plataforma web para barbearias: site público com agendamento online, loja e painel administrativo.
 
-## 🚀 Tech Stack
+**Stack:** Next.js · TypeScript · Tailwind · PostgreSQL · Prisma
 
-- **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript
-- **Styling:** TailwindCSS
-- **Database:** PostgreSQL
-- **ORM:** Prisma
-- **Validation:** Zod
-- **Authentication:** Custom auth with JWT
-- **Email:** Resend (primary) + SMTP (fallback)
-- **Maps:** Leaflet + OpenStreetMap
-- **Instagram:** Graph API
+## Funcionalidades
 
-## 📋 Features
+- **Site público:** banner, serviços, equipe, loja com checkout PIX, depoimentos, Instagram e localização
+- **Agendamento:** horários em tempo real, sem conflitos, lembrete por WhatsApp
+- **Painel admin:** barbeiros, serviços, produtos, pedidos, agenda, relatórios e configurações da barbearia (nome, endereço, horário, redes sociais)
+- **Acesso:** permissões por perfil (RBAC)
+- **PWA:** instalável no celular
 
-### Public Site
-- 🏠 Home page with fullscreen banner slider
-- 📖 About section
-- 💈 Services, Courses, and Booking cards
-- 📸 Instagram feed integration
-- 🗺️ Interactive map with location marker
-- 📱 Fully responsive design
+## Como rodar
 
-### Admin Panel
-- 👥 User management with RBAC (Role-Based Access Control)
-- 💇 Barber management
-- 📅 Availability and exception management
-- 📝 Booking management with conflict detection
-- 🏪 Service and product catalogs
-- 🎓 Course management
-- ⚙️ Establishment settings (hours, location, social media)
+Requisitos: Node.js 18+ e Docker.
 
-### Booking System
-- Real-time availability checking
-- Conflict prevention
-- Multiple status tracking (Pending, Confirmed, Cancelled, Completed)
-- Service duration-based slot calculation
-
-## 🏗️ Project Structure
-
-```
-app/
-├── app/                    # Next.js app directory
-│   ├── (public)/          # Public routes
-│   ├── admin/             # Admin routes (protected)
-│   └── api/               # API routes
-├── components/            # Reusable components
-├── lib/                   # Utilities and helpers
-├── prisma/               # Database schema and migrations
-├── services/             # Business logic
-├── repositories/         # Data access layer
-└── docs/                 # Documentation
-```
-
-## 🛠️ Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- Docker + Docker Compose (recomendado)
-- npm or pnpm
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd app
-```
-
-2. Install dependencies:
 ```bash
 npm install
+cp .env.example .env   # ajuste conforme docs/ENV.md
+npm run dev:full       # sobe Postgres + Mailpit, migra, popula e inicia
 ```
 
-3. Set up environment variables:
-```bash
-# Ajuste o .env conforme necessário
-```
-Edit `.env` with your configuration. See [docs/ENV.md](docs/ENV.md) for details.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-Por padrão, este projeto usa:
-- Postgres via Docker em `localhost:5433` (evita conflito comum com Postgres local na `5432`)
-- Mailpit em `localhost:8025` (UI) e `localhost:1025` (SMTP)
+## Scripts principais
 
-4. Start local infrastructure (Postgres + Mailpit) and set up the database:
-```bash
-npm run db:setup
-```
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run dev:full` | Infra + banco + servidor |
+| `npm run db:reset` | Zera e recria o banco |
+| `npm run build` | Build de produção |
+| `npm test` | Testes |
 
-5. Run the development server:
-```bash
-npm run dev
-```
+## Documentação
 
-Opcional (faz tudo em um comando):
-```bash
-npm run dev:full
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 📝 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run dev:full` - Sobe infra + migra + seed + inicia o dev server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run infra:up` - Sobe Postgres + Mailpit (Docker)
-- `npm run infra:down` - Para a infra (mantém volume)
-- `npm run infra:nuke` - Para a infra e remove volumes (zera o banco)
-- `npm run db:setup` - Infra + generate + migrate + seed
-- `npm run db:reset` - Zera o banco e roda `db:setup`
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
-- `npm run db:studio` - Open Prisma Studio (database GUI)
-
-## 📚 Documentation
-
-- [AI Context](docs/AI_CONTEXT.md) - Project overview and AI continuation guide
-- [Conventions](docs/CONVENTIONS.md) - Coding standards and best practices
-- [Environment Variables](docs/ENV.md) - Complete environment configuration guide
-- [Implementation Plan](docs/IMPLEMENTATION_PLAN.md) - Development roadmap and progress
-
-## 🌐 Language Convention
-
-- **Code:** English (en-US) - All code, variables, functions, comments
-- **UI:** Portuguese (pt-BR) - All visible text and labels for users
-
-## 🔒 Security
-
-- RBAC with default-deny policy
-- Password hashing with bcrypt
-- Rate limiting on auth endpoints
-- CSRF protection
-- XSS prevention
-- Server-side validation with Zod
-
-## 📄 License
-
-[Add your license here]
-
-## 👥 Contributors
-
-[Add contributors here]
-
-## 🤝 Contributing
-
-[Add contributing guidelines here]
+- [Variáveis de ambiente](docs/ENV.md)
+- [Convenções](docs/CONVENTIONS.md)

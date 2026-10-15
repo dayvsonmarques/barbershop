@@ -188,7 +188,7 @@ Educational courses offered.
 #### EstablishmentSettings
 Global settings for the establishment (singleton table).
 - `id`: Fixed to 1 (only one row allowed)
-- `name`: Establishment name (default: "ED Barbearia")
+- `name`: Establishment name (default: "Barbearia")
 - **`openingHours`**: JSON string with hours per day
   ```json
   {

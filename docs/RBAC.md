@@ -154,7 +154,7 @@ Authorization: Bearer <token>
 {
   "user": {
     "id": "cuid123",
-    "email": "admin@edbarbearia.com"
+    "email": "admin@barbearia.com"
   },
   "groups": [
     {
@@ -185,7 +185,7 @@ Authorization: Bearer <token>
   "users": [
     {
       "id": "cuid123",
-      "email": "admin@edbarbearia.com",
+      "email": "admin@barbearia.com",
       "name": "Administrador",
       "isActive": true,
       "createdAt": "2026-01-13T10:00:00.000Z"
@@ -340,12 +340,12 @@ function canEdit() {
 ### Test Credentials (from seed)
 ```
 Admin:
-  email: admin@edbarbearia.com
+  email: admin@barbearia.com
   password: password123
   permissions: ALL
 
 Receptionist:
-  email: recepcao@edbarbearia.com
+  email: recepcao@barbearia.com
   password: password123
   permissions: bookings*, barbers*, services*, products:view
 ```
@@ -355,7 +355,7 @@ Receptionist:
 # 1. Login
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@edbarbearia.com","password":"password123"}'
+  -d '{"email":"admin@barbearia.com","password":"password123"}'
 
 # 2. Get user info (includes permissions)
 curl http://localhost:3000/api/auth/me \
